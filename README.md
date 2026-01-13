@@ -19,7 +19,8 @@ In this repository there is only Spring Boot used where depending on the configu
 
 ## Note 3
 
-Saturation can happen also, when there is a Connection Pool. Rules are exactly the same. But it's out of scope for this repo.
+Saturation can happen also, when there is a Connection Pool or any other Pool. 
+Rules are exactly the same. But it's out of scope for this repo.
 
 ## Note 4
 Response from endpoint is returned always on server thread. 
