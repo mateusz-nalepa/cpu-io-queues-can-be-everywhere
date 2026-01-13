@@ -1,0 +1,32 @@
+services:
+  cpu-bound-io-bound-prometheus:
+      container_name: cpu-bound-io-bound-prometheus
+      image: prom/prometheus:v3.5.0 # https://hub.docker.com/r/prom/prometheus
+      extra_hosts: ['host.docker.internal:host-gateway']
+      command:
+          - --enable-feature=exemplar-storage
+          - --web.enable-remote-write-receiver
+          - --config.file=/etc/prometheus/prometheus.yml
+      volumes:
+          - prometheus_data:/prometheus
+          - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      ports:
+          - "9090:9090"
+  cpu-bound-io-bound-grafana:
+      container_name: cpu-bound-io-bound-grafana
+      image: grafana/grafana:12.0.2 # https://hub.docker.com/r/grafana/grafana/tags and https://github.com/grafana/grafana/releases
+      extra_hosts: ['host.docker.internal:host-gateway']
+      environment:
+          - GF_AUTH_ANONYMOUS_ENABLED=true
+          - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+          - GF_AUTH_DISABLE_LOGIN_FORM=true
+      volumes:
+          - ./docker/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+          - ./docker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+          - ./docker/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      ports:
+          - "3000:3000"
+volumes:
+  prometheus_data:
+    driver: local
+

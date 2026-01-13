@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  threads:
+    virtual:
+      enabled: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
