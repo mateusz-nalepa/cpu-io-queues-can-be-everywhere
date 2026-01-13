@@ -8,10 +8,9 @@ Check [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan G
 # Notes
 
 ## Note 1
-Do not look here for good coding practices.
 Examples here are as minimal as possible.
 They are only showing thread pool saturation.
-Programming principles like: SOLID, KISS, DRY were not being taken into consideration when creating this repo.
+Programming principles like: SOLID, KISS, DRY, Hexagonal Architecture were not being taken into consideration when creating this repo.
 
 ## Note 2
 
