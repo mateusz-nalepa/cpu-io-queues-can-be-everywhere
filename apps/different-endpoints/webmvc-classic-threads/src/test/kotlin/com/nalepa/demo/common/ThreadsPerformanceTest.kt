@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.concurrent.*
 
-class OperationsPerformanceTest {
+class ThreadsPerformanceTest {
 
     /**
      * more threads, less average number of iterations
