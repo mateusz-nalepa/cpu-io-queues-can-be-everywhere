@@ -1,6 +1,7 @@
 package com.nalepa.demo.common.monitored
 
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
 import org.springframework.context.SmartLifecycle
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory
 import org.springframework.stereotype.Component
@@ -16,14 +17,14 @@ class ExecutorsFactory(
     fun monitorExecutor(
         delegate: Executor,
         logMessagePrefix: String,
-        metricName: String,
+        threadPoolName: String,
     ): Executor {
-        return MonitoredExecutor(
-            delegate,
-            logMessagePrefix,
-            metricName,
-            meterRegistry,
-        )
+        return ExecutorServiceMetrics
+            .monitor(
+                meterRegistry,
+                delegate,
+                threadPoolName,
+            )
     }
 
     fun monitorExecutorService(
@@ -31,12 +32,13 @@ class ExecutorsFactory(
         logMessagePrefix: String,
         threadPoolName: String,
     ): ExecutorService {
-        return MonitoredExecutorService(
-            delegate,
-            logMessagePrefix,
-            threadPoolName,
-            meterRegistry,
-        )
+        return ExecutorServiceMetrics
+            .monitor(
+                meterRegistry,
+                delegate,
+                threadPoolName,
+            )
+
     }
 
     fun create(
@@ -45,16 +47,16 @@ class ExecutorsFactory(
         threadsSize: Int,
         taskQueueSize: Int,
     ): ExecutorService {
-        return MonitoredExecutorService(
-            createThreadPoolExecutor(
+        return ExecutorServiceMetrics
+            .monitor(
+                meterRegistry,
+                createThreadPoolExecutor(
+                    threadPoolName,
+                    threadsSize,
+                    taskQueueSize,
+                ),
                 threadPoolName,
-                threadsSize,
-                taskQueueSize,
-            ),
-            logMessagePrefix,
-            threadPoolName,
-            meterRegistry,
-        )
+            )
     }
 
     private fun createThreadPoolExecutor(
