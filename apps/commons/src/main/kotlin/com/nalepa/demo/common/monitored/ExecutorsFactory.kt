@@ -27,6 +27,23 @@ class ExecutorsFactory(
             )
     }
 
+
+    fun create(
+        logMessagePrefix: String,
+        threadPoolName: String,
+        threadsSize: Int,
+        taskQueueSize: Int,
+    ): ExecutorService {
+        val executor =
+            createThreadPoolExecutor(
+                threadPoolName,
+                threadsSize,
+                taskQueueSize,
+            )
+
+        return monitorExecutorService(executor, logMessagePrefix, threadPoolName)
+    }
+
     fun monitorExecutorService(
         delegate: ExecutorService,
         logMessagePrefix: String,
@@ -36,25 +53,6 @@ class ExecutorsFactory(
             .monitor(
                 meterRegistry,
                 delegate,
-                threadPoolName,
-            )
-
-    }
-
-    fun create(
-        logMessagePrefix: String,
-        threadPoolName: String,
-        threadsSize: Int,
-        taskQueueSize: Int,
-    ): ExecutorService {
-        return ExecutorServiceMetrics
-            .monitor(
-                meterRegistry,
-                createThreadPoolExecutor(
-                    threadPoolName,
-                    threadsSize,
-                    taskQueueSize,
-                ),
                 threadPoolName,
             )
     }
@@ -83,7 +81,7 @@ class ExecutorsFactory(
         return executor
     }
 
-    private val createdExecutors = mutableListOf<ThreadPoolExecutor>()
+    private val createdExecutors = mutableListOf<ExecutorService>()
     private var running = true
 
     override fun start() {
