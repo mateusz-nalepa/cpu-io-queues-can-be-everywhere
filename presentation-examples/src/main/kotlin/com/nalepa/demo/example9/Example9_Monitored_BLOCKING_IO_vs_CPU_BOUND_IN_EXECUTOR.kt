@@ -18,7 +18,7 @@ fun main() {
 
     repeat(10000) { index ->
         futures.add(
-            executor.submit(_root_ide_package_.com.nalepa.demo.example8.MonitoredRunnable { simulateBlockingIO(index) })
+            executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
 //            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
         )
     }
