@@ -9,6 +9,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.concurrent.*
 
+// TODO: check if this code is ok
 class ThreadsPerformanceTest {
 
     /**

@@ -1,6 +1,7 @@
 package com.nalepa.demo.common.monitored
 
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
 import org.springframework.context.SmartLifecycle
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory
 import org.springframework.stereotype.Component
@@ -16,28 +17,16 @@ class ExecutorsFactory(
     fun monitorExecutor(
         delegate: Executor,
         logMessagePrefix: String,
-        metricName: String,
+        threadPoolName: String,
     ): Executor {
-        return MonitoredExecutor(
-            delegate,
-            logMessagePrefix,
-            metricName,
-            meterRegistry,
-        )
+        return ExecutorServiceMetrics
+            .monitor(
+                meterRegistry,
+                delegate,
+                threadPoolName,
+            )
     }
 
-    fun monitorExecutorService(
-        delegate: ExecutorService,
-        logMessagePrefix: String,
-        threadPoolName: String,
-    ): ExecutorService {
-        return MonitoredExecutorService(
-            delegate,
-            logMessagePrefix,
-            threadPoolName,
-            meterRegistry,
-        )
-    }
 
     fun create(
         logMessagePrefix: String,
@@ -45,16 +34,27 @@ class ExecutorsFactory(
         threadsSize: Int,
         taskQueueSize: Int,
     ): ExecutorService {
-        return MonitoredExecutorService(
+        val executor =
             createThreadPoolExecutor(
                 threadPoolName,
                 threadsSize,
                 taskQueueSize,
-            ),
-            logMessagePrefix,
-            threadPoolName,
-            meterRegistry,
-        )
+            )
+
+        return monitorExecutorService(executor, logMessagePrefix, threadPoolName)
+    }
+
+    fun monitorExecutorService(
+        delegate: ExecutorService,
+        logMessagePrefix: String,
+        threadPoolName: String,
+    ): ExecutorService {
+        return ExecutorServiceMetrics
+            .monitor(
+                meterRegistry,
+                delegate,
+                threadPoolName,
+            )
     }
 
     private fun createThreadPoolExecutor(
@@ -81,7 +81,7 @@ class ExecutorsFactory(
         return executor
     }
 
-    private val createdExecutors = mutableListOf<ThreadPoolExecutor>()
+    private val createdExecutors = mutableListOf<ExecutorService>()
     private var running = true
 
     override fun start() {
