@@ -5,6 +5,25 @@ Repository which help to demonstrate thread pool saturation based on different t
 
 Check [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
+
+# TL;DR
+Metrics may be not aware about Thread Pools.
+When thread pools queues are full things like 500ms may mean everything.
+It's good to monitor queue wait time and execution time as two separete metrics.
+
+What to do when queue wait time > 0?
+- Thread Pool Isolation
+- Thread Stage Isolation
+- maybe just fewer instances
+- other things
+
+And what if queue size is almost 0?
+- maybe cache is needed
+- maybe async calls (http, database) can be done
+- maybe deep dive with e,g. async-profiler
+- maybe just more instances
+- other things
+
 # Notes
 
 ## Note 1
@@ -319,4 +338,3 @@ In this example, metric `http.client.requests` is not telling the truth
 |             Http Client metric             |      from 0s to 9s      |      from 0s to 9s  ✅       |       Not Applicable       |
 | Server Saturation time<br>(missing metric) |         Missing         |           Missing           |       Not Applicable       |
 | Client Saturation time<br>(custom metric)  |           0s            |            0s ✅             |       Not Applicable       |
-
