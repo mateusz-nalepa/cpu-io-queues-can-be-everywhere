@@ -14,8 +14,10 @@ Check [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan G
 
 # TL;DR
 Metrics may be not aware about Thread Pools.
-When thread pools queues are full things like 500ms may mean everything.
-It's good to monitor queue wait time and execution time as two separete metrics.
+When thread pools queues are full things like 500 ms may mean everything:
+- X ms in queue + 500 ms execution time
+- 450 ms in queue + 50ms execution time
+It's good to monitor queue wait time and execution time as two separate metrics.
 
 What to do when queue wait time > 0?
 - Thread Pool Isolation -> aka Bulkhead
