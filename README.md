@@ -1,7 +1,13 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-Repository which help to demonstrate thread pool saturation based on different types of tasks.
-> Treat this repo rather as a sandbox, not production ready code.
+A repository that demonstrates thread‑pool saturation (queue wait time) across different types of tasks.
+
+Treat this repository as a starting point rather than production‑ready code.
+The examples are intentionally minimal.
+They focus solely on showing thread‑pool saturation.
+
+Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
+Tracing is also not included.
 
 Check [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
@@ -27,21 +33,16 @@ And what if queue size is almost 0?
 # Notes
 
 ## Note 1
-Examples here are as minimal as possible.
-They are only showing thread pool saturation.
-Programming principles like: SOLID, KISS, DRY, Hexagonal Architecture were not being taken into consideration when creating this repo.
-
-## Note 2
 
 Libraries/frameworks `MAY` not be aware about thread pools, so metrics may not tell the truth.
 In this repository there is only Spring Boot used where depending on the configurations metrics are telling the truth or not.
 
-## Note 3
+## Note 2
 
 Saturation can happen also, when there is a Connection Pool or any other Pool. 
 Rules are exactly the same. But it's out of scope for this repo.
 
-## Note 4
+## Note 3
 Response from endpoint is returned always on server thread. 
 But it's intentionally omitted in diagrams, to make them easier to read.
 
