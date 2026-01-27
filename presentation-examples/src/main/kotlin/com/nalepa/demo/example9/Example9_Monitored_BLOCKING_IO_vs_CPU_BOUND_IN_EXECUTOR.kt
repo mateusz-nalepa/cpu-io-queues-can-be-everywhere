@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.sqrt
 
 fun main() {
+    // theads pool number equal to cpu, so it's 100% cpu usage on VisualVM
     val executor =
         Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors(),

@@ -1,4 +1,4 @@
-package com.nalepa.demo.example10
+package com.nalepa.demo.example14
 
 fun main() {
     HelloWorld.println()
@@ -21,6 +21,6 @@ fun main() {
 
 object HelloWorld {
     fun println() {
-        println("Hello world!")
+        println("Hello world! XD")
     }
 }
