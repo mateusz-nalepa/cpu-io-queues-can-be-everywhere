@@ -25,6 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue
  * So no more calculating what's the thread pool size!
  *
  * For IO: Threads Number = As many as needed, we don't want here tasks which are waiting in a queue
+ *      Or maybe just use Virtual Threads for this :D
  * For CPU: Threads Number = CPU Number with some queue Size
  *
  * Task#1:
