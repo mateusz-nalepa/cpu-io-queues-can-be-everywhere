@@ -54,6 +54,8 @@ There are two different types of examples:
 
 ## Examples with `fast` and `slow` endpoints
 
+In those endpoints, `bulkhead` pattern is used.
+
 From `saturation` perspective it doesn't matter, whether thread is:
 
 - busy - eq: JSON serialization/deserialization
@@ -219,6 +221,8 @@ In this example, metric `http.server.requests` is not telling the truth
 | Server Saturation time<br>(missing metric) |         Missing         |     Missing      |       Not Applicable       |
 
 ## Examples with app using http client
+
+In those examples, Staged Event-Driven Architecture (SEDA) is being used.
 
 When threads are busy/blocked, then it may happen that from application perspective:
 
