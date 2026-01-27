@@ -21,7 +21,13 @@ It's good to monitor queue wait time and execution time as two separate metrics.
 
 What to do when queue wait time > 0?
 - Thread Pool Isolation -> aka Bulkhead
+  - It protects from the "noisy neighbour" 
+  - request A -> Thread Pool A
+  - request B -> Thread Pool B
 - Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
+  - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
+  - maximize cpu, minimize queue wait time
+- Hybrid: Bulkhead + SEDA
 - maybe just fewer instances
 - other things
 
