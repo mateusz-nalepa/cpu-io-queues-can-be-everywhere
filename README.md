@@ -12,8 +12,8 @@ When thread pools queues are full things like 500ms may mean everything.
 It's good to monitor queue wait time and execution time as two separete metrics.
 
 What to do when queue wait time > 0?
-- Thread Pool Isolation
-- Thread Stage Isolation
+- Thread Pool Isolation -> aka Bulkhead
+- Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
 - maybe just fewer instances
 - other things
 
