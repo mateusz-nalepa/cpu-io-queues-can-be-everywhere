@@ -70,6 +70,9 @@ There are two different types of examples:
 
 In those endpoints, `bulkhead` pattern is used.
 
+![bulkhead.png](bulkhead.png)
+
+
 From `saturation` perspective it doesn't matter, whether thread is:
 
 - busy - eq: JSON serialization/deserialization
@@ -237,6 +240,8 @@ In this example, metric `http.server.requests` is not telling the truth
 ## Examples with app using http client
 
 In those examples, Staged Event-Driven Architecture (SEDA) is being used.
+
+![seda.png](seda.png)
 
 When threads are busy/blocked, then it may happen that from application perspective:
 
