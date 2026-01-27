@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.sqrt
 
+// look on Visual VM CPU Usage
 fun main() {
     // theads pool number equal to cpu, so it's 100% cpu usage on VisualVM
     val executor =

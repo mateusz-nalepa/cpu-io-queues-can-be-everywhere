@@ -54,6 +54,11 @@ Rules are exactly the same. But it's out of scope for this repo.
 Response from endpoint is returned always on server thread. 
 But it's intentionally omitted in diagrams, to make them easier to read.
 
+# Presentation / Blog examples
+Start with the module `presentation-examples`.
+It contains pure Kotlin, zero frameworks, zero magic 
+- only the minimal code needed to illustrate the concepts.
+
 # Examples
 
 There are two different types of examples:
