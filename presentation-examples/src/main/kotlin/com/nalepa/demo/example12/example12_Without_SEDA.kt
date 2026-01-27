@@ -9,6 +9,8 @@ import java.util.concurrent.LinkedBlockingQueue
 // While there is JSON parsing for index 1, we could already trigger I/O for index 2... but we are not doing it :(
 
 /**
+ * In this example there is only One Pool which is doing both I/O and CPU
+ *
  * Task#1:
  *   I/O(1)---3s---
  *                 CPU(1)-----5s-----

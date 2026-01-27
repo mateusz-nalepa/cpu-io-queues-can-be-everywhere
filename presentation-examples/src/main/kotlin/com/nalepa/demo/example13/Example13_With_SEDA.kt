@@ -8,6 +8,25 @@ import java.util.concurrent.LinkedBlockingQueue
 // With Staged Event-Driven Architecture
 // While there is JSON parsing for index 1 on thread cpu, then we already got data for index 2 on thread io <3
 /**
+ * In this example there is:
+ *  IO Pool -> CPU Pool
+ *
+ * But it's even more than OK to add more pools, when data from one client depends on data from another client:
+ *  IO Pool 1 -> CPU Pool 1 -> IO Pool 2 -> CPU Pool2 etc.
+ *
+ * We can add just more threads, but then Blocking Factor is a magic.
+ * Blocking Factor? Ratio between Blocking Time vs Total Time
+ * SharedPool: 3s for I/O, 3s for CPU >= 3s io / 3s io + 3s cpu = Blocking Factor: 0.5
+ * SharedPool: 9s for I/O, 3s for CPU >= 9s io / 9s io + 3s cpu = Blocking Factor: 0.75
+ *
+ * But with SEDA pattern, Blocking Factor is always
+ * IO Pool: Blocking Factor ≈ 1
+ * CPU Pool: Blocking Factor ≈ 0
+ * So no more calculating what's the thread pool size!
+ *
+ * For IO: Threads Number = As many as needed, we don't want here tasks which are waiting in a queue
+ * For CPU: Threads Number = CPU Number with some queue Size
+ *
  * Task#1:
  *   I/O(1)---3s---
  *                 CPU(1)-----5s-----
@@ -15,12 +34,6 @@ import java.util.concurrent.LinkedBlockingQueue
  * Task#2:                      (added here at t=5s)
  *                              I/O(2)---3s--- - no waiting in queue, case io thread was ready to sent data and block while waiting for them
  *                                            CPU(2)-----5s-----
- *
- * In this example there is:
- *  IO Pool -> CPU Pool
- *
- * But it's even more than OK to add more pools, when data from one client depends on data from another client:
- *  IO Pool 1 -> CPU Pool 1 -> IO Pool 2 -> CPU Pool2 etc.
  */
 fun main() {
     val queueForIo = LinkedBlockingQueue<Runnable>()
