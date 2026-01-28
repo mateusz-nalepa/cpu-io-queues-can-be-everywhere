@@ -19,7 +19,7 @@ class HttpDataProvider(
 
         return webClient
             .get()
-            .uri("http://localhost:8082/mock/{index}/{mockDelaySeconds}", index, mockDelaySeconds )
+            .uri("http://localhost:8082/mock/{index}/{mockDelaySeconds}", index, mockDelaySeconds)
             .header(DUMMY_INDEX, index)
             .retrieve()
             // by default webClient thread will do deserialization, switch it to another thread pool if needed with publishOn

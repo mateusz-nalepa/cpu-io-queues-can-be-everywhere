@@ -3,10 +3,10 @@ package com.nalepa.demo.httpclient
 import com.nalepa.demo.common.DUMMY_INDEX
 import com.nalepa.demo.common.DummyLogger
 import io.micrometer.core.instrument.MeterRegistry
+import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder
 import org.springframework.http.client.ReactorResourceFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder
 import reactor.netty.resources.LoopResources
 import java.time.Duration
 import kotlin.jvm.optionals.getOrNull
