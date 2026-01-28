@@ -60,11 +60,6 @@ In this repo there is only `Thread Pool`.
 Response from endpoint is returned always on server thread. 
 But it's intentionally omitted in diagrams, to make them easier to read.
 
-# Presentation / Blog examples
-Start with the module `presentation-examples`.
-It contains pure Kotlin, zero frameworks, zero magic 
-- only the minimal code needed to illustrate the concepts.
-
 # Thread, Thread Pools
 
 There is always some `Thread` - like a cashier at the checkout:
@@ -90,6 +85,10 @@ fun main() {
         .get()
 }
 ```
+
+What, if customers are waiting in a line?
+- measure queue wait time as one metric
+- measure scanning time as  another metric
 
 Default Thread Pool Sizes:
 
@@ -124,6 +123,11 @@ private val dispatcher =
 
 For any other library... it's probably the same 😄
 Under the hood: just threads.
+
+# Presentation / Blog examples
+Start with the module `presentation-examples`.
+It contains pure Kotlin, zero frameworks, zero magic.
+Only the minimal code needed to illustrate the concepts.
 
 # Fastest way to reduce queue wait
 Just add more threads:
