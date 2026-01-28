@@ -42,7 +42,8 @@ If you spot an error, feel free to open an issue or fork the repo and submit a P
 # Note about programming language / framework
 
 Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
-Whether you use Go, Rust, Java, or any other language, the hardware limits and queuing effects remain the same.
+Whether Go, Rust, Java, or any other language is used,
+the hardware limits and queuing effects are probably the same :D
 
 # Quick summary of the repo
 
