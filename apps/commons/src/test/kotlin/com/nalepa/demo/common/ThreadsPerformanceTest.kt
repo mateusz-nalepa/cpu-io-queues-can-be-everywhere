@@ -1,6 +1,6 @@
-package com.nalepa.demo.common
+package com.nalepa.demo.common.com.nalepa.demo.common
 
-
+import com.nalepa.demo.common.Operations
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigInteger

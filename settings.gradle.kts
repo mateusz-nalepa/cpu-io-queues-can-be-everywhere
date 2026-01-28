@@ -18,7 +18,6 @@ include(
     ":apps:endpoint-and-http-client:04-webmvc-coroutines-virtual-threads-rest-client",
     ":apps:endpoint-and-http-client:05-webflux-netty-server-client-netty",
 
-
     ":tools:request-sender",
     ":tools:mock-external-service",
 )
