@@ -82,6 +82,14 @@ But it's intentionally omitted in diagrams, to make them easier to read.
 
 # Thread, Thread Pools
 
+When dealing with threads, it's absolutely enough to debug code with given println :D
+
+```kotlin
+println("Current thread: ${Thread.currentThread()}")
+println("Current thread isVirtual: ${Thread.currentThread().isVirtual}")
+```
+
+
 There is always some `Thread` - like a cashier at the checkout:
 
 ```kotlin
