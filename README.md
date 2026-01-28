@@ -15,7 +15,11 @@ If time is e.g. 10 seconds, then:
 - maybe 8 seconds standing in line + 2 seconds scanning time
 - maybe 10 seconds standing in line + X seconds scanning time
 
-So It's good to monitor standing in line time and scanning time as two separate metrics.
+Another important thing to mention is that customers (tasks in the queue) 
+may not be aware of the cashier utilization (CPU usage). 
+Cause a queue can appear at any CPU utilization level.
+
+So it's good to monitor standing in line time and scanning time as two separate metrics.
 
 `Bonus`
 > If the queue is really high, it’s probably worth calculating a `Time to Consume Queue` metric :D
