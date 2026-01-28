@@ -9,8 +9,9 @@ include(
     ":apps:different-endpoints:webmvc-virtual-threads",
     ":apps:different-endpoints:webflux-netty-server",
 
-    ":apps:endpoint-and-http-client:webflux-netty-server-client-netty",
+    ":apps:endpoint-and-http-client:webmvc-classic-threads-rest-client",
     ":apps:endpoint-and-http-client:webmvc-virtual-threads-rest-client",
+    ":apps:endpoint-and-http-client:webflux-netty-server-client-netty",
 
     ":tools:request-sender",
     ":tools:mock-external-service",
