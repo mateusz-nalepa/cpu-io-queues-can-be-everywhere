@@ -1,16 +1,18 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks — and how easily it hides in plain sight.
+A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks - and how easily it hides in plain sight.
 
 Analogy: a cashier scanning groceries. Two metrics matter:
-- queue wait time — how long customers stand in line
+- queue wait time - how long customers stand in line
 - scanning time
 
 If there is only one metric... what does it mean? Honestly, no idea.
-If time is e.q. 10 seconds, then:
+If time is e.g. 10 seconds, then:
 - maybe X seconds standing in line + 10 seconds scanning time
 - maybe 8 seconds standing in line + 2 seconds scanning time
 - maybe 10 seconds standing in line + X seconds scanning time
+
+So It's good to monitor standing in line time and scanning time as two separate metrics.
 
 Treat this repository as a Sandbox.
 As a starting point, rather than production‑ready code.
@@ -22,14 +24,7 @@ Tracing is also not included.
 
 Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
-# TL;DR
-Metrics may be not aware about Thread Pools.
-When thread pools queues are full things like 500 ms may mean everything:
-- X ms in queue + 500 ms execution time
-- 450 ms in queue + 50ms execution time
-- 500 ms in queue + X ms execution time
-
-It's good to monitor queue wait time and execution time as two separate metrics.
+# Quick summary of the repo
 
 What to do when queue wait time > 0?
 - just add more threads
@@ -64,7 +59,7 @@ In this repository there is only Spring Boot used where depending on the configu
 
 ## Note 2
 
-Saturation can happen also, when there is a `Connection Poo`l or any `other Pool`. 
+Saturation can happen also, when there is a `Connection Pool` or any `other Pool`. 
 Rules are exactly the same. But it's out of scope for this repo.
 In this repo there is only `Thread Pool`.
 
@@ -117,6 +112,8 @@ Default Thread Pool Sizes:
 
 ## What about Schedulers, Dispatchers?
 
+Under the hood: just threads.
+
 Project Reactor:
 ```kotlin
 private val scheduler =
@@ -134,7 +131,6 @@ private val dispatcher =
 ```
 
 For any other library... it's probably the same 😄
-Under the hood: just threads.
 
 # Presentation / Blog examples
 Start with the module `presentation-examples`.
