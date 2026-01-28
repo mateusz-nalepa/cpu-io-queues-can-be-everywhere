@@ -1,22 +1,34 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-A repository that demonstrates thread‑pool saturation (queue wait time) across different types of tasks.
+A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks — and how easily it hides in plain sight.
 
-Treat this repository as a starting point rather than production‑ready code.
+Analogy: a cashier scanning groceries. Two metrics matter:
+- queue wait time — how long customers stand in line
+- scanning time
+
+If there is only one metric... what does it mean? Honestly, no idea.
+If time is e.q. 10 seconds, then:
+- maybe X seconds standing in line + 10 seconds scanning time
+- maybe 8 seconds standing in line + 2 seconds scanning time
+- maybe 10 seconds standing in line + X seconds scanning time
+
+Treat this repository as a Sandbox.
+As a starting point, rather than production‑ready code.
 The examples are intentionally minimal.
 They focus solely on showing thread‑pool saturation.
 
 Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
 Tracing is also not included.
 
-Check [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
-
+Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
 # TL;DR
 Metrics may be not aware about Thread Pools.
 When thread pools queues are full things like 500 ms may mean everything:
 - X ms in queue + 500 ms execution time
 - 450 ms in queue + 50ms execution time
+- 500 ms in queue + X ms execution time
+
 It's good to monitor queue wait time and execution time as two separate metrics.
 
 What to do when queue wait time > 0?
@@ -33,14 +45,14 @@ What to do when queue wait time > 0?
   - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
   - maximize cpu, minimize queue wait time
 - Hybrid: Bulkhead + SEDA
-- maybe just fewer instances
+- maybe just more instances
 - other things
 
 And what if queue size is almost 0?
 - maybe cache is needed
 - maybe async calls (http, database) can be done
 - maybe deep dive with e,g. async-profiler
-- maybe just more instances
+- maybe just fewer instances
 - other things
 
 # Notes
