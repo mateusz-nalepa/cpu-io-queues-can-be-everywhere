@@ -14,6 +14,9 @@ include(
     ":apps:endpoint-and-http-client:webmvc-classic-threads-rest-client",
     ":apps:endpoint-and-http-client:webmvc-virtual-threads-rest-client",
     ":apps:endpoint-and-http-client:webflux-netty-server-client-netty",
+    ":apps:endpoint-and-http-client:webmvc-coroutines-classic-threads-rest-client",
+    ":apps:endpoint-and-http-client:webmvc-coroutines-virtual-threads-rest-client",
+
 
     ":tools:request-sender",
     ":tools:mock-external-service",
