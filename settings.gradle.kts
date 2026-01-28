@@ -6,17 +6,17 @@ include(
     ":presentation-blog-examples",
 
     ":apps:commons",
-    ":apps:different-endpoints:webmvc-classic-threads",
-    ":apps:different-endpoints:webmvc-virtual-threads",
-    ":apps:different-endpoints:webflux-netty-server",
-    ":apps:different-endpoints:webmvc-coroutines-classic-threads",
-    ":apps:different-endpoints:webmvc-coroutines-virtual-threads",
+    ":apps:different-endpoints:01-webmvc-classic-threads",
+    ":apps:different-endpoints:02-webmvc-virtual-threads",
+    ":apps:different-endpoints:03-webmvc-coroutines-classic-threads",
+    ":apps:different-endpoints:04-webmvc-coroutines-virtual-threads",
+    ":apps:different-endpoints:05-webflux-netty-server",
 
-    ":apps:endpoint-and-http-client:webmvc-classic-threads-rest-client",
-    ":apps:endpoint-and-http-client:webmvc-virtual-threads-rest-client",
-    ":apps:endpoint-and-http-client:webflux-netty-server-client-netty",
-    ":apps:endpoint-and-http-client:webmvc-coroutines-classic-threads-rest-client",
-    ":apps:endpoint-and-http-client:webmvc-coroutines-virtual-threads-rest-client",
+    ":apps:endpoint-and-http-client:01-webmvc-classic-threads-rest-client",
+    ":apps:endpoint-and-http-client:02-webmvc-virtual-threads-rest-client",
+    ":apps:endpoint-and-http-client:03-webmvc-coroutines-classic-threads-rest-client",
+    ":apps:endpoint-and-http-client:04-webmvc-coroutines-virtual-threads-rest-client",
+    ":apps:endpoint-and-http-client:05-webflux-netty-server-client-netty",
 
 
     ":tools:request-sender",
