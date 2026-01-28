@@ -45,14 +45,14 @@ What to do when queue wait time > 0?
   - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
   - maximize cpu, minimize queue wait time
 - Hybrid: Bulkhead + SEDA
-- maybe just more instances
+- maybe just more threads/instances
 - other things
 
 And what if queue size is almost 0?
 - maybe cache is needed
 - maybe async calls (http, database) can be done
 - maybe deep dive with e,g. async-profiler
-- maybe just fewer instances
+- maybe just fewer threads/instances
 - other things
 
 # Notes
@@ -141,6 +141,7 @@ For any other library... it's probably the same 😄
 Start with the module `presentation-examples`.
 It contains pure Kotlin, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
+Simple files with a `main()` method that can be executed after cloning this repository.
 
 # Fastest way to reduce queue wait
 Just add more threads:
@@ -164,6 +165,8 @@ There are two different types of examples:
   - bulkhead pattern will be used
 - applications with only one endpoint, but under the hood, http-client is called
   - Staged Event-Driven Architecture (SEDA) will be used
+
+`How to run` is included in every example.
 
 ## Examples with `fast` and `slow` endpoints
 
