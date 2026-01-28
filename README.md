@@ -77,9 +77,10 @@ And what if queue size is almost 0?
 
 ## Note 1
 
-Libraries/frameworks `MAY` not be aware about thread pools, so metrics may not tell the truth.
-In this repository there is only Spring Boot used where depending on the configurations metrics are telling the truth or
-not.
+Different libraries and frameworks handle thread pools in their own ways.  
+Because of that, some of them may not expose fully accurate metrics out of the box.  
+In some cases, the metrics may also behave differently than expected.
+Simply because the library may not be fully aware of the underlying threads and queues.
 
 ## Note 2
 
