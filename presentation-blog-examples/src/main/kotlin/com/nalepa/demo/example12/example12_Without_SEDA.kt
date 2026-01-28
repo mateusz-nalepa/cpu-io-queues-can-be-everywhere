@@ -16,9 +16,9 @@ import java.util.concurrent.LinkedBlockingQueue
  *                 CPU(1)-----5s-----
  *
  * Task#2:                      (added here at t=5s)
- *                              waits in queue---3s---
- *                                                    I/O(2)---3s---
- *                                                                  CPU(2)-----5s-----
+ *                              queue---3s---
+ *                                   I/O(2)---3s---
+ *                                                 CPU(2)-----5s-----
  */
 
 fun main() {

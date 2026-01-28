@@ -1,4 +1,4 @@
-package com.nalepa.demo.example4
+package com.nalepa.demo.example04
 
 import java.time.LocalTime
 

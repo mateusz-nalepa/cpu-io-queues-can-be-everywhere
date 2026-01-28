@@ -1,4 +1,4 @@
-package com.nalepa.demo.example2
+package com.nalepa.demo.example02
 
 fun main() {
     while (true) {

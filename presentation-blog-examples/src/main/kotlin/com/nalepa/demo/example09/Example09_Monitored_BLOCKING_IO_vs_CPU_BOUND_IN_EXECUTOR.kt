@@ -1,4 +1,4 @@
-package com.nalepa.demo.example9
+package com.nalepa.demo.example09
 
 import java.time.Duration
 import java.time.LocalTime
@@ -10,7 +10,7 @@ import kotlin.math.sqrt
 
 // look on Visual VM CPU Usage
 fun main() {
-    // theads pool number equal to cpu, so it's 100% cpu usage on VisualVM
+    // threads pool number equal to cpu, so it's 100% cpu usage on VisualVM
     val executor =
         Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors(),

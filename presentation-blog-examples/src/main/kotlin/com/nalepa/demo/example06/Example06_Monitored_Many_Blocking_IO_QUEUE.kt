@@ -1,15 +1,14 @@
-package com.nalepa.demo.example7
+package com.nalepa.demo.example06
 
 import java.time.Duration
 import java.time.LocalTime
 import java.util.*
-import kotlin.math.sqrt
 
 fun main() {
     val queue = LinkedList<Runnable>()
 
     repeat(4) { index ->
-        queue.add(MonitoredRunnable { simulateCpuCode(index) })
+        queue.add(MonitoredRunnable { simulateBlockingIO(index) })
     }
 
     while (!queue.isEmpty()) {
@@ -17,17 +16,10 @@ fun main() {
     }
 }
 
-fun simulateCpuCode(index: Int): Long {
-    log("Start CPU code for: $index")
-    val startTime = System.nanoTime()
-    var iteration = 0L
-    while (Duration.ofNanos(System.nanoTime() - startTime).seconds < 5) {
-        // whatever cpu is doing, compression, JSON serialization, deserialization, etc
-        iteration++
-        sqrt(iteration.toDouble())
-    }
-    log("End CPU code for: $index")
-    return iteration
+fun simulateBlockingIO(index: Int) {
+    log("Start blocking IO code for: $index")
+    Thread.sleep(5000) // http call, database call, reading from file, whatever what needs external data
+    log("End blocking IO code for: $index")
 }
 
 fun log(message: String) {
@@ -39,10 +31,6 @@ class MonitoredRunnable(
 ) : Runnable {
 
     val runnableInstanceCreatedAt = System.nanoTime()
-
-    init {
-        log("Created MonitoredRunnable instance")
-    }
 
     override fun run() {
         println("")

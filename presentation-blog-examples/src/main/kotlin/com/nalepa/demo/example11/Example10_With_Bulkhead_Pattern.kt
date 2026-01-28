@@ -5,7 +5,6 @@ import java.time.LocalTime
 import java.util.*
 
 // fast endpoints are really fast! <3
-
 fun main() {
     val queueForSlow = LinkedList<Runnable>()
     val queueForFast = LinkedList<Runnable>()
