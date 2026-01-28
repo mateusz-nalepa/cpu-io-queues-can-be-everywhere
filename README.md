@@ -59,6 +59,66 @@ Start with the module `presentation-examples`.
 It contains pure Kotlin, zero frameworks, zero magic 
 - only the minimal code needed to illustrate the concepts.
 
+# Thread, Thread Pools
+
+There is always some `Thread` - like a cashier at the checkout:
+```kotlin
+fun main() {
+    Thread.ofPlatform()
+        .name("some-thread")
+        .start {
+            println("${Thread.currentThread()} : Hello world!")
+        }
+        .join()
+}
+```
+
+Or a `Thread Pool`, like many cashiers working in parallel:
+```kotlin
+fun main() {
+    val threadPoolExecutor = ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+    threadPoolExecutor
+        .submit {
+            println("${Thread.currentThread()} : Hello world!")
+        }
+        .get()
+}
+```
+
+Default Thread Pool Sizes:
+
+- Spring Boot WebMVC + Tomcat  
+  Default thread pool size: 200 threads
+
+
+- Spring Boot WebMVC + Tomcat (Virtual Threads)  
+    Default thread pool size: equal to the number of CPU cores
+
+
+- Spring Boot WebFlux + Netty  
+    Default event loop size: equal to the number of CPU cores
+
+## What about Schedulers, Dispatchers?
+
+Project Reactor:
+```kotlin
+private val scheduler =
+    Schedulers.fromExecutor(
+        ThreadPoolExecutor(
+            1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+    )
+```
+
+Kotlin Coroutines:
+```kotlin
+private val dispatcher =
+    ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+        .asCoroutineDispatcher()
+```
+
+For any other library... it's probably the same 😄
+Under the hood: just threads.
+
 # Examples
 
 There are two different types of examples:
