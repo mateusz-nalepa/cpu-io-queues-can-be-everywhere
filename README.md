@@ -51,7 +51,7 @@ What to do when queue wait time > 0?
 And what if queue size is almost 0?
 - maybe cache is needed
 - maybe async calls (http, database) can be done
-- maybe deep dive with e,g. async-profiler
+  maybe deep dive with e.g. async-profiler
 - maybe just fewer threads/instances
 - other things
 
