@@ -17,6 +17,12 @@ If time is e.g. 10 seconds, then:
 
 So It's good to monitor standing in line time and scanning time as two separate metrics.
 
+`Bonus`
+> If the queue is really high, it’s probably worth calculating a `Time to Consume Queue` metric :D
+>
+> It can be useful when doing migrations for millions of records :D
+
+
 # About this repo
 
 Treat this repository as a Sandbox - an educational repo,
@@ -32,6 +38,11 @@ Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Bren
 # Note
 
 If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
+
+# Note about programming language / framework
+
+Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
+Whether you use Go, Rust, Java, or any other language, the hardware limits and queuing effects remain the same.
 
 # Quick summary of the repo
 
