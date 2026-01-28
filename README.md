@@ -14,15 +14,20 @@ If time is e.g. 10 seconds, then:
 
 So It's good to monitor standing in line time and scanning time as two separate metrics.
 
-Treat this repository as a Sandbox.
-As a starting point, rather than production‑ready code.
+# About this repo
+
+Treat this repository as a Sandbox - an educational repo, 
+rather than production‑ready code.
 The examples are intentionally minimal.
-They focus solely on showing thread‑pool saturation.
+They focus solely on showing thread‑pool saturation (queue wait time).
 
 Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
 Tracing is also not included.
 
 Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
+
+# Note
+If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
 
 # Quick summary of the repo
 
