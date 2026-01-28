@@ -1,4 +1,4 @@
-package com.nalepa.demo.common.monitored
+package com.nalepa.demo.common.monitored.customMonitoredExecutor
 
 import io.micrometer.core.instrument.MeterRegistry
 import java.util.concurrent.Executor

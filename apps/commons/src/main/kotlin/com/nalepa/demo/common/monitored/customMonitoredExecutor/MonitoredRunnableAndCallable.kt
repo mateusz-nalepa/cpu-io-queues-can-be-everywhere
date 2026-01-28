@@ -1,4 +1,4 @@
-package com.nalepa.demo.common.monitored
+package com.nalepa.demo.common.monitored.customMonitoredExecutor
 
 import com.nalepa.demo.common.DummyLogger
 import io.micrometer.core.instrument.MeterRegistry

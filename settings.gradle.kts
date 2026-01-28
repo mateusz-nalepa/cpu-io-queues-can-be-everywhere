@@ -3,7 +3,8 @@ rootProject.name = "cpu-io-queues-can-be-everywhere"
 
 include(
 
-    ":presentation-examples",
+    ":presentation-blog-examples",
+
     ":apps:commons",
     ":apps:different-endpoints:webmvc-classic-threads",
     ":apps:different-endpoints:webmvc-virtual-threads",
