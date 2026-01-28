@@ -20,6 +20,11 @@ When thread pools queues are full things like 500 ms may mean everything:
 It's good to monitor queue wait time and execution time as two separate metrics.
 
 What to do when queue wait time > 0?
+- just add more threads
+    - absolutely simplest, really
+    - does every app truly need to be ultra‑fast and hyper‑optimized
+    - probably not
+    - it's like a soft version of `add more instances` :D
 - Thread Pool Isolation -> aka Bulkhead
   - It protects from the "noisy neighbour" 
   - request A -> Thread Pool A
@@ -120,12 +125,28 @@ private val dispatcher =
 For any other library... it's probably the same 😄
 Under the hood: just threads.
 
-# Examples
+# Fastest way to reduce queue wait
+Just add more threads:
+- really, absolutely simplest
+- does every app truly need to be ultra‑fast and hyper‑optimized
+- probably not
+- it's like a soft version of `add more instances` :D
+
+What can happen under high load?
+- noisy neighbour, one endpoint consumes all resources
+- slow app:
+  - all threads are doing I/O
+  - or all threads are doing CPU
+  - other things
+
+# Examples for a little bit slower way
 
 There are two different types of examples:
 
 - applications with `fast` and `slow` endpoints
+  - bulkhead pattern will be used
 - applications with only one endpoint, but under the hood, http-client is called
+  - Staged Event-Driven Architecture (SEDA) will be used
 
 ## Examples with `fast` and `slow` endpoints
 
