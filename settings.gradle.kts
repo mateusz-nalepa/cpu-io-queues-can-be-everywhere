@@ -8,6 +8,8 @@ include(
     ":apps:different-endpoints:webmvc-classic-threads",
     ":apps:different-endpoints:webmvc-virtual-threads",
     ":apps:different-endpoints:webflux-netty-server",
+    ":apps:different-endpoints:webmvc-coroutines-classic-threads",
+    ":apps:different-endpoints:webmvc-coroutines-virtual-threads",
 
     ":apps:endpoint-and-http-client:webmvc-classic-threads-rest-client",
     ":apps:endpoint-and-http-client:webmvc-virtual-threads-rest-client",
