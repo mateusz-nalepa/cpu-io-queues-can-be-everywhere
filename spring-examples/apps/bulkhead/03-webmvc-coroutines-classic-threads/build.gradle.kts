@@ -19,15 +19,13 @@ repositories {
 }
 
 dependencies {
-	implementation(project(":apps:commons"))
+	implementation(project(":spring-examples:apps:utils"))
 
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("org.springframework.boot:spring-boot-starter-restclient")
-	implementation("org.apache.httpcomponents.client5:httpclient5")
 
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

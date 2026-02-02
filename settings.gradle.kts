@@ -5,19 +5,19 @@ include(
 
     ":presentation-blog-examples",
 
-    ":apps:commons",
-    ":apps:different-endpoints:01-webmvc-classic-threads",
-    ":apps:different-endpoints:02-webmvc-virtual-threads",
-    ":apps:different-endpoints:03-webmvc-coroutines-classic-threads",
-    ":apps:different-endpoints:04-webmvc-coroutines-virtual-threads",
-    ":apps:different-endpoints:05-webflux-netty-server",
+    ":spring-examples:apps:utils",
+    ":spring-examples:apps:bulkhead:01-webmvc-classic-threads",
+    ":spring-examples:apps:bulkhead:02-webmvc-virtual-threads",
+    ":spring-examples:apps:bulkhead:03-webmvc-coroutines-classic-threads",
+    ":spring-examples:apps:bulkhead:04-webmvc-coroutines-virtual-threads",
+    ":spring-examples:apps:bulkhead:05-webflux-netty-server",
 
-    ":apps:endpoint-and-http-client:01-webmvc-classic-threads-rest-client",
-    ":apps:endpoint-and-http-client:02-webmvc-virtual-threads-rest-client",
-    ":apps:endpoint-and-http-client:03-webmvc-coroutines-classic-threads-rest-client",
-    ":apps:endpoint-and-http-client:04-webmvc-coroutines-virtual-threads-rest-client",
-    ":apps:endpoint-and-http-client:05-webflux-netty-server-client-netty",
+    ":spring-examples:apps:seda:01-webmvc-classic-threads-rest-client",
+    ":spring-examples:apps:seda:02-webmvc-virtual-threads-rest-client",
+    ":spring-examples:apps:seda:03-webmvc-coroutines-classic-threads-rest-client",
+    ":spring-examples:apps:seda:04-webmvc-coroutines-virtual-threads-rest-client",
+    ":spring-examples:apps:seda:05-webflux-netty-server-client-netty",
 
-    ":tools:request-sender",
-    ":tools:mock-external-service",
+    ":spring-examples:helpers:request-sender",
+    ":spring-examples:helpers:mock-external-service",
 )

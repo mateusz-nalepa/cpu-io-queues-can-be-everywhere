@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	implementation(project(":apps:commons"))
+	implementation(project(":spring-examples:apps:utils"))
 
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-webclient")
