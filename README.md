@@ -1,7 +1,7 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
 A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks - and
-how easily it hides in plain sight. When queue wait time is high, then system is slow. 
+how easily it hides in plain sight. When queue wait time is high, then system becomes slow. 
 
 Analogy: a cashier scanning groceries. Two metrics matter:
 
@@ -41,8 +41,8 @@ Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Bren
 
 Steps for this repo:
 - start with reading `this` readme.md file
-- jump to [presentation-blog-examples](presentation-blog-examples)
-- jump to [spring-examples](spring-examples)
+- jump to [presentation-blog-examples module](presentation-blog-examples) and run examples
+- jump to [spring-examples module](spring-examples) and run examples & see results in Grafana
 
 # Quick summary of the repo
 
@@ -74,33 +74,29 @@ And what if queue size is almost 0?
 
 # Notes
 
-## Note 1 - About programming language / framework
+## Note 1 - Language / framework
 
 Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
 Whether Go, Rust, Java, or any other language is used,
 the hardware limits and queuing effects are probably the same :D
 
-## Note 2 - About metrics
+## Note 2 - Metrics
 
 Different libraries and frameworks handle thread pools in their own ways.  
 Because of that, some of them may not expose fully accurate metrics out of the box.  
 In some cases, the metrics may also behave differently than expected.
 Simply because the library may not be fully aware of the underlying threads and queues.
 
-## Note 3 - About other pools
+## Note 3 - Other pools
 
 Queue wait time can happen also, when there is a `Connection Pool` or any `other Pool`.
 Rules are exactly the same. But it's out of scope for this repo.
 In this repo there is only `Thread Pool`.
 
-## Note 4 - About thread returning response from the server
+## Note 4 - Thread returning response from server
 
 Response from endpoint is returned always on server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
-
-## Note 5 - About errors
-
-If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
 
 # Thread, Thread Pools
 
@@ -270,3 +266,6 @@ Solutions?
   - Tomcat thread pool works like that
 
 
+# Contributing
+
+If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
