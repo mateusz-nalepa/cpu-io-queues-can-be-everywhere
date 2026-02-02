@@ -176,12 +176,19 @@ private val dispatcher =
 
 For any other library... it's probably the same 😄
 
-# Presentation / Blog examples
+# When queue wait time happens
 
-Start with the module `presentation-examples`.
-It contains pure Kotlin, zero frameworks, zero magic.
-Only the minimal code needed to illustrate the concepts.
-Simple files with a `main()` method that can be executed after cloning this repository.
+`Queue wait time` may occur when all threads in thread pool are:
+- busy 
+  - e.q: JSON serialization/deserialization 
+  - high cpu utilization
+  - thousands of `cpu bound tasks`? probably bad
+- blocked 
+  - e.q: waiting for response from http-client
+  - low cpu utilization
+  - thousands of `blocking tasks`? probably we can live with that
+
+Check [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
 
 # Fastest way to reduce queue wait
 
@@ -196,317 +203,64 @@ What can happen under high load?
 
 - noisy neighbour, one endpoint consumes all resources
 - slow app:
-    - all threads are doing I/O
-    - or all threads are doing CPU
-    - other things
+  - all threads are doing I/O
+  - or all threads are doing CPU
+  - other things
 
-# Examples for a little bit slower way
+# Presentation / Blog examples
+
+Start with the module `presentation-examples`.
+It contains pure Kotlin, zero frameworks, zero magic.
+Only the minimal code needed to illustrate the concepts.
+Simple files with a `main()` method that can be executed after cloning this repository.
+
+# Spring Boot Examples
+
+> `How to run` is included in every example
 
 There are two different types of examples:
 
 - applications with `fast` and `slow` endpoints
-    - bulkhead pattern will be used
+    - bulkhead pattern is used
+    - it protects resources
+    - check `spring-examples/bulkhead` module
+  ![bulkhead.png](bulkhead.png)
+
 - applications with only one endpoint, but under the hood, http-client is called
-    - Staged Event-Driven Architecture (SEDA) will be used
+    - Staged Event-Driven Architecture (SEDA) is used
+    - it makes resources faster
+    - check `spring-examples/seda` module
+    ![seda.png](seda.png)
 
-`How to run` is included in every example.
+# Other
 
-## Examples with `fast` and `slow` endpoints
+Some unexpected things when dealing with Thread Pools
 
-In those endpoints, `bulkhead` pattern is used.
+### Behaviour of `corePoolSize` and `maxPoolSize` it is unintuitive
 
-![bulkhead.png](bulkhead.png)
+It minimizes number of threads used.
 
-From `saturation` perspective it doesn't matter, whether thread is:
+Let's say that there is config like that:
 
-- busy - eq: JSON serialization/deserialization
-- blocked - eq: waiting for response from http-client
-
-But it does matter from threading perspective, so depending on the configuration `slow endpoint` is one of those:
-
-- `Thread.sleep(Duration.ofSeconds(blockingTimeSeconds))`
-- `heavyCpuCode(cpuOperationDelaySeconds)`
-
-`NOTE`
-
-From CPU `utilization` perspective it does matter whether apps are doing `Blocking I/O` or `CPU Bound Code`:
-
-- thousands of `blocked threads` - not so bad
-- thousands of `cpu bound code threads` - probably very bad
-
--
-Check [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
-
-For `fast endpoints` it's always:
-
-- `ResponseEntity.ok((SomeResponse("fast")))`
-
-### 1/3 - Spring Boot app with classic Tomcat with 200 threads
-
-<details>
-  <summary>Click to learn How To Run</summary>
-
-1. Run `docker-compose up`
-2. Run `RequestSenderApp`
-3. Run `ClassicTomcatAppDifferentEndpoints`
-4. Run one of those:
-
-```shell
-curl 'http://localhost:8080/send-requests-on-different-endpoints/scenario/defaults?batchSize=200'
-#or 
-curl 'http://localhost:8080/send-requests-on-different-endpoints/scenario/dedicatedCpuPool?batchSize=200'
+```yaml
+some-thread-pool:
+  core-pool-size: 4
+  max-pool-size: 10
+  queue-size: 1000
 ```
 
-5. Open Grafana and look for metrics http://localhost:3000
-
-</details>
-
-- Scenario:
-    - send 200 requests on `slow endpoint` - every thread will just sleep for 10 seconds
-    - wait 2 seconds
-    - send 200 requests on `fast endpoint`
-
-#### HighLevel Overview
-
-![tomcat_different_endpoints_200_classic_threads.png](images/tomcat_different_endpoints_200_classic_threads.png)
-
-#### Results, when endpoints are being executed on Tomcat Thread Pool
-
-In this example, metric `http.server.requests` is not telling the truth
-
-|                  Element                  | Expected response times | Metrics from App | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint               |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint               |        almost 0s        |   almost 0s ❌    |            8s ✅            |
-| Server Saturation time<br>(custom metric) |           8s            |       8s ✅       |       Not Applicable       |
-
-#### Results, when every endpoint has dedicated thread pool - Tomcat thread only accept here requests
-
-|                  Element                  | Expected response times | Metrics from App | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint               |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint               |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
-| Server Saturation time<br>(custom metric) |           0s            |       0s ✅       |       Not Applicable       |
-
-### 2/3 - Spring Boot app with Tomcat on Virtual Threads
-
-<details>
-  <summary>Click to learn How To Run</summary>
-
-1. Run `docker-compose up`
-2. Run `RequestSenderApp`
-3. Run `VirtualAppDifferentEndpoints`
-4. Run one of those:
-
-```shell
-curl http://localhost:8080/send-requests-on-different-endpoints/scenario/defaults
-#or 
-curl http://localhost:8080/send-requests-on-different-endpoints/scenario/dedicatedCpuPool
+It looks like, that:
+```text
+-> 4 tasks are added to the queue, so 4 core threads are working
+-> another 4 tasks are added to the queue, so:
+    -> IN THEORY 4 additional threads are created
+    -> IN PRACTICE, tasks are just added to the queue
+-> fifth thread will be created, when queue is full
 ```
 
-5. Open Grafana and look for metrics http://localhost:3000
+Solutions? 
+- the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
+- create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
+  - Tomcat thread pool works like that
 
-</details>
 
-- Scenario:
-    - send `Runtime.getRuntime().availableProcessors()` requests on `slow endpoint` - each `heavyCpuCode` will
-      take 10 seconds
-    - wait 2 seconds
-    - send `Runtime.getRuntime().availableProcessors()` requests on `fast endpoint`
-
-#### HighLevel Overview
-
-![tomcat_different_endpoints_virtual_threads.png](images/tomcat_different_endpoints_virtual_threads.png)
-
-#### Results, when endpoints are being executed on Virtual Thread Pool
-
-In this example, metric `http.server.requests` is not telling the truth
-
-|                  Element                  | Expected response times | Metrics from App | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint               |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint               |        almost 0s        |   almost 0s ❌    |            8s ✅            |
-| Server Saturation time<br>(custom metric) |           8s            |       8s ✅       |       Not Applicable       |
-
-#### Results, when `heavyCpuCode` is being executed on dedicated thread pool
-
-|                  Element                  | Expected response times | Metrics from App | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint               |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint               |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
-| Server Saturation time<br>(custom metric) |           0s            |       0s ✅       |       Not Applicable       |
-
-### 3/3 - Spring Boot WebFlux with Netty
-
-<details>
-  <summary>Click to learn How To Run</summary>
-
-1. Run `docker-compose up`
-2. Run `RequestSenderApp`
-3. Run `WebfluxAppAppDifferentEndpoints`
-4. Run one of those:
-
-```shell
-curl http://localhost:8080/send-requests-on-different-endpoints/scenario/defaults
-#or 
-curl http://localhost:8080/send-requests-on-different-endpoints/scenario/dedicatedCpuPool
-```
-
-5. Open Grafana and look for metrics http://localhost:3000
-
-</details>
-
-- Scenario:
-    - send `Runtime.getRuntime().availableProcessors()` requests on `slow endpoint` - each `heavyCpuCode` will
-      take 10 seconds
-    - wait 2 seconds
-    - send `Runtime.getRuntime().availableProcessors()` requests on `fast endpoint`
-
-#### HighLevel Overview
-
-![netty_different_endpoints.png](images/netty_different_endpoints.png)
-
-#### Results, when endpoints are being executed on Netty thread pool
-
-In this example, metric `http.server.requests` is not telling the truth
-
-|                  Element                   | Expected response times | Metrics from App | Metrics from RequestSender |
-|:------------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint                |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint                |        almost 0s        |   almost 0s ❌    |            8s ✅            |
-| Server Saturation time<br>(missing metric) |         Missing         |     Missing      |       Not Applicable       |
-
-#### Results, when `heavyCpuCode` is being executed on dedicated thread pool
-
-|                  Element                   | Expected response times | Metrics from App | Metrics from RequestSender |
-|:------------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|               Slow endpoint                |           10s           |      10s ✅       |           10s ✅            |
-|               Fast endpoint                |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
-| Server Saturation time<br>(missing metric) |         Missing         |     Missing      |       Not Applicable       |
-
-## Examples with app using http client
-
-In those examples, Staged Event-Driven Architecture (SEDA) is being used.
-
-![seda.png](seda.png)
-
-When threads are busy/blocked, then it may happen that from application perspective:
-
-- app is doing CPU work, eq: JSON deserialization for request X
-- and then send http-client request for request X+1
-
-We would probably like to change that to:
-
-- app is doing CPU work, eq: JSON deserialization for request X
-- at the same time, app is waiting for response from http-client for request X+1
-
-There is only one `dummy endpoint` in apps:
-
-- `httpClient.getData()`
-- and then `heavyCpuCode(cpuOperationDelaySeconds)`
-
-### 1/2 - Spring Boot app with Tomcat on Virtual Threads
-
-<details>
-  <summary>Click to learn How To Run</summary>
-
-1. Run `docker-compose up`
-2. Run `RequestSenderApp`
-3. Run `VirtualAppWithHttpClient`
-4. Run `MockExternalServiceApp`
-5. Run one of those:
-
-```shell
-curl http://localhost:8080/send-requests-app-with-client/scenario/defaults
-#or 
-curl http://localhost:8080/send-requests-app-with-client/scenario/dedicatedCpuPool
-```
-
-6. Open Grafana and look for metrics http://localhost:3000
-
-</details>
-
-- Scenario:
-    - send first batch of requests `Runtime.getRuntime().availableProcessors()` on `dummy endpoint`
-        - mock app will return response after 0s
-    - wait 2 seconds
-    - send second batch of requests `Runtime.getRuntime().availableProcessors()` on `dummy endpoint`
-        - mock app will return response after 9s
-
-#### HighLevel Overview
-
-![tomcat_http_client_virtual_threads.png](images/tomcat_http_client_virtual_threads.png)
-
-#### Results, when endpoint is executed only on Virtual Thread Pool
-
-In this example, metric `http.server.requests` is not telling the truth
-
-|                  Element                  | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint      |           10s           | 19s (no info about batch) ❌ |           10s ✅            |
-|     `second batch` on dummy endpoint      |           19s           | 19s (no info about batch) ❌ |           27s ✅            |
-|            Http Client metric             |      from 0s to 9s      |        from 0s to 9s        |       Not Applicable       |
-| Server Saturation time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
-
-#### Results, when `heavyCpuCode` is being executed on dedicated thread pool
-
-|                  Element                  | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint      |           10s           | 19s (no info about batch) ❌ |           10s ✅            |
-|     `second batch` on dummy endpoint      |           19s           | 19s (no info about batch) ❌ |           19s ✅            |
-|            Http Client metric             |      from 0s to 9s      |        from 0s to 9s        |       Not Applicable       |
-| Server Saturation time<br>(custom metric) |           0s            |            0s ✅             |       Not Applicable       |
-
-### 2/2 - Spring Boot WebFlux with Netty
-
-<details>
-  <summary>Click to learn How To Run</summary>
-
-1. Run `docker-compose up`
-2. Run `RequestSenderApp`
-3. Run `NettyServerAppWithHttpClient`
-4. Run `MockExternalServiceApp`
-5. Run one of those:
-
-```shell
-curl http://localhost:8080/send-requests-app-with-client/scenario/defaults
-#or 
-curl http://localhost:8080/send-requests-app-with-client/scenario/dedicatedCpuPool
-```
-
-6. Open Grafana and look for metrics http://localhost:3000
-
-</details>
-
-- Scenario:
-    - send first batch of requests `Runtime.getRuntime().availableProcessors()` on `dummy endpoint`
-        - mock app will return response after 0s
-    - wait 2 seconds
-    - send second batch of requests `Runtime.getRuntime().availableProcessors()` on `dummy endpoint`
-        - mock app will return response after 9s
-
-#### HighLevel Overview
-
-![netty_http_client.png](images/netty_http_client.png)
-
-#### Results, when endpoint is executed only on Netty thread pools
-
-In this example, metric `http.client.requests` is not telling the truth
-
-|                  Element                   | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:------------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint       |           10s           | 27s (no info about batch) ✅ |           10s ✅            |
-|      `second batch` on dummy endpoint      |           19s           | 27s (no info about batch) ✅ |           27s ✅            |
-|             Http Client metric             |      from 0s to 9s      |      from 0s to 18s ❌       |       Not Applicable       |
-| Server Saturation time<br>(missing metric) |         Missing         |           Missing           |       Not Applicable       |
-| Client Saturation time<br>(custom metric)  |           8s            |            8s ✅             |       Not Applicable       |
-
-#### Results, when `heavyCpuCode` is being executed on dedicated thread pool
-
-|                  Element                   | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:------------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint       |           10s           | 19s (no info about batch) ✅ |           10s ✅            |
-|      `second batch` on dummy endpoint      |           19s           | 19s (no info about batch) ✅ |           19s ✅            |
-|             Http Client metric             |      from 0s to 9s      |      from 0s to 9s  ✅       |       Not Applicable       |
-| Server Saturation time<br>(missing metric) |         Missing         |           Missing           |       Not Applicable       |
-| Client Saturation time<br>(custom metric)  |           0s            |            0s ✅             |       Not Applicable       |

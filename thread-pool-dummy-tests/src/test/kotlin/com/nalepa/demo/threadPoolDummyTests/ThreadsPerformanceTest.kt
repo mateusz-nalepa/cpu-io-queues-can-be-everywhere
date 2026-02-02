@@ -1,13 +1,14 @@
-package com.nalepa.demo.common.com.nalepa.demo.common
+package com.nalepa.demo.threadPoolDummyTests
 
-import com.nalepa.demo.common.Operations
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.time.Duration
 import java.util.concurrent.*
+import kotlin.math.sqrt
 
 // TODO: check if this code is ok
 class ThreadsPerformanceTest {
@@ -100,4 +101,34 @@ fun BigDecimal.formatted(): String {
         groupingSeparator = ' '
     }
     return DecimalFormat("#,###", symbols).format(this)
+}
+
+
+object Operations {
+
+    /**
+     * condition is based on time of execution, not number of iteration
+     */
+    fun heavyCpuCode(cpuOperationDelaySeconds: Long): BigInteger {
+        val startTime = System.nanoTime()
+        var iterations = BigInteger.ZERO
+        while (Duration.ofNanos(System.nanoTime() - startTime).seconds < cpuOperationDelaySeconds) {
+            sqrt(iterations.toDouble())
+            iterations++
+        }
+        return iterations
+    }
+
+    /**
+     * simulate blocking I/O
+     */
+    fun someBlockingIO(blockingTimeSeconds: Long) {
+        // simulate blocking I/O
+        if (!Thread.currentThread().isVirtual) {
+            Thread.sleep(Duration.ofSeconds(blockingTimeSeconds))
+        } else {
+            throw RuntimeException("Thread.sleep is non-blocking on virtual threads")
+        }
+    }
+
 }

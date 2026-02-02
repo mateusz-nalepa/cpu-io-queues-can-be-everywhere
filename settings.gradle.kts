@@ -20,4 +20,8 @@ include(
 
     ":spring-examples:helpers:request-sender",
     ":spring-examples:helpers:mock-external-service",
+
+
+
+    ":thread-pool-dummy-tests",
 )
