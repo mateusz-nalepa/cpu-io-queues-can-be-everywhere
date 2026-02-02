@@ -95,7 +95,7 @@ In this repo there is only `Thread Pool`.
 
 ## Note 4 - Thread returning response from server
 
-Response from endpoint is returned always on server thread.
+The response from an endpoint is always returned on a server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
 
 # Thread, Thread Pools
@@ -264,7 +264,6 @@ Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
 - create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
   - Tomcat thread pool works like that
-
 
 # Contributing
 
