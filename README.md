@@ -27,7 +27,7 @@ So it's good to monitor standing in line time and scanning time as two separate 
 > It can be useful when doing migrations for millions of records :D
 
 
-# About this repo
+# How to use this repo
 
 Treat this repository as a Sandbox - an educational repo,
 rather than production‑ready code.
@@ -39,11 +39,10 @@ Tracing is also not included.
 
 Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
-# Note about programming language / framework
-
-Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
-Whether Go, Rust, Java, or any other language is used,
-the hardware limits and queuing effects are probably the same :D
+Steps for this repo:
+- start with reading `this` readme.md file
+- jump to [presentation-blog-examples](presentation-blog-examples)
+- jump to [spring-examples](spring-examples)
 
 # Quick summary of the repo
 
@@ -75,25 +74,31 @@ And what if queue size is almost 0?
 
 # Notes
 
-## Note 1
+## Note 1 - About programming language / framework
+
+Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
+Whether Go, Rust, Java, or any other language is used,
+the hardware limits and queuing effects are probably the same :D
+
+## Note 2 - About metrics
 
 Different libraries and frameworks handle thread pools in their own ways.  
 Because of that, some of them may not expose fully accurate metrics out of the box.  
 In some cases, the metrics may also behave differently than expected.
 Simply because the library may not be fully aware of the underlying threads and queues.
 
-## Note 2
+## Note 3 - About other pools
 
 Queue wait time can happen also, when there is a `Connection Pool` or any `other Pool`.
 Rules are exactly the same. But it's out of scope for this repo.
 In this repo there is only `Thread Pool`.
 
-## Note 3
+## Note 4 - About thread returning response from the server
 
 Response from endpoint is returned always on server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
 
-## Note 4
+## Note 5 - About errors
 
 If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
 
