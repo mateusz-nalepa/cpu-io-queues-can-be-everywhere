@@ -39,10 +39,6 @@ Tracing is also not included.
 
 Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
-# Note
-
-If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
-
 # Note about programming language / framework
 
 Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
@@ -88,7 +84,7 @@ Simply because the library may not be fully aware of the underlying threads and 
 
 ## Note 2
 
-Saturation can happen also, when there is a `Connection Pool` or any `other Pool`.
+Queue wait time can happen also, when there is a `Connection Pool` or any `other Pool`.
 Rules are exactly the same. But it's out of scope for this repo.
 In this repo there is only `Thread Pool`.
 
@@ -96,6 +92,10 @@ In this repo there is only `Thread Pool`.
 
 Response from endpoint is returned always on server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
+
+## Note 4
+
+If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
 
 # Thread, Thread Pools
 
