@@ -1,7 +1,7 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
 A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks - and
-how easily it hides in plain sight.
+how easily it hides in plain sight. When queue wait time is high, then system is slow. 
 
 Analogy: a cashier scanning groceries. Two metrics matter:
 
@@ -209,10 +209,11 @@ What can happen under high load?
 
 # Presentation / Blog examples
 
-Start with the module `presentation-examples`.
+Start with the module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
 It contains pure Kotlin, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
 Simple files with a `main()` method that can be executed after cloning this repository.
+
 
 # Spring Boot Examples
 
@@ -223,13 +224,13 @@ There are two different types of examples:
 - applications with `fast` and `slow` endpoints
     - bulkhead pattern is used
     - it protects resources
-    - check `spring-examples/bulkhead` module
+    - check [spring-examples/bulkhead module](spring-examples/apps/bulkhead/readme-bulkhead.md)
   ![bulkhead.png](bulkhead.png)
 
 - applications with only one endpoint, but under the hood, http-client is called
     - Staged Event-Driven Architecture (SEDA) is used
     - it makes resources faster
-    - check `spring-examples/seda` module
+    - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
     ![seda.png](seda.png)
 
 # Other
