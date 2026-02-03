@@ -191,6 +191,34 @@ For any other library... it's probably the same 😄
 
 Check [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
 
+# How to measure queue wait time
+
+In order to measure queue wait time (and more) use :
+```kotlin
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
+
+val threadPoolExecutor = 
+    ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+
+val monitoredThreadPoolExecutor = 
+    ExecutorServiceMetrics
+        .monitor(
+            meterRegistry,
+            threadPoolExecutor,
+            threadPoolName,
+        )
+```
+
+Thanks to this code, the metric `executor.idle` will be available - yes, this is literally queue wait time. The name may be misleading, but the behavior is not.
+
+Check [Micrometer JVM Metrics for more](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
+
+
+Check also this PR with Micrometer metrics documentation update*
+https://github.com/micrometer-metrics/micrometer/pull/7083/changes
+
+*Note: Remove this link, once new version of Micrometer is released. 
+
 # Fastest way to reduce queue wait
 
 Just add more threads:
