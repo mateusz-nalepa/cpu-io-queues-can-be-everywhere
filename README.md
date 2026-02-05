@@ -246,7 +246,8 @@ Simple files with a `main()` method that can be executed after cloning this repo
 
 # Spring Boot Examples
 
-> `How to run` is included in every example
+> Each example includes instructions on how to run it,
+as well as a detailed threads diagram.
 
 There are two different types of examples:
 
@@ -254,13 +255,13 @@ There are two different types of examples:
     - bulkhead pattern is used
     - it protects resources
     - check [spring-examples/bulkhead module](spring-examples/apps/bulkhead/readme-bulkhead.md)
-  ![bulkhead.png](bulkhead.png)
+  ![bulkhead.png](images/bulkhead.png)
 
 - applications with only one endpoint, but under the hood, http-client is called
     - Staged Event-Driven Architecture (SEDA) is used
     - it makes resources faster
     - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
-    ![seda.png](seda.png)
+    ![seda.png](images/seda.png)
 
 # Other
 
