@@ -19,6 +19,18 @@ fun main() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 object HelloWorld {
     fun println() {
         println("When the queue time grow, the system is slow")

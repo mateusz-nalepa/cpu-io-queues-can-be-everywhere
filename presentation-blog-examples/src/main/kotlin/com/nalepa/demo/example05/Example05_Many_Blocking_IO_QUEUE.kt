@@ -6,13 +6,19 @@ import java.util.*
 fun main() {
     val queue = LinkedList<Runnable>()
 
-    // yup, we can write: queue.add { simulateBlockingIO(1) } but Runnable is intentional :P
-    repeat(4) { index ->
-        queue.add(Runnable { simulateBlockingIO(index) })
-    }
+    val runnable1 = Runnable { simulateBlockingIO(1) }
+    val runnable2 = Runnable { simulateBlockingIO(2) }
+    val runnable3 = Runnable { simulateBlockingIO(3) }
+    val runnable4 = Runnable { simulateBlockingIO(4) }
+
+    queue.add(runnable1)
+    queue.add(runnable2)
+    queue.add(runnable3)
+    queue.add(runnable4)
 
     while (!queue.isEmpty()) {
-        queue.poll().run()
+        val runnable = queue.poll()
+        runnable.run()
     }
 }
 

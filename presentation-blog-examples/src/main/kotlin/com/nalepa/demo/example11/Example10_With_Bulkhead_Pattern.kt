@@ -22,7 +22,8 @@ fun main() {
             .name("thread-for-slow")
             .start {
                 while (!queueForSlow.isEmpty()) {
-                    queueForSlow.poll().run()
+                    val runnable = queueForSlow.poll()
+                    runnable.run()
                 }
             }
 
@@ -31,7 +32,8 @@ fun main() {
             .name("thread-for-fast")
             .start {
                 while (!queueForFast.isEmpty()) {
-                    queueForFast.poll().run()
+                    val runnable = queueForFast.poll()
+                    runnable.run()
                 }
                 log("#### Fast tasks finished! ####")
             }

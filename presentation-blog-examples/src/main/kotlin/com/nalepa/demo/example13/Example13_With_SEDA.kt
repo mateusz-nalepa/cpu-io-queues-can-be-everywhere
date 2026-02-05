@@ -49,7 +49,8 @@ fun main() {
         .name("io-thread")
         .start {
             while (true) {
-                queueForIo.take().run() // take instead of pull, here it's blocking waiting
+                val runnable = queueForIo.take() // take instead of pull, here it's blocking waiting
+                runnable.run()
                 countDownLatchForIO.countDown()
 
                 if (countDownLatchForIO.count == 0L) {
@@ -62,7 +63,8 @@ fun main() {
         .name("cpu-thread")
         .start {
             while (true) {
-                queueForCPU.take().run() // take instead of pull, here it's blocking waiting
+                val runnable = queueForCPU.take() // take instead of pull, here it's blocking waiting
+                runnable.run()
                 countDownLatchForCPU.countDown()
 
                 if (countDownLatchForCPU.count == 0L) {

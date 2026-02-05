@@ -31,7 +31,8 @@ fun main() {
         .name("worker-thread")
         .start {
             while (true) {
-                queue.take().run() // take instead of pull, here it's blocking waiting
+                val runnable = queue.take() // take instead of pull, here it's blocking waiting
+                runnable.run()
                 countDownLatch.countDown()
 
                 if (countDownLatch.count == 0L) {

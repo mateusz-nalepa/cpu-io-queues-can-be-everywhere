@@ -18,7 +18,7 @@ fun main() {
         )
     val futures = mutableListOf<Future<*>>()
 
-    repeat(10000) { index ->
+    repeat(10_000) { index ->
         futures.add(
             executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
 //            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
@@ -29,14 +29,14 @@ fun main() {
 }
 
 fun simulateBlockingIO(index: Int) {
-    log("Start blocking IO code for: $index")
+//    log("Start blocking IO code for: $index")
     Thread.sleep(Duration.ofSeconds(5)) // http call, database call, reading from file, whatever what needs external data
-    log("End blocking IO code for: $index")
+//    log("End blocking IO code for: $index")
 }
 
 
 fun simulateCpuCode(index: Int): Long {
-    log("Start CPU code for: $index")
+//    log("Start CPU code for: $index")
     val startTime = System.nanoTime()
     var iteration = 0L
     while (Duration.ofNanos(System.nanoTime() - startTime).seconds < 5) {
@@ -44,7 +44,7 @@ fun simulateCpuCode(index: Int): Long {
         iteration++
         sqrt(iteration.toDouble())
     }
-    log("End CPU code for: $index")
+//    log("End CPU code for: $index")
     return iteration
 }
 
@@ -58,10 +58,6 @@ class MonitoredRunnable(
 ) : Runnable {
 
     val runnableInstanceCreatedAt = System.nanoTime()
-
-    init {
-        log("Created MonitoredRunnable instance")
-    }
 
     override fun run() {
         log("Queue wait time took: ${Duration.ofNanos(System.nanoTime() - runnableInstanceCreatedAt).toSeconds()} s")

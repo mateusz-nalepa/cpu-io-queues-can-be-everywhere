@@ -12,7 +12,8 @@ fun main() {
     }
 
     while (!queue.isEmpty()) {
-        queue.poll().run()
+        val runnable = queue.poll()
+        runnable.run()
     }
 }
 

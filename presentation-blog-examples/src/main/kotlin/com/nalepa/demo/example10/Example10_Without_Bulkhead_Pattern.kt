@@ -21,7 +21,8 @@ fun main() {
             .name("worker-thread")
             .start {
                 while (!queue.isEmpty()) {
-                    queue.poll().run()
+                    val runnable = queue.poll()
+                    runnable.run()
                 }
             }
 
