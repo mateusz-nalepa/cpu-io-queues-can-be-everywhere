@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class WebfluxAppAppDifferentEndpoints
+class SEDA_04_WebMVC_Coroutines_VirtualThreads
 
 fun main(args: Array<String>) {
-	runApplication<WebfluxAppAppDifferentEndpoints>(*args)
+	runApplication<SEDA_04_WebMVC_Coroutines_VirtualThreads>(*args)
 }

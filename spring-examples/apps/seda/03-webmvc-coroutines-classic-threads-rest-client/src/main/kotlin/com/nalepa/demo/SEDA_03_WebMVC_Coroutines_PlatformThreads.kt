@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ClassicTomcatAppDifferentEndpoints
+class SEDA_03_WebMVC_Coroutines_PlatformThreads
 
 fun main(args: Array<String>) {
-	runApplication<ClassicTomcatAppDifferentEndpoints>(*args)
+	runApplication<SEDA_03_WebMVC_Coroutines_PlatformThreads>(*args)
 }

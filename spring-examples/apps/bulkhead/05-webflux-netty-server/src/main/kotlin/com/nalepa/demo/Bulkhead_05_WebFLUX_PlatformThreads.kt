@@ -3,12 +3,9 @@ package com.nalepa.demo
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-/**
- * There is no
- */
 @SpringBootApplication
-class CoroutinesClassicTomcatAppDifferentEndpoints
+class Bulkhead_05_WebFLUX_PlatformThreads
 
 fun main(args: Array<String>) {
-	runApplication<CoroutinesClassicTomcatAppDifferentEndpoints>(*args)
+	runApplication<Bulkhead_05_WebFLUX_PlatformThreads>(*args)
 }

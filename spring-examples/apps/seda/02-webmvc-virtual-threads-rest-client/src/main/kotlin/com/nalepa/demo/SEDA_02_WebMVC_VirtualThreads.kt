@@ -3,12 +3,9 @@ package com.nalepa.demo
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-/**
- * There is no
- */
 @SpringBootApplication
-class CoroutinesVirtualTomcatAppDifferentEndpoints
+class SEDA_02_WebMVC_VirtualThreads
 
 fun main(args: Array<String>) {
-	runApplication<CoroutinesVirtualTomcatAppDifferentEndpoints>(*args)
+	runApplication<SEDA_02_WebMVC_VirtualThreads>(*args)
 }

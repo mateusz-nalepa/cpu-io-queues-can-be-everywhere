@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class VirtualAppDifferentEndpoints
+class Bulkhead_02_WebMVC_VirtualThreads
 
 fun main(args: Array<String>) {
-    runApplication<VirtualAppDifferentEndpoints>(*args)
+    runApplication<Bulkhead_02_WebMVC_VirtualThreads>(*args)
 }
