@@ -189,9 +189,10 @@ For any other library... it's probably the same 😄
   - low cpu utilization
   - thousands of `blocking tasks`? probably we can live with that
 
-Check [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
-
 ![cpu-usage.png](images/cpu-usage.png)
+
+Please check also [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
+
 
 # How to measure queue wait time
 
