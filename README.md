@@ -191,8 +191,8 @@ For any other library... it's probably the same 😄
 
 ![cpu-usage.png](images/cpu-usage.png)
 
-Please check also [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
-
+Please check also 
+[ThreadsPerformance.kt](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example01/ThreadsPerformance.kt)
 
 # How to measure queue wait time
 
@@ -306,6 +306,33 @@ Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
 - create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
   - Tomcat thread pool works like that
+
+### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
+
+```kotlin
+fun virtualThreadFactoryThreadsAreScheduledOnForkJoinPool() {
+    val executor1 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("one").factory())
+    val executor2 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("two").factory())
+    val executor3 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("three").factory())
+
+    // CurrentThread: VirtualThread[#37,one]/runnable@ForkJoinPool-1-worker-1
+    val future1 = executor1.submit { println("CurrentThread: " + Thread.currentThread()) }
+
+    // CurrentThread: VirtualThread[#39,two]/runnable@ForkJoinPool-1-worker-2
+    val future2 = executor2.submit { println("CurrentThread: " + Thread.currentThread()) }
+
+    // CurrentThread: VirtualThread[#41,three]/runnable@ForkJoinPool-1-worker-3
+    val future3 = executor3.submit { println("CurrentThread: " + Thread.currentThread()) }
+
+    future1.get()
+    future2.get()
+    future3.get()
+}
+```
+
+Check 
+[ThreadOfVirtualFactory](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example02/ThreadOfVirtualFactory.kt)
+for more
 
 # Contributing
 

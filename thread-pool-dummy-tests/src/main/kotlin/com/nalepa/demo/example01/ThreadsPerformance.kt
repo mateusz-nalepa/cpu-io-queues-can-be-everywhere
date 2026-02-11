@@ -1,6 +1,5 @@
-package com.nalepa.demo.threadPoolDummyTests
+package com.nalepa.demo.example01
 
-import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -11,12 +10,16 @@ import java.util.concurrent.*
 import kotlin.math.sqrt
 
 // TODO: check if this code is ok
-class ThreadsPerformanceTest {
+fun main() {
+    ThreadsPerformanceTest.printAverageNumberOfIterationsPerThreadsCountWhenWeAreNotUsingQueue()
+    ThreadsPerformanceTest.printAverageNumberOfIterationsPerThreadsCountWhenWeAreUsingQueue()
+}
+
+object ThreadsPerformanceTest {
 
     /**
      * more threads, less average number of iterations
      */
-    @Test
     fun printAverageNumberOfIterationsPerThreadsCountWhenWeAreNotUsingQueue() {
         // warmup
         executeIterations(1)
@@ -44,7 +47,6 @@ class ThreadsPerformanceTest {
     /**
      * more tasks - they are just waiting in a queue
      */
-    @Test
     fun printAverageNumberOfIterationsPerThreadsCountWhenWeAreUsingQueue() {
         // warmup
         executeIterations(1)
