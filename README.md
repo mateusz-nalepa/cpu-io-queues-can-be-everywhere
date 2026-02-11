@@ -191,6 +191,8 @@ For any other library... it's probably the same 😄
 
 Check [ThreadsPerformanceTest](apps/different-endpoints/webmvc-classic-threads/src/test/kotlin/com/nalepa/demo/common/ThreadsPerformanceTest.kt)
 
+![cpu-usage.png](images/cpu-usage.png)
+
 # How to measure queue wait time
 
 In order to measure queue wait time (and more) use :
@@ -236,6 +238,16 @@ What can happen under high load?
   - or all threads are doing CPU
   - other things
 
+# A little bit slower way to reduce response times
+
+There are two patterns that can be used to reduce response times, when queue wait time is high:
+- bulkhead pattern
+  - it protects resources
+  ![bulkhead.png](images/bulkhead.png)
+- Staged Event-Driven Architecture (SEDA)
+  - it makes resources faster
+  ![seda.png](images/seda.png)
+
 # Presentation / Blog examples
 
 Start with the module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
@@ -255,13 +267,11 @@ There are two different types of examples:
     - bulkhead pattern is used
     - it protects resources
     - check [spring-examples/bulkhead module](spring-examples/apps/bulkhead/readme-bulkhead.md)
-  ![bulkhead.png](images/bulkhead.png)
 
 - applications with only one endpoint, but under the hood, http-client is called
     - Staged Event-Driven Architecture (SEDA) is used
     - it makes resources faster
     - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
-    ![seda.png](images/seda.png)
 
 `Nalepa TODO`: Make sure that data in module readme files are valid
 

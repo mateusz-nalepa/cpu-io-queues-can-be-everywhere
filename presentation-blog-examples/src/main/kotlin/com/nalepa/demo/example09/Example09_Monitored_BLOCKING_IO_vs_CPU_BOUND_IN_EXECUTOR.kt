@@ -23,8 +23,8 @@ fun main() {
 
     repeat(10_000) { index ->
         futures.add(
-//            executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
-            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
+            executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
+//            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
         )
     }
 
