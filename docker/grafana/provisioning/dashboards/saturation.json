@@ -337,7 +337,7 @@
           "refId": "A"
         }
       ],
-      "title": "App Thread Pools Saturation",
+      "title": "App Thread Pools Queue Wait Times",
       "type": "timeseries"
     },
     {
@@ -527,13 +527,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg by (name) (custom_web_client_saturation_seconds{job=\"app\", quantile=\"0.99\"})",
+          "expr": "avg by (name) (custom_web_client_queue_wait_time_seconds{job=\"app\", quantile=\"0.99\"})",
           "legendFormat": "{{uri}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "WebClient Saturation",
+      "title": "WebClient Queue Wait Time",
       "type": "timeseries"
     }
   ],
@@ -549,7 +549,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Saturation Dashboard",
+  "title": "Queue Wait Time Dashboard",
   "uid": "e3e9b8b1-896b-4a89-be2a-08b65842b75d",
   "version": 1
 }

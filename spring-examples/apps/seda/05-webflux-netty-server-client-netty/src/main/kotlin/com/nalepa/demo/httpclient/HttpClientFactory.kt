@@ -67,7 +67,7 @@ class HttpClientFactory(
                                 val duration = Duration.ofNanos(System.nanoTime() - contextWithStartTime.startTime)
                                 DummyLogger.log(this, "Http client pending request took: $duration")
                                 meterRegistry
-                                    .timer("custom.web.client.saturation")
+                                    .timer("custom.web.client.queue_wait_time")
                                     .record(duration)
                             }
                     }

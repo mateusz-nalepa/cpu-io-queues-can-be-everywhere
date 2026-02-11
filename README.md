@@ -263,6 +263,8 @@ There are two different types of examples:
     - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
     ![seda.png](images/seda.png)
 
+`Nalepa TODO`: Make sure that data in module readme files are valid
+
 # Other
 
 Some unexpected things when dealing with Thread Pools
