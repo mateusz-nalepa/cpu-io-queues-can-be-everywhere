@@ -8,10 +8,15 @@ import kotlin.math.sqrt
 fun main() {
     val queue = LinkedList<Runnable>()
 
-    // yup, we can write: queue.add { simulateBlockingIO(1) } but Runnable is intentional :P
-    repeat(4) { index ->
-        queue.add(MonitoredRunnable { simulateCpuCode(index) })
-    }
+    val monitoredRunnable1 = MonitoredRunnable { simulateCpuCode(1) }
+    val monitoredRunnable2 = MonitoredRunnable { simulateCpuCode(2) }
+    val monitoredRunnable3 = MonitoredRunnable { simulateCpuCode(3) }
+    val monitoredRunnable4 = MonitoredRunnable { simulateCpuCode(4) }
+
+    queue.add(monitoredRunnable1)
+    queue.add(monitoredRunnable2)
+    queue.add(monitoredRunnable3)
+    queue.add(monitoredRunnable4)
 
     while (!queue.isEmpty()) {
         val runnable = queue.poll()

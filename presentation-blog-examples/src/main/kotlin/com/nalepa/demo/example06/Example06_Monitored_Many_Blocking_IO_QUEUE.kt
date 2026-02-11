@@ -7,9 +7,15 @@ import java.util.*
 fun main() {
     val queue = LinkedList<Runnable>()
 
-    repeat(4) { index ->
-        queue.add(MonitoredRunnable { simulateBlockingIO(index) })
-    }
+    val monitoredRunnable1 = MonitoredRunnable { simulateBlockingIO(1) }
+    val monitoredRunnable2 = MonitoredRunnable { simulateBlockingIO(2) }
+    val monitoredRunnable3 = MonitoredRunnable { simulateBlockingIO(3) }
+    val monitoredRunnable4 = MonitoredRunnable { simulateBlockingIO(4) }
+
+    queue.add(monitoredRunnable1)
+    queue.add(monitoredRunnable2)
+    queue.add(monitoredRunnable3)
+    queue.add(monitoredRunnable4)
 
     while (!queue.isEmpty()) {
         val runnable = queue.poll()

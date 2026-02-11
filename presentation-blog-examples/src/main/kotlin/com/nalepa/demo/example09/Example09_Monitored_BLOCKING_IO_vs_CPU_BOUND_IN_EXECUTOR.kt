@@ -10,7 +10,10 @@ import kotlin.math.sqrt
 
 // look on Visual VM CPU Usage
 fun main() {
-    // threads pool number equal to cpu, so it's 100% cpu usage on VisualVM
+    // threads pool number equal to cpu count
+    // so number of threads is equal to cpu count
+    // thanks to this there is 0% or 100% cpu usage on VisualVM
+    // depending on the use case
     val executor =
         Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors(),
@@ -20,8 +23,8 @@ fun main() {
 
     repeat(10_000) { index ->
         futures.add(
-            executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
-//            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
+//            executor.submit(MonitoredRunnable { simulateBlockingIO(index) })
+            executor.submit(MonitoredRunnable { simulateCpuCode(index) })
         )
     }
 

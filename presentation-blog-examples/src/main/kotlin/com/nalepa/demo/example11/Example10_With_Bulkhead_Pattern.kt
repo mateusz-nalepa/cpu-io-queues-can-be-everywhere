@@ -1,5 +1,6 @@
 package com.nalepa.demo.example11
 
+import com.nalepa.demo.example12.log
 import java.time.Duration
 import java.time.LocalTime
 import java.util.*
@@ -8,6 +9,8 @@ import java.util.*
 fun main() {
     val queueForSlow = LinkedList<Runnable>()
     val queueForFast = LinkedList<Runnable>()
+
+    val exampleStart = System.nanoTime()
 
     repeat(4) { index ->
         queueForSlow.add(MonitoredRunnable { simulateSlowEndpoint(index) })
@@ -41,6 +44,7 @@ fun main() {
     threadForSlow.join()
     threadForFast.join()
 
+    log("Example ended after: ${Duration.ofNanos(System.nanoTime() - exampleStart).toSeconds()} s")
 }
 
 fun simulateSlowEndpoint(index: Int) {
