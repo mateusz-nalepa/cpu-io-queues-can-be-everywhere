@@ -112,7 +112,7 @@ In order to use another thread pool for Project Reactor, given operators can be 
 
 But it turns out, that only the first `subscribeOn` does matter.
 
-https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method
+Check [Project Reactor - subscribeOn method documentation](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method)
 
 ```kotlin
 fun anotherSubscribeOnHasNoEffect() {

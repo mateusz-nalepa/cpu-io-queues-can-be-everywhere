@@ -40,9 +40,10 @@ Tracing is also not included.
 Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
 
 Steps for this repo:
-- start with reading `this` readme.md file
+- start with reading `this readme.md` file
 - jump to [presentation-blog-examples module](presentation-blog-examples) and run examples
 - jump to [spring-examples module](spring-examples) and run examples & see results in Grafana
+- jump to [thread-pool-un-expected-things module](thread-pool-un-expected-things) and learn about some (un)expected things
 
 # Quick summary of the repo
 
@@ -50,9 +51,9 @@ What to do when queue wait time > 0?
 
 - just add more threads
     - absolutely simplest, really
-    - does every app truly need to be ultra‑fast and hyper‑optimized
-    - probably not
-    - it's like a soft version of `add more instances` :D
+      - does every app truly need to be ultra‑fast and hyper‑optimized?
+      - probably not
+      - it's like a soft version of `add more instances` :D
 - Thread Pool Isolation -> aka Bulkhead
     - It protects from the "noisy neighbour"
     - request A -> Thread Pool A
@@ -69,8 +70,8 @@ And what if queue size is almost 0?
 - maybe cache is needed
 - maybe async calls (http, database) can be done
   maybe deep dive with e.g. async-profiler
-- maybe just fewer threads/instances
-- other things
+- maybe fewer threads/instances are needed ❤️
+- maybe some other things? 🤔
 
 # Notes
 
@@ -194,7 +195,7 @@ For any other library... it's probably the same 😄
 
 # How to measure queue wait time
 
-In order to measure queue wait time (and more) use :
+In order to measure queue wait time (and more) use:
 ```kotlin
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
 
@@ -214,20 +215,14 @@ Thanks to this code, the metric `executor.idle` will be available - yes, this is
 
 Check [Micrometer JVM Metrics for more](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
 
-
-Check also this PR with Micrometer metrics documentation update*
-https://github.com/micrometer-metrics/micrometer/pull/7083/changes
-
-*Note: Remove this link, once new version of Micrometer is released. 
-
 # Fastest way to reduce queue wait
 
 Just add more threads:
 
 - really, absolutely simplest
-- does every app truly need to be ultra‑fast and hyper‑optimized
-- probably not
-- it's like a soft version of `add more instances` :D
+  - does every app truly need to be ultra‑fast and hyper‑optimized?
+  - probably not
+  - it's like a soft version of `add more instances` :D
 
 What can happen under high load?
 
@@ -239,7 +234,7 @@ What can happen under high load?
 
 # A little bit slower way to reduce response times
 
-There are two patterns that can be used to reduce response times, when queue wait time is high:
+There are two patterns (maybe there is some more?) that can be used to reduce response times, when queue wait time is high:
 - bulkhead pattern
   - it protects resources
   ![bulkhead.png](images/bulkhead.png)
@@ -249,8 +244,8 @@ There are two patterns that can be used to reduce response times, when queue wai
 
 # Presentation / Blog examples
 
-Start with the module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
-It contains pure Kotlin, zero frameworks, zero magic.
+The module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
+contains pure Kotlin, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
 Simple files with a `main()` method that can be executed after cloning this repository.
 
