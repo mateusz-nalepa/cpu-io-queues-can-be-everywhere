@@ -272,7 +272,7 @@ There are two different types of examples:
     - it makes resources faster
     - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
 
-`Nalepa TODO`: Make sure that data in module readme files are valid
+`Nalepa TODO`: Make sure one again, that data in module readme files are valid
 
 # Thread Pool (Un)Expected Things
 
