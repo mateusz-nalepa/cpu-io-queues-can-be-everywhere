@@ -334,6 +334,62 @@ Check
 [ThreadOfVirtualFactory](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example02/ThreadOfVirtualFactory.kt)
 for more
 
+### Only first `subscribeOn` does matter
+
+In order to use another thread pool for Project Reactor, given operators can be used:
+- subscribeOn
+- publishOn
+
+But it turns out, that only the first `subscribeOn` does matter.
+
+https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method
+
+```kotlin
+fun anotherSubscribeOnHasNoEffect() {
+    val firstScheduler = Schedulers.newParallel("first-Scheduler")
+    val secondScheduler = Schedulers.newParallel("second-Scheduler")
+  
+    Mono.just("value")
+        // Thread[#26,first-Scheduler-2,5,main] : first-Value     
+        .subscribeOn(firstScheduler)
+        .doOnNext { println("${Thread.currentThread()} : first-Value") }
+
+        // Thread[#26,first-Scheduler-2,5,main] : second-Value    
+        .subscribeOn(secondScheduler)
+        .doOnNext { println("${Thread.currentThread()} : second-Value") }
+        .block()
+  
+    firstScheduler.dispose()
+    secondScheduler.dispose()
+}
+```
+
+If there's a need to switch code execution to another thread, then `publishOn` can be used:
+
+```kotlin
+fun subscribeOnThenPublishOn() {
+    val firstScheduler = Schedulers.newParallel("first-Scheduler")
+    val secondScheduler = Schedulers.newParallel("second-Scheduler")
+
+    Mono.just("value")
+        // Thread[#25,first-Scheduler-1,5,main] : first-Value
+        .subscribeOn(firstScheduler)
+        .doOnNext { println("${Thread.currentThread()} : first-Value") }
+
+        // Thread[#26,second-Scheduler-2,5,main] : second-Value
+        .publishOn(secondScheduler)
+        .doOnNext { println("${Thread.currentThread()} : second-Value") }
+        .block()
+
+    firstScheduler.dispose()
+    secondScheduler.dispose()
+}
+```
+
+Check 
+[ReactorSubscribeOnPublishOn](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example03/ReactorSubscribeOnPublishOn.kt)
+for more
+
 # Contributing
 
 If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
