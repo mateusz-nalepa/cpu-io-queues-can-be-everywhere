@@ -191,9 +191,6 @@ For any other library... it's probably the same 😄
 
 ![cpu-usage.png](images/cpu-usage.png)
 
-Please check also 
-[ThreadsPerformance.kt](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example01/ThreadsPerformance.kt)
-
 # How to measure queue wait time
 
 In order to measure queue wait time (and more) use :
@@ -278,7 +275,27 @@ There are two different types of examples:
 
 # Other
 
-Some unexpected things when dealing with Thread Pools
+Some (un)expected things when dealing with Thread Pools
+
+### Adding more threads for CPU‑bound tasks may make things worse
+
+When all threads are busy doing CPU‑bound work, then adding more threads may make things worse.
+Off course CPU can execute many tasks in parallel, but they will be slower.
+
+There is a code, which is intentionally doing CPU‑bound work, and given number of threads is used to execute it. 
+When more threads are added, then the total number of iterations per thread is slower
+
+`Note`: This code was executed on notebook with 8 cores.
+```kotlin
+Number of iterations per thread number: 8: 	 3 018 674
+Number of iterations per thread number: 16: 	 1 603 543
+Number of iterations per thread number: 32: 	 855 639
+Number of iterations per thread number: 128: 	 240 104
+```
+
+Check
+[ThreadsPerformance](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example01/ThreadsPerformance.kt)
+for more
 
 ### Behaviour of `corePoolSize` and `maxPoolSize` it is unintuitive
 

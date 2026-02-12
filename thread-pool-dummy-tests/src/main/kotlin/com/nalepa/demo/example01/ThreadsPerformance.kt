@@ -12,7 +12,7 @@ import kotlin.math.sqrt
 // TODO: check if this code is ok
 fun main() {
     ThreadsPerformanceTest.printAverageNumberOfIterationsPerThreadsCountWhenWeAreNotUsingQueue()
-    ThreadsPerformanceTest.printAverageNumberOfIterationsPerThreadsCountWhenWeAreUsingQueue()
+//    ThreadsPerformanceTest.printAverageNumberOfIterationsPerThreadsCountWhenWeAreUsingQueue()
 }
 
 object ThreadsPerformanceTest {
@@ -29,14 +29,9 @@ object ThreadsPerformanceTest {
         val threadsTaskCount = // threads count == task count, so every thread is executing task
             listOf(
                 Runtime.getRuntime().availableProcessors(),
-                1,
-                2,
-                4,
-                20,
-                50,
-                100,
-                200,
-                1000,
+                Runtime.getRuntime().availableProcessors() * 2,
+                Runtime.getRuntime().availableProcessors() * 4,
+                Runtime.getRuntime().availableProcessors() * 16,
             )
 
         threadsTaskCount
