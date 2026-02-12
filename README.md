@@ -306,6 +306,10 @@ Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
 - create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
   - Tomcat thread pool works like that
+  
+Check
+[ThreadPoolCoreSizeMaxSize.kt](thread-pool-dummy-tests/src/main/kotlin/com/nalepa/demo/example04/ThreadPoolCoreSizeMaxSize.kt)
+for more
 
 ### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
 
