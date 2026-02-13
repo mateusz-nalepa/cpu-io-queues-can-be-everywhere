@@ -7,10 +7,3 @@ datasources:
       access: proxy
       url: http://host.docker.internal:9090
       editable: true
-#      jsonData:
-#        httpMethod: POST
-#        exemplarTraceIdDestinations:
-#          - name: trace_id
-#            datasourceUid: tempo
-#            # if you want to use zipkin
-#            # url: http://localhost:9411/zipkin/traces/$${__value.raw}
