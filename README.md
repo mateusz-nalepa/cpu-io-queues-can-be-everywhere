@@ -139,15 +139,6 @@ is used to describe the time of the saturation.
 
 # Thread, Thread Pools
 
-When dealing with threads, it's `ABSOLUTELY GOOD IDEA` to check which thread executes code.
-Given code is simple enough to check this :D 
-
-```kotlin
-println("Current thread: ${Thread.currentThread()}")
-println("Current thread isVirtual: ${Thread.currentThread().isVirtual}")
-```
-
-
 There is always some `Thread` - like a cashier at the checkout:
 
 ```kotlin
@@ -179,6 +170,16 @@ What, if customers are waiting in a line?
 - measure queue wait time as one metric
 - measure scanning time as another metric
 
+#### Debugging thread pools
+When dealing with threads, it's `ABSOLUTELY GOOD IDEA` to check which thread executes code.
+Given code is simple enough to check this :D
+
+```kotlin
+println("Current thread: ${Thread.currentThread()}")
+println("Current thread isVirtual: ${Thread.currentThread().isVirtual}")
+```
+
+#### Some default thread pools sizes
 Default Thread Pool Sizes:
 
 - Spring Boot WebMVC + Tomcat  
@@ -192,7 +193,7 @@ Default Thread Pool Sizes:
 - Spring Boot WebFlux + Netty  
   Default event loop size: equal to the number of CPU cores
 
-## What about Schedulers, Dispatchers?
+#### What about Schedulers, Dispatchers?
 
 Under the hood: just threads.
 
