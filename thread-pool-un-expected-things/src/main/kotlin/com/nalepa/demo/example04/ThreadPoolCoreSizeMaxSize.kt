@@ -43,6 +43,7 @@ fun threadPoolIsNotCreatingThreadsWhenQueueIsNotEmpty() {
 
     Thread.sleep(Duration.ofMillis(100))
     println("Number of threads in pool: ${executor.poolSize}, number of tasks in queue: ${executor.queue.size}")
+    println("It would be nice to have 6 threads in pool here XD")
     check(executor.poolSize == 1) { "Pool size is: ${executor.poolSize}" }
 
 
