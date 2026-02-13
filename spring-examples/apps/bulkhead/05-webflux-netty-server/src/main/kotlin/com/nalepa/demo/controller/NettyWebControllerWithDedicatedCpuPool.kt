@@ -28,7 +28,7 @@ class NettyWebControllerWithDedicatedCpuPool(
             )
         )
 
-    // in theory this is not needed, in practice in reactor I have no idea how to monitor saturation time for server
+    // in theory this is not needed, in practice in reactor I have no idea how to monitor tasks queue wait time for server
     private val schedulerForSlow =
         Schedulers.fromExecutor(
             executorsFactory.create(

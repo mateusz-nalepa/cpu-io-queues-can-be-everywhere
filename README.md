@@ -1,6 +1,6 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks - and
+A repository demonstrating how thread‑pool tasks queue wait time appears across different types of tasks and
 how easily it hides in plain sight. It contains also some examples of how to reduce response times when queue wait time is high.
 Some un-expected things about thread pools are also included.
 
@@ -92,7 +92,7 @@ So it's good to monitor standing in line time and scanning time as two separate 
 Treat this repository as a Sandbox - an educational repo,
 rather than production‑ready code.
 The examples are intentionally minimal.
-They focus solely on showing thread‑pool saturation (queue wait time).
+They focus solely on showing thread‑pool tasks queue wait time.
 
 Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
 Tracing is also not included.
@@ -130,6 +130,12 @@ In this repo there is only `Thread Pool`.
 
 The response from an endpoint is always returned on a server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
+
+## Note 5 - Thread pool saturation
+
+When all threads in thread pool are busy, then thread pool is saturated.
+In this repository, the term `queue wait time` 
+is used to describe the time of the saturation.
 
 # Thread, Thread Pools
 
