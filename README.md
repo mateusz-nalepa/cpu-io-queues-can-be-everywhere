@@ -281,6 +281,10 @@ There are two patterns (maybe there is some more?) that can be used to reduce re
   - it makes resources faster
   ![seda.png](images/seda.png)
 
+In those approaches, additional thread pools may be needed,
+thus more context-switching. But context-switching is not a problem, 
+when it is not excessive.
+
 # Presentation / Blog examples
 
 The module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
