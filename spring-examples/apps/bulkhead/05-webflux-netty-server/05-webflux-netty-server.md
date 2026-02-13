@@ -32,16 +32,16 @@ curl http://localhost:8080/send-requests-on-different-endpoints/scenario/dedicat
 
 In this example, metric `http.server.requests` is not telling the truth
 
-|                 Element                 | Expected response times | Metrics from App | Metrics from RequestSender |
-|:---------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|              Slow endpoint              |           10s           |      10s ✅       |           10s ✅            |
-|              Fast endpoint              |        almost 0s        |   almost 0s ❌    |            8s ✅            |
-| App queue wait time<br>(missing metric) |         Missing         |     Missing      |       Not Applicable       |
+|                Element                 | Expected response times | Metrics from App | Metrics from RequestSender |
+|:--------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
+|             Slow endpoint              |           10s           |      10s ✅       |           10s ✅            |
+|             Fast endpoint              |        almost 0s        |   almost 0s ❌    |            8s ✅            |
+| App queue wait time<br>(custom metric) |           8s            |      10s 🤔      |       Not Applicable       |
 
 #### Results, when `heavyCpuCode` is being executed on dedicated thread pool
 
-|                 Element                 | Expected response times | Metrics from App | Metrics from RequestSender |
-|:---------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|              Slow endpoint              |           10s           |      10s ✅       |           10s ✅            |
-|              Fast endpoint              |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
-| App queue wait time<br>(missing metric) |         Missing         |     Missing      |       Not Applicable       |
+|                Element                 | Expected response times | Metrics from App | Metrics from RequestSender |
+|:--------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
+|             Slow endpoint              |           10s           |      10s ✅       |           10s ✅            |
+|             Fast endpoint              |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
+| App queue wait time<br>(custom metric) |           8s            |        0s        |       Not Applicable       |

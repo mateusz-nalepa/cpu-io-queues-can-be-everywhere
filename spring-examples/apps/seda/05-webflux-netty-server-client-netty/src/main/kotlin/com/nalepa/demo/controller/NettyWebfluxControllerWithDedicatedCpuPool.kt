@@ -24,18 +24,6 @@ class NettyWebfluxControllerWithDedicatedCpuPool(
 
     private val webClient = httpClientFactory.createWebClient()
 
-    // I don't know how to replace reactor pool with custom pool, so basically thanks to this pool, reactor server threads are like I/O threads
-    // TODO: add event loop lag to reactor netty?
-    private val serverWorkerScheduler =
-        Schedulers.fromExecutor(
-            executorsFactory.create(
-                "CPU Bound pool waiting time took:",
-                "CPU.for.serverWorker",
-                threadsSize = Runtime.getRuntime().availableProcessors(),
-                taskQueueSize = Runtime.getRuntime().availableProcessors(),
-            )
-        )
-
     private val afterWebClientScheduler =
         Schedulers.fromExecutor(
             executorsFactory.create(
@@ -56,7 +44,6 @@ class NettyWebfluxControllerWithDedicatedCpuPool(
         DummyLogger.log(this, "Start endpoint for index: $index")
 
         return Mono.just(index)
-            .publishOn(serverWorkerScheduler)
             // .map {  } // eq: deserialize requestBody, remember about validation if needed
             .flatMap {
                 getData(index, mockDelaySeconds)
