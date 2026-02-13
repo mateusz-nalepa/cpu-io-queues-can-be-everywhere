@@ -1,14 +1,74 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
 A repository demonstrating how thread‑pool saturation (queue wait time) appears across different types of tasks - and
-how easily it hides in plain sight. When queue wait time is high, then system becomes slow. 
+how easily it hides in plain sight. It contains also some examples of how to reduce response times when queue wait time is high.
+Some un-expected things about thread pools are also included.
 
-Analogy: a cashier scanning groceries. Two metrics matter:
+# TL;DR
+
+CPU usage is misleading when it comes to thread pool tasks queue wait time.
+Queues can be present at any CPU utilization level.
+
+What to do when queue wait time > 0?
+
+- just add more threads
+  - absolutely simplest, really
+    - does every app truly need to be ultra‑fast and hyper‑optimized?
+    - probably not
+    - it's like a soft version of `add more instances` :D
+- Thread Pool Isolation -> aka Bulkhead
+  - It protects from the "noisy neighbour"
+  - request A -> Thread Pool A
+  - request B -> Thread Pool B
+- Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
+  - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
+  - maximize cpu, minimize queue wait time
+- Hybrid: Bulkhead + SEDA
+- maybe just more threads/instances
+- other things
+
+And what if queue size is almost 0?
+
+- maybe cache is needed
+- maybe async calls (http, database) can be done
+- maybe deep dive with e.g. async-profiler
+- maybe fewer threads/instances are needed ❤️
+- maybe some other things? 🤔
+
+# Short introduction
+Many different systems behave surprisingly similarly: 
+they rely on threads or thread pools, 
+make HTTP requests in blocking or non‑blocking mode, 
+and parse JSON while executing business logic. 
+But sooner or later they begin to slow down - 
+like driving through a city during rush hour, 
+when every street hides another traffic jam.
+
+Let's say, that regular application has some `I/O-bound tasks`
+and some `CPU-bound tasks`.
+For example, getting data from http-client is an `I/O-bound task`,
+and doing JSON serialization/deserialization 
+and probably everything else is a `CPU-bound task`.
+When the traffic is low, then response times are flat, and everything is fine.
+But when the traffic grows, then response times are increasing, 
+and the system becomes slow.
+On metric, it looks like a sinusoidal wave, with peaks(e.q. day) 
+and valleys(e.q. night).
+The more traffic, the higher peaks.
+One of the reason for that are `queues`. 
+They store info about pending tasks waiting for execution.
+
+
+Let's use given analogy to understand this better:
+`a cashier scanning groceries`. In this example, two metrics matter:
 
 - queue wait time - how long customers stand in line
 - scanning time
 
-If there is only one metric... what does it mean? Honestly, no idea.
+Based on that store owner can make some decisions, e.g. open new checkout line.
+
+But what if... there is only one metric... 
+what does it mean? Honestly, no idea 😀
 If time is e.g. 10 seconds, then:
 
 - maybe X seconds standing in line + 10 seconds scanning time
@@ -44,34 +104,6 @@ Steps for this repo:
 - jump to [presentation-blog-examples module](presentation-blog-examples) and run examples
 - jump to [spring-examples module](spring-examples) and run examples & see results in Grafana
 - jump to [thread-pool-un-expected-things module](thread-pool-un-expected-things) and learn about some (un)expected things
-
-# Quick summary of the repo
-
-What to do when queue wait time > 0?
-
-- just add more threads
-    - absolutely simplest, really
-      - does every app truly need to be ultra‑fast and hyper‑optimized?
-      - probably not
-      - it's like a soft version of `add more instances` :D
-- Thread Pool Isolation -> aka Bulkhead
-    - It protects from the "noisy neighbour"
-    - request A -> Thread Pool A
-    - request B -> Thread Pool B
-- Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
-    - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
-    - maximize cpu, minimize queue wait time
-- Hybrid: Bulkhead + SEDA
-- maybe just more threads/instances
-- other things
-
-And what if queue size is almost 0?
-
-- maybe cache is needed
-- maybe async calls (http, database) can be done
-  maybe deep dive with e.g. async-profiler
-- maybe fewer threads/instances are needed ❤️
-- maybe some other things? 🤔
 
 # Notes
 
