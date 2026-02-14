@@ -1,6 +1,6 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-A repository demonstrating how thread‑pool tasks queue wait time appears across different types of tasks and
+An educational repository demonstrating how thread‑pool tasks queue wait time appears across different types of tasks and
 how easily it hides in plain sight. It contains also some examples of how to reduce response times when queue wait time is high.
 Some un-expected things about thread pools are also included.
 
@@ -77,6 +77,8 @@ Let's use given analogy to understand this better:
 
 - queue wait time - how long customers stand in line
 - scanning time
+
+![store.png](images/store.png)
 
 Based on that store owner can make some decisions, e.g. open new checkout line.
 
