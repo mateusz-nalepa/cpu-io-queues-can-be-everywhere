@@ -276,9 +276,11 @@ What can happen under high load?
 There are two patterns (maybe there is some more?) that can be used to reduce response times, when queue wait time is high:
 - bulkhead pattern
   - it protects resources
+  - many thread pools, many endpoints
   ![bulkhead.png](images/bulkhead.png)
 - Staged Event-Driven Architecture (SEDA)
   - it makes resources faster
+  - many thread pools, one endpoint
   ![seda.png](images/seda.png)
 
 In those approaches, additional thread pools may be needed,
