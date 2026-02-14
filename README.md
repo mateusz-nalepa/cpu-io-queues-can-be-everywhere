@@ -55,6 +55,7 @@ and the system becomes slow.
 On metric, it looks like a sinusoidal wave, with peaks(e.q. day) 
 and valleys(e.q. night).
 The more traffic, the higher peaks.
+And it may happen on a daily basis.
 One of the reason for that are `queues`. 
 They store info about pending tasks waiting for execution.
 
