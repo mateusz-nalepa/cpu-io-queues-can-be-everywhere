@@ -4,9 +4,12 @@ A repository demonstrating how thread‑pool tasks queue wait time appears acros
 how easily it hides in plain sight. It contains also some examples of how to reduce response times when queue wait time is high.
 Some un-expected things about thread pools are also included.
 
-Sometimes adding new thread pool can make system `X times faster`, if queue wait time is high. 
+Sometimes adding a new thread pool can make a system `several times faster`,
+especially when high queue wait time is the dominant bottleneck.
 
-But sometimes it can make things worse, if all threads are busy doing CPU‑bound work.
+In other cases it may have the opposite effect,
+for example when all threads become busy with CPU‑bound work
+and additional thread pools only make things worse.
 
 # TL;DR
 
