@@ -42,6 +42,11 @@ And what if queue size is almost 0?
 - maybe fewer threads/instances are needed ❤️
 - maybe some other things? 🤔
 
+There are 3 main modules in this repo:
+- [presentation-blog-examples](presentation-blog-examples) - minimal Kotlin examples
+- [spring-examples](spring-examples) - Spring Boot demos with Grafana dashboards
+- [thread-pool-un-expected-things](thread-pool-un-expected-things) - some edge cases and pitfalls
+
 # Short introduction
 Many different systems behave surprisingly similarly: 
 they rely on threads or thread pools, 
