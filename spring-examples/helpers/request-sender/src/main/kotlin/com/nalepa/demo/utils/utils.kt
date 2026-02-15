@@ -23,6 +23,13 @@ class ActionRecorder(
         val start = System.nanoTime()
 
         action()
+
+
+        if (type == "warmup") {
+            // warmup not needed to be visible in grafana
+            return
+        }
+
         val duration = Duration.ofNanos(System.nanoTime() - start)
         meterRegistry
             .timer("custom.http.request", "type", type)
@@ -40,5 +47,11 @@ object CpuCountRequestConfig : RequestSenderConfig {
 }
 
 class UserProvidedRequestConfig(val count: Int) : RequestSenderConfig {
+
+    init {
+        if (count > 200) {
+            throw IllegalArgumentException("Count of request in batch cannot be bigger than 200, because of thread pool size")
+        }
+    }
     override fun numberOfRequestInBatch(): Int = count
 }

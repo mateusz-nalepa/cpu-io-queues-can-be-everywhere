@@ -37,8 +37,11 @@ class ClassicWebControllerDefaultsWithDedicatedCpuPool(
         executorsFactory.create(
             "IO Bound Pool",
             "io",
-            threadsSize = 500,
-            taskQueueSize = 10,
+            threadsSize = 400,
+            // in order to prevent microburst present in demonstration :D
+            // in normal situation, this queue should not be so high, there should be more threads
+            // app should wait for response from I/O, not sit down in queue here
+            taskQueueSize = 400
         ).asCoroutineDispatcher()
 
     // CPU-bound: small queue is fine; high CPU usage should trigger scaling.
@@ -47,8 +50,10 @@ class ClassicWebControllerDefaultsWithDedicatedCpuPool(
         executorsFactory.create(
             "CPU Bound Pool",
             "cpu",
-            threadsSize = Runtime.getRuntime().availableProcessors(),
-            taskQueueSize = 100,
+            // In normal conditions, set Runtime.getRuntime().availableProcessors()
+            // 200 is only for demonstration purposes in this repo
+            threadsSize = 200,
+            taskQueueSize = 400,
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/{index}/{mockDelaySeconds}/{cpuOperationDelaySeconds}")

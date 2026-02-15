@@ -202,32 +202,7 @@
           },
           "unit": "s"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "/endpoint/scenario/dedicatedCpuPool/fast/{index}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -425,7 +400,32 @@
           },
           "unit": "s"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "custom.tomcat"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -552,8 +552,8 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg by (name) (custom_netty_eventloop_lag_seconds{job=\"app\", quantile=\"0.99\"})",
-          "legendFormat": "{{uri}}",
+          "expr": "avg by (type) (custom_netty_eventloop_lag_seconds{job=\"app\", quantile=\"0.99\"})",
+          "legendFormat": "{{type}}",
           "range": true,
           "refId": "A"
         }
@@ -673,5 +673,5 @@
   "timezone": "browser",
   "title": "Queue Wait Time Dashboard",
   "uid": "e3e9b8b1-896b-4a89-be2a-08b65842b75d",
-  "version": 1
+  "version": 3
 }

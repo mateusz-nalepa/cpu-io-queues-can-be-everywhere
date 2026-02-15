@@ -68,7 +68,7 @@ class EventLoopLagMonitor(
 
                 if (lagNanos > 0) {
                     meterRegistry
-                        .timer("custom.netty.eventloop.lag")
+                        .timer("custom.netty.eventloop.lag", "type", "server")
                         .record(lagNanos, TimeUnit.NANOSECONDS)
                 }
             }

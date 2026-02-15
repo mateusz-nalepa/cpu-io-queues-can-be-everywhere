@@ -14,6 +14,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer
 import org.springframework.context.SmartLifecycle
 import org.springframework.stereotype.Component
 import java.time.Duration
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 
 @Component
@@ -21,23 +22,29 @@ import java.util.concurrent.TimeUnit
 class CustomThreadsWebServerCustomizer(
     private val tomcatServerProperties: TomcatServerProperties,
     private val executorsFactory: ExecutorsFactory,
-) : WebServerFactoryCustomizer<ConfigurableTomcatWebServerFactory>, SmartLifecycle {
-
-
-    private val executor = getExecutor()
+    private val customTomcatThreadsShutdownManager: CustomTomcatThreadsShutdownManager,
+) : WebServerFactoryCustomizer<ConfigurableTomcatWebServerFactory> {
 
     override fun customize(factory: ConfigurableTomcatWebServerFactory) {
+
+        val customTomcatExecutor =
+            executorsFactory
+                .create(
+                    "Http server pending request took:",
+                    "custom.tomcat",
+                    tomcatServerProperties.threads.max,
+                    tomcatServerProperties.threads.maxQueueCapacity,
+                )
+
+        customTomcatThreadsShutdownManager.assignExecutor(customTomcatExecutor)
+
         factory.addProtocolHandlerCustomizers(
             TomcatProtocolHandlerCustomizer { protocolHandler: ProtocolHandler ->
-                protocolHandler.executor =
-                    executorsFactory.monitorExecutorService(
-                        executor,
-                        "Http server pending request took:",
-                        "custom.http.server.pending"
-                    )
+                protocolHandler.executor = customTomcatExecutor
             })
     }
 
+    // that's how Tomcat by default creates executor for handling requests
     private fun getExecutor(): ThreadPoolExecutor {
         // by default, Java minimize resources used when dealing with threads, so threads are created when there is reached queue limit
         // this task queue enforce java to create threads, when there are only elements in queue
@@ -56,11 +63,22 @@ class CustomThreadsWebServerCustomizer(
                 threadFactory,
             )
         taskQueue.setParent(executor)
+        executor.prestartAllCoreThreads()
 
         return executor
     }
+}
+
+@Component
+class CustomTomcatThreadsShutdownManager : SmartLifecycle {
 
     private var running = true
+
+    private lateinit var executorService: ExecutorService
+
+    fun assignExecutor(executorService: ExecutorService) {
+        this.executorService = executorService
+    }
 
     override fun start() {
     }
@@ -73,11 +91,11 @@ class CustomThreadsWebServerCustomizer(
     override fun isRunning(): Boolean = running
 
     private fun shutdownExecutor() {
-        executor.shutdown()
-        val isTerminated = executor.awaitTermination(5, TimeUnit.SECONDS)
+        executorService.shutdown()
+        val isTerminated = executorService.awaitTermination(5, TimeUnit.SECONDS)
 
         if (!isTerminated) {
-            executor.shutdownNow()
+            executorService.shutdownNow()
         }
     }
 

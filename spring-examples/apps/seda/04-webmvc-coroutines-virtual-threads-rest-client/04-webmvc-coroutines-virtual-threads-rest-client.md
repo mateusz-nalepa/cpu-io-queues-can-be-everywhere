@@ -38,8 +38,8 @@ In this example, metric `http.server.requests` is not telling the truth
 
 |                Element                 | Expected response times |      Metrics from App       | Metrics from RequestSender |
 |:--------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|    `first batch` on dummy endpoint     |           10s           | 27s (no info about batch) ❌ |           10s ✅            |
-|    `second batch` on dummy endpoint    |           19s           | 27s (no info about batch) ❌ |           27s ✅            |
+|    `first batch` on dummy endpoint     |           10s           | 19s (no info about batch) ✅ |           10s ✅            |
+|    `second batch` on dummy endpoint    |           19s           | 19s (no info about batch) ✅ |           27s ✅            |
 |           Http Client metric           |      from 0s to 9s      |        from 0s to 9s        |       Not Applicable       |
 | App queue wait time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
 

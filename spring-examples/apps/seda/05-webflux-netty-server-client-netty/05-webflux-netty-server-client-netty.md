@@ -37,20 +37,20 @@ curl http://localhost:8080/send-requests-app-with-client/scenario/dedicatedCpuPo
 
 In this example, metric `http.client.requests` is not telling the truth
 
-|                  Element                  | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint      |           10s           | 27s (no info about batch) ✅ |           10s ✅            |
-|     `second batch` on dummy endpoint      |           19s           | 27s (no info about batch) ✅ |           27s ✅            |
-|            Http Client metric             |      from 0s to 9s      |      from 0s to 18s ❌       |       Not Applicable       |
-| Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
-| Client Queue wait time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
+|                    Element                    | Expected response times |      Metrics from App       | Metrics from RequestSender |
+|:---------------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
+|        `first batch` on dummy endpoint        |           10s           | 27s (no info about batch) ❌ |           10s ✅            |
+|       `second batch` on dummy endpoint        |           19s           | 27s (no info about batch) ❌ |           27s ✅            |
+|              Http Client metric               |      from 0s to 9s      |      from 0s to 18s ❌       |       Not Applicable       |
+| App Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
+| App Client Queue wait time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
 
 #### Results, when `heavyCpuCode` is being executed on dedicated thread pool
 
-|                  Element                  | Expected response times |      Metrics from App       | Metrics from RequestSender |
-|:-----------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
-|      `first batch` on dummy endpoint      |           10s           | 19s (no info about batch) ✅ |           10s ✅            |
-|     `second batch` on dummy endpoint      |           19s           | 19s (no info about batch) ✅ |           19s ✅            |
-|            Http Client metric             |      from 0s to 9s      |      from 0s to 9s  ✅       |       Not Applicable       |
-| Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
-| Client Queue wait time<br>(custom metric) |           0s            |            0s ✅             |       Not Applicable       |
+|                    Element                    | Expected response times |      Metrics from App       | Metrics from RequestSender |
+|:---------------------------------------------:|:-----------------------:|:---------------------------:|:--------------------------:|
+|        `first batch` on dummy endpoint        |           10s           | 19s (no info about batch) ✅ |           10s ✅            |
+|       `second batch` on dummy endpoint        |           19s           | 19s (no info about batch) ✅ |           19s ✅            |
+|              Http Client metric               |      from 0s to 9s      |      from 0s to 9s  ✅       |       Not Applicable       |
+| App Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
+| App Client Queue wait time<br>(custom metric) |           0s            |            0s ✅             |       Not Applicable       |
