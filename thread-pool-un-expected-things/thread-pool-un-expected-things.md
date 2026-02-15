@@ -31,6 +31,44 @@ Processing thousand of elements at the same time may cause:
 - all customers will be waiting for the response which can cause `OutOfMemoryError`
 - none of them will be finished in case of e.q. `OutOfMemoryError`
 
+### Blocking factor
+
+The blocking factor describes the proportion of time 
+a task spends blocked compared to its total execution time.
+
+Blocking Factor = Blocking Time / (Blocking Time + CPU Time)
+
+Examples:
+
+- Task: 3s I/O, 3s CPU
+  - Blocking Factor = 3/(3+3)=0.5
+- Task: 9s I/O, 3s CPU
+  - Blocking Factor = 9/(9+3)=0.75
+
+But it may be very hard to find out blocking factor for given task, because it can be different for each execution, and it can be different for each task.
+
+What if blocking factor is always near 0 or 1?
+
+This leads to the following guidelines:
+
+- I/O pool -> Blocking Factor ≈ 1
+  - getting data from database, calling external service, etc.
+  - tasks spend most of their time waiting, so a larger number of threads is acceptable, and virtual threads are often suitable.
+  - tasks queue wait time should be here 0, as app should wait request as soon as possible and wait for the response
+
+- CPU pool -> Blocking Factor ≈ 0
+  - e.q. parsing JSON 
+  - tasks primarily use CPU, so the number of threads should be close to the number of CPU cores
+  - tasks queue wait time can be here greater than 0, as maybe there is microburst which will disappear for a moment, or maybe creating a new instances is in progress
+
+##### Why this matter?
+
+Incorrect thread‑pool sizing may result in:
+
+- excessive CPU contention and reduced throughput
+- long queueing delays
+- unnecessarily large thread pools for CPU‑bound workloads
+- performance issues that are difficult to diagnose
 
 ### Behavior of `corePoolSize` and `maxPoolSize` it is unintuitive
 
