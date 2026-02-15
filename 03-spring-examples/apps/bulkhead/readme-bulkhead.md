@@ -2,6 +2,8 @@
 
 In those endpoints, `bulkhead` pattern is used.
 
+It has many thread pools for many endpoints.
+
 It protects one resources from another, e.q. `noisy neighbour`
 
 ![bulkhead.png](../../../images/bulkhead.png)

@@ -42,10 +42,12 @@ What to do when queue wait time > 0?
     - probably not
     - it's like a soft version of `add more instances` :D
 - Thread Pool Isolation -> aka Bulkhead
+  - many thread pools, many endpoints
   - It protects from the "noisy neighbour"
   - request A -> Thread Pool A
   - request B -> Thread Pool B
 - Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
+  - many thread pools, one endpoint
   - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
   - maximize cpu, minimize queue wait time
 - Hybrid: Bulkhead + SEDA
