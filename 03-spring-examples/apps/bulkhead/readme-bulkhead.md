@@ -28,7 +28,7 @@ Operations.heavyCpuCode(cpuOperationDelaySeconds)
 ResponseEntity.ok((SomeResponse("slow")))
 ```
 
-## Apps examples
+## Application examples
 - every one of them includes `how to run` and detailed threads diagram
 - [01-webmvc-classic-threads](01-webmvc-classic-threads/01-webmvc-classic-threads.md)
 - [02-webmvc-virtual-threads.md](02-webmvc-virtual-threads/02-webmvc-virtual-threads.md)

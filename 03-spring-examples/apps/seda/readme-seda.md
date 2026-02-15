@@ -36,7 +36,7 @@ Operations.heavyCpuCode(cpuOperationDelaySeconds)
 ResponseEntity.ok((SomeResponse("response")))
 ```
 
-## Apps examples 
+## Application examples 
 - every one of them includes `how to run` and detailed threads diagram
 - [01-webmvc-classic-threads-rest-client](01-webmvc-classic-threads-rest-client/01-webmvc-classic-threads-rest-client.md)
 - [02-webmvc-virtual-threads-rest-client](02-webmvc-virtual-threads-rest-client/02-webmvc-virtual-threads-rest-client.md)
