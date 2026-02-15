@@ -43,9 +43,9 @@ And what if queue size is almost 0?
 - maybe some other things? 🤔
 
 There are 3 main modules in this repo:
-- [presentation-blog-examples](presentation-blog-examples) - minimal Kotlin examples
-- [spring-examples](spring-examples) - Spring Boot demos with Grafana dashboards
-- [thread-pool-un-expected-things](thread-pool-un-expected-things) - some edge cases and pitfalls
+- [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Kotlin examples
+- [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
+- [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
 
 # Short introduction
 Many different systems behave surprisingly similarly: 
@@ -116,9 +116,9 @@ Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Bren
 
 Steps for this repo:
 - start with reading `this readme.md` file
-- jump to [presentation-blog-examples module](presentation-blog-examples) and run examples
-- jump to [spring-examples module](spring-examples) and run examples & see results in Grafana
-- jump to [thread-pool-un-expected-things module](thread-pool-un-expected-things) and learn about some (un)expected things
+- jump to [presentation-blog-examples module](01-presentation-blog-examples) and run examples
+- jump to [thread-pool-un-expected-things module](02-thread-pool-un-expected-things) and learn about some (un)expected things
+- jump to [spring-examples module](03-spring-examples) and run examples & see results in Grafana
 
 # Notes
 
@@ -304,11 +304,17 @@ when it is not excessive.
 
 # Presentation / Blog examples
 
-The module [presentation-blog-examples](presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
+The module [01-presentation-blog-examples](01-presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
 contains pure Kotlin, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
 Simple files with a `main()` method that can be executed after cloning this repository.
 
+# Thread Pool (Un)Expected Things
+
+Sometimes things does not work as expected.
+Knowing about them, can save a lot of debugging hours.
+
+Please check [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things/thread-pool-un-expected-things.md)
 
 # Spring Boot Examples
 
@@ -320,21 +326,14 @@ There are two different types of examples:
 - applications with `fast` and `slow` endpoints
     - bulkhead pattern is used
     - it protects resources
-    - check [spring-examples/bulkhead module](spring-examples/apps/bulkhead/readme-bulkhead.md)
+    - check [03-spring-examples/bulkhead module](03-spring-examples/apps/bulkhead/readme-bulkhead.md)
 
 - applications with only one endpoint, but under the hood, http-client is called
     - Staged Event-Driven Architecture (SEDA) is used
     - it makes resources faster
-    - check [spring-examples/seda module](spring-examples/apps/seda/readme-seda.md)
+    - check [03-spring-examples/seda module](03-spring-examples/apps/seda/readme-seda.md)
 
 `Nalepa TODO`: Make sure one again, that data in module readme files are valid
-
-# Thread Pool (Un)Expected Things
-
-Sometimes things does not work as expected.
-Knowing about them, can save a lot of debugging hours.
-
-Please check [thread-pool-un-expected-things](thread-pool-un-expected-things/thread-pool-un-expected-things.md)
 
 # Contributing
 
