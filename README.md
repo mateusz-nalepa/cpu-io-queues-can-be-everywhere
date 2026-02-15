@@ -11,6 +11,24 @@ In other cases it may have the opposite effect,
 for example when all threads become busy with CPU‑bound work
 and additional thread pools only make things worse.
 
+# Table of Contents
+
+- [TL;DR](#tldr)
+- [Short introduction](#short-introduction)
+- [How to use this repo](#how-to-use-this-repo)
+- [Notes](#notes)
+- [Thread, Thread Pools](#thread-thread-pools)
+- [When queue wait time happens](#when-queue-wait-time-happens)
+- [How to measure queue wait time](#how-to-measure-queue-wait-time)
+- [Fastest way to reduce queue wait](#fastest-way-to-reduce-queue-wait)
+- [A little bit slower way to reduce response times](#a-little-bit-slower-way-to-reduce-response-times)
+- [Presentation / Blog examples](#presentation--blog-examples)
+- [Thread Pool (Un)Expected Things](#thread-pool-unexpected-things)
+- [Spring Boot Examples](#spring-boot-examples)
+- [Contributing](#contributing)
+
+
+
 # TL;DR
 
 CPU usage is misleading when it comes to thread pool tasks queue wait time.
@@ -245,11 +263,13 @@ For any other library... it's probably the same 😄
   - low cpu utilization
   - thousands of `blocking tasks`? probably we can live with that
 
+It's like all cashiers are busy/blocked, and customers are waiting in line.
+
 ![cpu-usage.png](images/cpu-usage.png)
 
 # How to measure queue wait time
 
-In order to measure queue wait time (and more) use:
+In order to measure queue wait time (and more*) use:
 ```kotlin
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
 
@@ -267,7 +287,8 @@ val monitoredThreadPoolExecutor =
 
 Thanks to this code, the metric `executor.idle` will be available - yes, this is literally queue wait time. The name may be misleading, but the behavior is not.
 
-Check [Micrometer JVM Metrics for more](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
+*Check [Micrometer JVM Metrics for more metric](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
+related to thread pools.
 
 # Fastest way to reduce queue wait
 
@@ -290,12 +311,12 @@ What can happen under high load?
 
 There are two patterns (maybe there is some more?) that can be used to reduce response times, when queue wait time is high:
 - bulkhead pattern
-  - it protects resources
   - many thread pools, many endpoints
+  - it protects resources
   ![bulkhead.png](images/bulkhead.png)
 - Staged Event-Driven Architecture (SEDA)
-  - it makes resources faster
   - many thread pools, one endpoint
+  - it makes resources faster
   ![seda.png](images/seda.png)
 
 In those approaches, additional thread pools may be needed,
