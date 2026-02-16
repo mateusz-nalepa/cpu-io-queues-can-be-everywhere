@@ -92,7 +92,7 @@ Incorrect thread‑pool sizing may result in:
 - unnecessarily large thread pools for CPU‑bound workloads
 - performance issues that are difficult to diagnose
 
-### Behavior of `corePoolSize` and `maxPoolSize` it is unintuitive
+### Behavior of `corePoolSize` and `maxPoolSize` is unintuitive
 
 It minimizes number of threads used.
 
