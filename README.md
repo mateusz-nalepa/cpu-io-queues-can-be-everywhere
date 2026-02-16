@@ -47,7 +47,7 @@ What to do when queue wait time > 0?
   - request A -> Thread Pool A
   - request B -> Thread Pool B
 - Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
-  - many thread pools, one endpoint
+  - many thread pools, different stage of endpoint execution
   - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
   - maximize cpu, minimize queue wait time
 - Hybrid: Bulkhead + SEDA
@@ -324,7 +324,7 @@ There are two patterns (maybe there is some more?) that can be used to reduce re
   - it protects resources
   ![bulkhead.png](images/bulkhead.png)
 - Staged Event-Driven Architecture (SEDA)
-  - many thread pools, one endpoint
+  - many thread pools, different stage of endpoint execution
   - it makes resources faster
   ![seda.png](images/seda.png)
 
