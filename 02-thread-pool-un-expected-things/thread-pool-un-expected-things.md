@@ -114,7 +114,7 @@ It looks like, that:
 -> fifth thread will be created, when queue is full
 ```
 
-This behavior minimizes thread creation but is surprising.
+This behavior minimizes thread creation but is unintuitive.
 
 Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
