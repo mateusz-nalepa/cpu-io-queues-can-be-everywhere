@@ -84,8 +84,8 @@ and probably everything else is a `CPU-bound task`.
 When the traffic is low, then response times are flat, and everything is fine.
 But when the traffic grows, then response times are increasing, 
 and the system becomes slow.
-On metric, it looks like a sinusoidal wave, with peaks(e.q. day) 
-and valleys(e.q. night).
+On metric, it looks like a sinusoidal wave, with peaks(e.g. day) 
+and valleys(e.g. night).
 The more traffic, the higher peaks.
 And it may happen on a daily basis.
 One of the reason for that are `queues`. 

@@ -80,7 +80,7 @@ fun ioHttpClientCall(index: Int): ByteArray {
 }
 
 fun cpuJsonParsing(byteArray: ByteArray) {
-    // parse ByteArray to some Object, e.q. objectMapper.readValue(bytes, User::class.java)
+    // parse ByteArray to some Object, e.g. objectMapper.readValue(bytes, User::class.java)
     log("Start parsing data for ${byteArray.toString(Charsets.UTF_8)}")
     Thread.sleep(Duration.ofSeconds(5))
     log("End parsing data for ${byteArray.toString(Charsets.UTF_8)}")

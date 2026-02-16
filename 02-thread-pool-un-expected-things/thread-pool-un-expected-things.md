@@ -38,7 +38,7 @@ for more
 
 Processing thousand of elements at the same time may cause:
 - all customers will be waiting for the response which can cause `OutOfMemoryError`
-- none of them will be finished in case of e.q. `OutOfMemoryError`
+- none of them will be finished in case of e.g. `OutOfMemoryError`
 
 ### Blocking factor
 
@@ -66,7 +66,7 @@ This leads to the following guidelines:
   - tasks queue wait time should be here 0, as app should wait request as soon as possible and wait for the response
 
 - CPU pool -> Blocking Factor ≈ 0
-  - e.q. parsing JSON 
+  - e.g. parsing JSON 
   - tasks primarily use CPU, so the number of threads should be close to the number of CPU cores
   - tasks queue wait time can be here greater than 0, as maybe there is microburst which will disappear for a moment, or maybe creating a new instances is in progress
 
@@ -129,6 +129,9 @@ There can be a performance problem and knowing about default Thread Pool Behavio
 
 ### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
 
+When creating multiple executors with virtual thread factories,
+full isolation may by expected. However, it does not work like that.
+
 ```kotlin
 fun virtualThreadFactoryThreadsAreScheduledOnForkJoinPool() {
     val executor1 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("one").factory())
@@ -166,7 +169,7 @@ Of course, there are scenarios where virtual‑thread factories are intentionall
 
 ### Only first `subscribeOn` does matter
 
-In order to use another thread pool for Project Reactor, given operators can be used:
+In order to use another thread pool for [Project Reactor](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method), given operators can be used:
 - subscribeOn
 - publishOn
 
@@ -222,7 +225,7 @@ for more
 
 ##### Why this matter?
 
-Reactive code, like e.q. `WebClient from Spring` by default have configured `Thread Pool.` So using `subscribeOn` operator may have no effect.
+Reactive code, like e.g. `WebClient from Spring` by default have configured `Thread Pool.` So using `subscribeOn` operator may have no effect.
 
 ```kotlin
 val someScheduler = Schedulers.newBoundedElastic(10, 100, "some-scheduler")
