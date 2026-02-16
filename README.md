@@ -392,8 +392,6 @@ There are two different types of examples:
     - it makes resources faster
     - check [03-spring-examples/seda module](03-spring-examples/apps/seda/readme-seda.md)
 
-`Nalepa TODO`: Make sure one again, that data in module readme files are valid
-
 # Contributing
 
 Found this useful? Star the repo!
