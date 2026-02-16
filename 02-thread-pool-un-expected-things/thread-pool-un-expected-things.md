@@ -114,6 +114,8 @@ It looks like, that:
 -> fifth thread will be created, when queue is full
 ```
 
+This behavior minimizes thread creation but is surprising.
+
 Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
 - create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
