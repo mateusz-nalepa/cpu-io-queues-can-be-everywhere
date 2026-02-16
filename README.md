@@ -287,7 +287,14 @@ val monitoredThreadPoolExecutor =
         )
 ```
 
-Thanks to this code, the metric `executor.idle` will be available - yes, this is literally queue wait time. The name may be misleading, but the behavior is not.
+Thanks to this code, the metric `executor.idle` will be available - yes, 
+this is literally queue wait time. 
+The name may be misleading, but the behavior is not.
+
+If the value of this metric is higher than 0, it means tasks 
+are already waiting in the queue instead of 
+being executed immediately - in other words, customers are standing in line.
+
 
 *Check [Micrometer JVM Metrics for more metric](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
 related to thread pools.

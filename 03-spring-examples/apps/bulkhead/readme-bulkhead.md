@@ -31,8 +31,8 @@ ResponseEntity.ok((SomeResponse("slow")))
 ## Application examples
 - every one of them includes `how to run` and detailed threads diagram
 - [01-webmvc-classic-threads](01-webmvc-classic-threads/01-webmvc-classic-threads.md)
-- [02-webmvc-virtual-threads.md](02-webmvc-virtual-threads/02-webmvc-virtual-threads.md)
+- [02-webmvc-virtual-threads](02-webmvc-virtual-threads/02-webmvc-virtual-threads.md)
 - [03-webmvc-coroutines-classic-threads](03-webmvc-coroutines-classic-threads/03-webmvc-coroutines-classic-threads.md)
 - [04-webmvc-coroutines-virtual-threads](04-webmvc-coroutines-virtual-threads/04-webmvc-coroutines-virtual-threads.md)
-- [05-webflux-netty-server.](05-webflux-netty-server/05-webflux-netty-server.md)
+- [05-webflux-netty-server](05-webflux-netty-server/05-webflux-netty-server.md)
 
