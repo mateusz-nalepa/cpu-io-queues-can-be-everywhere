@@ -172,6 +172,13 @@ When all threads in thread pool are busy, then thread pool is saturated.
 In this repository, the term `queue wait time` 
 is used to describe the time of the saturation.
 
+## Note 6 - Backpressure & Queues Limits
+
+To keep examples minimal and focused on queue wait time metrics, 
+this repo doesn't cover Backpressure or Rejected Execution Policies. 
+In production, always remember that an unbounded queue is a `hidden`
+memory leak waiting to happen.
+
 # Thread, Thread Pools
 
 There is always some `Thread` - like a cashier at the checkout:
@@ -268,7 +275,7 @@ For any other library... it's probably the same 😄
 It's like all cashiers are busy/blocked, and customers are waiting in line.
 
 ![cpu-usage.png](images/cpu-usage.png)
-
+K
 # How to measure queue wait time
 
 In order to measure queue wait time (and more*) use `ExecutorServiceMetrics` 
@@ -321,7 +328,7 @@ for more metric related to thread pools.
 
 # Fastest way to reduce queue wait
 
-Just add more threads:
+Just add more threads, unless there are only CPU‑bound tasks:
 
 - really, absolutely simplest
   - does every app truly need to be ultra‑fast and hyper‑optimized?
