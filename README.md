@@ -277,7 +277,7 @@ For any other library... it's probably the same 😄
 It's like all cashiers are busy/blocked, and customers are waiting in line.
 
 ![cpu-usage.png](images/cpu-usage.png)
-K
+
 # How to measure queue wait time
 
 In order to measure queue wait time (and more*) use `ExecutorServiceMetrics` 
