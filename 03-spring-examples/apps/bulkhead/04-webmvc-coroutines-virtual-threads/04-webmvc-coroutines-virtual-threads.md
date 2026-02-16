@@ -8,7 +8,8 @@
 
 #### HighLevel Overview
 
-![tomcat_different_endpoints_virtual_threads.png](images/tomcat_different_endpoints_virtual_threads.png)
+![tomcat_different_endpoints_virtual_threads.png](../../../../images/tomcat_different_endpoints_virtual_threads.png)
+
 
 <details>
   <summary>Click to learn How To Run</summary>

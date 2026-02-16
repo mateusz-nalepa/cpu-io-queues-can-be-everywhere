@@ -8,7 +8,7 @@
 
 #### HighLevel Overview
 
-![tomcat_different_endpoints_200_classic_threads.png](images/tomcat_different_endpoints_200_classic_threads.png)
+![tomcat_different_endpoints_200_classic_threads.png](../../../../images/tomcat_different_endpoints_200_classic_threads.png)
 
 <details>
   <summary>Click to learn How To Run</summary>
