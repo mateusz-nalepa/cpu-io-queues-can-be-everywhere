@@ -271,7 +271,9 @@ It's like all cashiers are busy/blocked, and customers are waiting in line.
 
 # How to measure queue wait time
 
-In order to measure queue wait time (and more*) use:
+In order to measure queue wait time (and more*) use `ExecutorServiceMetrics` 
+from [Micrometer](https://docs.micrometer.io/micrometer/reference/reference/jvm.html):
+
 ```kotlin
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
 
@@ -288,16 +290,34 @@ val monitoredThreadPoolExecutor =
 ```
 
 Thanks to this code, the metric `executor.idle` will be available - yes, 
-this is literally queue wait time. 
-The name may be misleading, but the behavior is not.
+this is literally queue wait time.
 
 If the value of this metric is higher than 0, it means tasks 
 are already waiting in the queue instead of 
 being executed immediately - in other words, customers are standing in line.
 
+Under the hood code is wrapping `Runnable` in `MonitoredRunnable` and then it is executed.
+This is a simplified illustration - Micrometer uses the same idea:
 
-*Check [Micrometer JVM Metrics for more metric](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
-related to thread pools.
+```kotlin
+class MonitoredRunnable(
+  private val delegate: Runnable,
+) : Runnable {
+
+  val runnableInstanceCreatedAt = System.nanoTime()
+
+  override fun run() {
+    log("Queue wait time took: ${System.nanoTime() - runnableInstanceCreatedAt} ns")
+
+    val startExecution = System.nanoTime()
+    delegate.run()
+    log("Task execution took: ${System.nanoTime() - startExecution} ns")
+  }
+}
+```
+
+Check [Micrometer JVM Metrics](https://docs.micrometer.io/micrometer/reference/reference/jvm.html)
+for more metric related to thread pools.
 
 # Fastest way to reduce queue wait
 
