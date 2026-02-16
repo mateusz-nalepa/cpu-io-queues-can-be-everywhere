@@ -16,7 +16,7 @@ and additional thread pools only make things worse.
 - [TL;DR](#tldr)
 - [Short introduction](#short-introduction)
 - [How to use this repo](#how-to-use-this-repo)
-- [Notes](#notes)
+- [Prerequisites & Scope](#prerequisites--scope)
 - [Thread, Thread Pools](#thread-thread-pools)
 - [When queue wait time happens](#when-queue-wait-time-happens)
 - [How to measure queue wait time](#how-to-measure-queue-wait-time)
@@ -140,39 +140,41 @@ Steps for this repo:
 - jump to [thread-pool-un-expected-things module](02-thread-pool-un-expected-things) and learn about some (un)expected things
 - jump to [spring-examples module](03-spring-examples) and run examples & see results in Grafana
 
-# Notes
+# Prerequisites & Scope
 
-## Note 1 - Language / framework
+### Language / framework
 
 Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
 Whether Go, Rust, Java, or any other language is used,
 the hardware limits and queuing effects are probably the same :D
 
-## Note 2 - Metrics
+### Metrics
 
 Different libraries and frameworks handle thread pools in their own ways.  
-Because of that, some of them may not expose fully accurate metrics out of the box.  
+Because of that, some of them may not expose fully accurate metrics 
+related to queue wait time out of the box.
+Usually only `queue size is present.`
 In some cases, the metrics may also behave differently than expected.
 Simply because the library may not be fully aware of the underlying threads and queues.
 
-## Note 3 - Other pools
+### Other pools
 
 Queue wait time can happen also, when there is a `Connection Pool` or any `other Pool`.
 Rules are exactly the same. But it's out of scope for this repo.
 In this repo there is only `Thread Pool`.
 
-## Note 4 - Thread returning response from server
+### Thread returning response from server
 
 The response from an endpoint is always returned on a server thread.
 But it's intentionally omitted in diagrams, to make them easier to read.
 
-## Note 5 - Thread pool saturation
+### Thread pool saturation
 
 When all threads in thread pool are busy, then thread pool is saturated.
 In this repository, the term `queue wait time` 
 is used to describe the time of the saturation.
 
-## Note 6 - Backpressure & Queues Limits
+### Backpressure & Queues Limits
 
 To keep examples minimal and focused on queue wait time metrics, 
 this repo doesn't cover Backpressure or Rejected Execution Policies. 
@@ -394,4 +396,9 @@ There are two different types of examples:
 
 # Contributing
 
-If you spot an error, feel free to open an issue or fork the repo and submit a Pull Request with a fix.
+Found this useful? Star the repo!
+
+If you spot an error, feel free to open an issue or fork the repo and submit a
+Pull Request with a fix.
+
+Got examples from production? Please share them!

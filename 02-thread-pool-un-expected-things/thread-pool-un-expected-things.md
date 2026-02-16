@@ -14,7 +14,7 @@ At the end of every section, there is info `why this matter`
 ### Adding more threads for CPU‑bound tasks may make things worse
 
 When all threads are busy doing CPU‑bound work, then adding more threads may make things worse.
-Off course CPU can execute many tasks in parallel, but they will be slower.
+Of course CPU can execute many tasks in parallel, but they will be slower.
 
 From the other hand, adding more threads for `blocking tasks` may be a good idea,
 when queue wait time is high. It happens because, well, CPU usage for them is near 0%.
