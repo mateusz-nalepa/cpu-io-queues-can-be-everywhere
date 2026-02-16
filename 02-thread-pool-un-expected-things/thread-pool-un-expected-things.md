@@ -70,6 +70,19 @@ This leads to the following guidelines:
   - tasks primarily use CPU, so the number of threads should be close to the number of CPU cores
   - tasks queue wait time can be here greater than 0, as maybe there is microburst which will disappear for a moment, or maybe creating a new instances is in progress
 
+But hey, not every app needs to be hyper‑optimized. 
+For example, Tomcat default 200 request threads probably works surprisingly well 
+`as long as the workload is mostly I/O‑bound`. 
+
+Most servlet‑based applications spend the majority of time waiting for: 
+- database responses
+- external services
+- network I/O
+
+With a blocking factor close to 1, having many threads is perfectly reasonable and easy to maintain. 
+
+However, if request processing becomes CPU‑heavy, those 200 threads can suddenly turn into 200 competing CPU tasks, causing contention, GC pressure, and a drop in throughput.
+
 ##### Why this matter?
 
 Incorrect thread‑pool sizing may result in:
