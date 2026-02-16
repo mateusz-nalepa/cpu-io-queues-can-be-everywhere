@@ -2,6 +2,15 @@
 
 At the end of every section, there is info `why this matter`
 
+## Table of Contents
+
+- [Adding more threads for CPU‑bound tasks may make things worse](#adding-more-threads-for-cpubound-tasks-may-make-things-worse)
+- [Blocking factor](#blocking-factor)
+- [Behavior of corePoolSize and maxPoolSize is unintuitive](#behavior-of-corepoolsize-and-maxpoolsize-it-is-unintuitive)
+- [Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool](#threads-created-with-threadofvirtualfactory-are-scheduled-on-forkjoinpool)
+- [Only first subscribeOn does matter](#only-first-subscribeon-does-matter)
+
+
 ### Adding more threads for CPU‑bound tasks may make things worse
 
 When all threads are busy doing CPU‑bound work, then adding more threads may make things worse.
