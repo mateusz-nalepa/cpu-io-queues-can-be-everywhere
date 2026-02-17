@@ -300,7 +300,7 @@ For any other library... it's probably the same 😄
 - blocked 
   - e.q: waiting for response from http-client
   - low cpu utilization
-  - thousands of `blocking tasks`? probably we can live with that
+  - thousands of `blocking tasks`? probably not so bad at all
 
 It's like all cashiers are busy/blocked, and customers are waiting in line.
 
