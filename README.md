@@ -294,11 +294,11 @@ For any other library... it's probably the same 😄
 
 `Queue wait time` may occur when all threads in thread pool are:
 - busy 
-  - e.q: JSON serialization/deserialization 
+  - e.g.: JSON serialization/deserialization 
   - high cpu utilization
   - thousands of `cpu bound tasks`? probably bad
 - blocked 
-  - e.q: waiting for response from http-client
+  - e.g.: waiting for response from http-client
   - low cpu utilization
   - thousands of `blocking tasks`? probably not so bad at all
 
