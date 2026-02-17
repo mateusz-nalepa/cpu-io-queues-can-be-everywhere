@@ -33,6 +33,10 @@ for the latest few days,
 then probably queues are present
 in given service or it's dependencies.
 
+> Please remember, that during night there might be no traffic at all. 
+> From the other hand, there might be "day all the time", 
+> if service is being used globally.
+
 Interested in details? 
 How to monitor queues and how to fix them?
 Please keep reading!
