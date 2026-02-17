@@ -1,23 +1,29 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-An educational repository demonstrating how thread‑pool tasks queue wait time appears across different types of tasks and
-how easily it hides in plain sight. It contains also some examples of how to reduce response times when queue wait time is high.
-Some un-expected things about thread pools are also included.
+An educational repository demonstrating 
+how thread‑pool tasks queue wait time appears 
+across different types of tasks and
+how easily it hides in plain sight. 
+It contains pure Kotlin examples,
+some un-expected things about thread pool
+and Spring Boot examples with defaults and some solutions 
+of how to monitor, get rid of queues and make response times faster.
 
 Sometimes adding a new thread pool can make a system `several times faster`,
 especially when high queue wait time is the dominant bottleneck.
 
 In other cases it may have the opposite effect,
-for example when all threads become busy with CPU‑bound work
-and additional thread pools only make things worse.
+for example when all threads are busy with CPU‑bound work
+then adding additional threads can make things only worse.
 
 # Quick check for queues
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
 
-On image below, there is an estimated time-travel from Wrocław to Kraków 
-(cities in Poland). It's faster during night, slower during day.
+The image below shows an estimated travel time
+from Wrocław to Kraków (cities in Poland).
+It's faster during night, slower during day.
 
 ![quick_check_traffic_jam.png](images/quick_check_traffic_jam.png)
 
