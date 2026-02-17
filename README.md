@@ -11,6 +11,26 @@ In other cases it may have the opposite effect,
 for example when all threads become busy with CPU‑bound work
 and additional thread pools only make things worse.
 
+# Quick check for queues
+
+Queues can be present on a daily basis, and they can be hidden in plain sight.
+It's like traffic jam in the city - it can be there every day.
+
+On image below, there is an estimated time-travel from Wrocław to Kraków 
+(cities in Poland). It's faster during night, slower during day.
+
+![quick_check_traffic_jam.png](images/quick_check_traffic_jam.png)
+
+It's the same for the service.
+If there are peaks and valleys in response times
+for the latest few days,
+then probably queues are present
+in given service or it's dependencies.
+
+Interested in details? 
+How to monitor queues and how to fix them?
+Please keep reading!
+
 # Table of Contents
 
 - [TL;DR](#tldr)
@@ -26,8 +46,6 @@ and additional thread pools only make things worse.
 - [Thread Pool (Un)Expected Things](#thread-pool-unexpected-things)
 - [Spring Boot Examples](#spring-boot-examples)
 - [Contributing](#contributing)
-
-
 
 # TL;DR
 
@@ -231,7 +249,7 @@ Default Thread Pool Sizes:
 
 
 - Spring Boot WebMVC + Tomcat (Virtual Threads)  
-  Default thread pool size: equal to the number of CPU cores
+  Default platform(carrier) thread pool size: equal to the number of CPU cores
 
 
 - Spring Boot WebFlux + Netty  
