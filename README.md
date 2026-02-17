@@ -38,7 +38,7 @@ in given service or it's dependencies.
 > if service is being used globally.
 
 Interested in details? 
-How to monitor queues and how to fix them?
+How to monitor thread pool queues and how to fix them?
 Please keep reading!
 
 # Table of Contents
