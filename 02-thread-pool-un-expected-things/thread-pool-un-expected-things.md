@@ -6,9 +6,9 @@ At the end of every section, there is info `why this matter`
 
 - [Adding more threads for CPU‑bound tasks may make things worse](#adding-more-threads-for-cpubound-tasks-may-make-things-worse)
 - [Blocking factor](#blocking-factor)
-- [Behavior of corePoolSize and maxPoolSize is unintuitive](#behavior-of-corepoolsize-and-maxpoolsize-it-is-unintuitive)
 - [Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool](#threads-created-with-threadofvirtualfactory-are-scheduled-on-forkjoinpool)
 - [Only first subscribeOn does matter](#only-first-subscribeon-does-matter)
+- [Behavior of corePoolSize and maxPoolSize is unintuitive](#behavior-of-corepoolsize-and-maxpoolsize-is-unintuitive)
 
 
 ### Adding more threads for CPU‑bound tasks may make things worse
@@ -23,7 +23,7 @@ There is a code, which is intentionally doing CPU‑bound work, and given number
 When more threads are added, then the total number of iterations per thread is slower
 
 `Note`: This code was executed on notebook with 8 cores.
-```kotlin
+```java
 Number of iterations per thread number: 8: 	 3 018 674
 Number of iterations per thread number: 16: 	 1 603 543
 Number of iterations per thread number: 32: 	 855 639
@@ -31,7 +31,7 @@ Number of iterations per thread number: 128: 	 240 104
 ```
 
 Check
-[ThreadsPerformance](src/main/kotlin/com/nalepa/demo/example01/ThreadsPerformance.kt)
+[ThreadsPerformance](src/main/java/com/nalepa/demo/example01/ThreadsPerformance.java)
 for more
 
 ##### Why this matter?
@@ -92,6 +92,125 @@ Incorrect thread‑pool sizing may result in:
 - unnecessarily large thread pools for CPU‑bound workloads
 - performance issues that are difficult to diagnose
 
+### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
+
+When creating multiple executors with virtual thread factories,
+full isolation may by expected. However, it does not work like that.
+
+```java
+static void virtualThreadFactoryThreadsAreScheduledOnForkJoinPool() throws Exception {
+    var executor1 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("one").factory());
+    var executor2 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("two").factory());
+    var executor3 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("three").factory());
+
+    // CurrentThread: VirtualThread[#37,one]/runnable@ForkJoinPool-1-worker-1
+    Future<?> future1 = executor1.submit(() -> System.out.println("CurrentThread: " + Thread.currentThread()));
+
+    // CurrentThread: VirtualThread[#39,two]/runnable@ForkJoinPool-1-worker-2
+    Future<?> future2 = executor2.submit(() -> System.out.println("CurrentThread: " + Thread.currentThread()));
+  
+    // CurrentThread: VirtualThread[#41,three]/runnable@ForkJoinPool-1-worker-3
+    Future<?> future3 = executor3.submit(() -> System.out.println("CurrentThread: " + Thread.currentThread()));
+    
+    future1.get();
+    future2.get();
+    future3.get();
+}
+```
+
+Check
+[ThreadOfVirtualFactory](src/main/java/com/nalepa/demo/example02/ThreadOfVirtualFactory.java)
+for more
+
+##### Why this matter?
+
+Multiple executors created with virtual‑thread factories still share the same underlying thread pool, which can lead to incorrect assumptions about isolation. Using:
+```java
+var executor = Executors.newVirtualThreadPerTaskExecutor();
+```
+keeps the model simple and avoids unnecessary complexity.
+
+Of course, there are scenarios where virtual‑thread factories are intentionally preferred.
+
+### Only first `subscribeOn` does matter
+
+In order to use another thread pool for [Project Reactor](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method), given operators can be used:
+- subscribeOn
+- publishOn
+
+But it turns out, that only the first `subscribeOn` does matter.
+
+Check [Project Reactor - subscribeOn method documentation](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method)
+
+```java
+static void anotherSubscribeOnHasNoEffect() {
+    Scheduler firstScheduler = Schedulers.newParallel("first-Scheduler");
+    Scheduler secondScheduler = Schedulers.newParallel("second-Scheduler");
+
+    Mono.just("value")
+        .subscribeOn(firstScheduler)
+        // Thread[#26,first-Scheduler-2,5,main] : first-Value   
+        .doOnNext(v -> System.out.println(Thread.currentThread() + " : first-Value"))
+        .subscribeOn(secondScheduler)
+
+         // Thread[#26,first-Scheduler-2,5,main] : second-Value  
+        .doOnNext(v -> System.out.println(Thread.currentThread() + " : second-Value"))
+        .block();
+
+    firstScheduler.dispose();
+    secondScheduler.dispose();
+}
+```
+
+If there's a need to switch code execution to another thread, then `publishOn` can be used:
+
+```java
+static void subscribeOnThenPublishOn() {
+    Scheduler firstScheduler = Schedulers.newParallel("first-Scheduler");
+    Scheduler secondScheduler = Schedulers.newParallel("second-Scheduler");
+
+    Mono.just("value")
+        .subscribeOn(firstScheduler)
+        // Thread[#25,first-Scheduler-1,5,main] : first-Value
+        .doOnNext(v -> System.out.println(Thread.currentThread() + " : first-Value"))
+        
+        .publishOn(secondScheduler)
+        // Thread[#26,second-Scheduler-2,5,main] : second-Value
+        .doOnNext(v -> System.out.println(Thread.currentThread() + " : second-Value"))
+        .block();
+
+    firstScheduler.dispose();
+    secondScheduler.dispose();
+}
+```
+
+Check
+[ReactorSubscribeOnPublishOn.java](src/main/java/com/nalepa/demo/example03/ReactorSubscribeOnPublishOn.java)
+for more
+
+##### Why this matter?
+
+Reactive code, like e.g. `WebClient from Spring` by default have configured `Thread Pool.` So using `subscribeOn` operator may have no effect.
+
+```java
+private final Scheduler someScheduler =
+        Schedulers.newParallel("some-scheduler");
+
+private Mono<byte[]> getDummyData() {
+    return webClient
+            .get()
+            .uri("http://some-service/some-endpoint")
+            .retrieve()
+            .bodyToMono(byte[].class)
+            
+            // this may have no effect :D
+            // check which thread will be next to "some-message"
+            // maybe publishOn operator should be used
+            .subscribeOn(someScheduler)
+            .doOnNext(bytes -> System.out.println(Thread.currentThread() + " : some message"));
+}
+```
+
 ### Behavior of `corePoolSize` and `maxPoolSize` is unintuitive
 
 It minimizes number of threads used.
@@ -122,127 +241,9 @@ Solutions?
     - Tomcat thread pool works like that
 
 Check
-[ThreadPoolCoreSizeMaxSize.kt](src/main/kotlin/com/nalepa/demo/example04/ThreadPoolCoreSizeMaxSize.kt)
+[ThreadPoolCoreSizeMaxSize](src/main/java/com/nalepa/demo/example04/ThreadPoolCoreSizeMaxSize.java)
 for more
 
 ##### Why this matter?
 
 There can be a performance problem and knowing about default Thread Pool Behavior can save a lot of hours
-
-### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
-
-When creating multiple executors with virtual thread factories,
-full isolation may by expected. However, it does not work like that.
-
-```kotlin
-fun virtualThreadFactoryThreadsAreScheduledOnForkJoinPool() {
-    val executor1 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("one").factory())
-    val executor2 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("two").factory())
-    val executor3 = Executors.newFixedThreadPool(1, Thread.ofVirtual().name("three").factory())
-
-    // CurrentThread: VirtualThread[#37,one]/runnable@ForkJoinPool-1-worker-1
-    val future1 = executor1.submit { println("CurrentThread: " + Thread.currentThread()) }
-
-    // CurrentThread: VirtualThread[#39,two]/runnable@ForkJoinPool-1-worker-2
-    val future2 = executor2.submit { println("CurrentThread: " + Thread.currentThread()) }
-
-    // CurrentThread: VirtualThread[#41,three]/runnable@ForkJoinPool-1-worker-3
-    val future3 = executor3.submit { println("CurrentThread: " + Thread.currentThread()) }
-
-    future1.get()
-    future2.get()
-    future3.get()
-}
-```
-
-Check
-[ThreadOfVirtualFactory](src/main/kotlin/com/nalepa/demo/example02/ThreadOfVirtualFactory.kt)
-for more
-
-##### Why this matter?
-
-Multiple executors created with virtual‑thread factories still share the same underlying thread pool, which can lead to incorrect assumptions about isolation. Using:
-```kotlin
-val executor = Executors.newVirtualThreadPerTaskExecutor()
-```
-keeps the model simple and avoids unnecessary complexity.
-
-Of course, there are scenarios where virtual‑thread factories are intentionally preferred.
-
-### Only first `subscribeOn` does matter
-
-In order to use another thread pool for [Project Reactor](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method), given operators can be used:
-- subscribeOn
-- publishOn
-
-But it turns out, that only the first `subscribeOn` does matter.
-
-Check [Project Reactor - subscribeOn method documentation](https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html#the-subscribeon-method)
-
-```kotlin
-fun anotherSubscribeOnHasNoEffect() {
-    val firstScheduler = Schedulers.newParallel("first-Scheduler")
-    val secondScheduler = Schedulers.newParallel("second-Scheduler")
-  
-    Mono.just("value")
-        // Thread[#26,first-Scheduler-2,5,main] : first-Value     
-        .subscribeOn(firstScheduler)
-        .doOnNext { println("${Thread.currentThread()} : first-Value") }
-
-        // Thread[#26,first-Scheduler-2,5,main] : second-Value    
-        .subscribeOn(secondScheduler)
-        .doOnNext { println("${Thread.currentThread()} : second-Value") }
-        .block()
-  
-    firstScheduler.dispose()
-    secondScheduler.dispose()
-}
-```
-
-If there's a need to switch code execution to another thread, then `publishOn` can be used:
-
-```kotlin
-fun subscribeOnThenPublishOn() {
-    val firstScheduler = Schedulers.newParallel("first-Scheduler")
-    val secondScheduler = Schedulers.newParallel("second-Scheduler")
-
-    Mono.just("value")
-        // Thread[#25,first-Scheduler-1,5,main] : first-Value
-        .subscribeOn(firstScheduler)
-        .doOnNext { println("${Thread.currentThread()} : first-Value") }
-
-        // Thread[#26,second-Scheduler-2,5,main] : second-Value
-        .publishOn(secondScheduler)
-        .doOnNext { println("${Thread.currentThread()} : second-Value") }
-        .block()
-
-    firstScheduler.dispose()
-    secondScheduler.dispose()
-}
-```
-
-Check
-[ReactorSubscribeOnPublishOn](src/main/kotlin/com/nalepa/demo/example03/ReactorSubscribeOnPublishOn.kt)
-for more
-
-##### Why this matter?
-
-Reactive code, like e.g. `WebClient from Spring` by default have configured `Thread Pool.` So using `subscribeOn` operator may have no effect.
-
-```kotlin
-val someScheduler = Schedulers.newBoundedElastic(10, 100, "some-scheduler")
-
-private fun getDummyData(index: String, mockDelaySeconds: Long): Mono<ByteArray> {
-    return webClient
-        .get()
-        .uri("http://some-service/some-endpoint")
-        .retrieve()
-        .bodyToMono(ByteArray::class.java)
-        
-        // this may have no effect :D 
-        // check which thread will be next to "some-message"
-        // maybe publishOn operator should be used
-        .subscribeOn(someScheduler) 
-        .doOnNext { println("${Thread.currentThread()} : some message") }
-}
-```
