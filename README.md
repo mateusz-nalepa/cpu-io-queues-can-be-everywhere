@@ -419,6 +419,9 @@ as well as a detailed threads diagram.
 
 There are two different types of examples:
 
+> Nalepa TODO: Check once again that modules are working
+> after migrating them from Kotlin to Java ( except of Kotlin Coroutines of course)
+
 - applications with `fast` and `slow` endpoints
     - bulkhead pattern is used
     - it protects resources
