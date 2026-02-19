@@ -4,7 +4,7 @@ An educational repository demonstrating
 how thread‑pool tasks queue wait time appears 
 across different types of tasks and
 how easily it hides in plain sight. 
-It contains pure Kotlin examples,
+It contains pure Java (and Kotlin Coroutines when needed) examples,
 some un-expected things about thread pool
 and Spring Boot examples with defaults and some solutions 
 of how to monitor, get rid of queues and make response times faster.
@@ -91,7 +91,7 @@ And what if queue size is almost 0?
 - maybe some other things? 🤔
 
 There are 3 main modules in this repo:
-- [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Kotlin examples
+- [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
 - [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
 - [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
 
@@ -172,7 +172,8 @@ Steps for this repo:
 
 ### Language / framework
 
-Examples are written in Kotlin, but the rules of queuing and resource isolation are universal.
+Examples are written in Java (and Kotlin Coroutines when needed), 
+but the rules of queuing and resource isolation are universal.
 Whether Go, Rust, Java, or any other language is used,
 the hardware limits and queuing effects are probably the same :D
 
@@ -213,27 +214,31 @@ memory leak waiting to happen.
 
 There is always some `Thread` - like a cashier at the checkout:
 
-```kotlin
-fun main() {
-    Thread.ofPlatform()
-        .name("some-thread")
-        .start {
-            println("${Thread.currentThread()} : Hello world!")
-        }
-        .join()
+```java
+public class Main {
+    public static void main(String[] args) throws InterruptedException {
+        Thread.ofPlatform()
+                .name("some-thread")
+                .start(() -> System.out.println(Thread.currentThread() + " : Hello world!"))
+                .join();
+    }
 }
 ```
 
 Or a `Thread Pool`, like many cashiers working in parallel:
 
-```kotlin
-fun main() {
-    val threadPoolExecutor = ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+```java
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
     threadPoolExecutor
-        .submit {
-            println("${Thread.currentThread()} : Hello world!")
-        }
-        .get()
+            .submit(() -> System.out.println(Thread.currentThread() + " : Hello world!"))
+            .get();
+  }
 }
 ```
 
@@ -246,9 +251,9 @@ What, if customers are waiting in a line?
 When dealing with threads, it's `ABSOLUTELY GOOD IDEA` to check which thread executes code.
 Given code is simple enough to check this :D
 
-```kotlin
-println("Current thread: ${Thread.currentThread()}")
-println("Current thread isVirtual: ${Thread.currentThread().isVirtual}")
+```java
+System.out.println("Current thread: " + Thread.currentThread());
+System.out.println("Current thread isVirtual: " + Thread.currentThread().isVirtual());
 ```
 
 #### Some default thread pools sizes
@@ -271,13 +276,13 @@ Under the hood: just threads.
 
 Project Reactor:
 
-```kotlin
-private val scheduler =
-    Schedulers.fromExecutor(
-        ThreadPoolExecutor(
-            1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10)
-        )
-    )
+```java
+private final Scheduler scheduler =
+        Schedulers.fromExecutor(
+                new ThreadPoolExecutor(
+                        1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10)
+                )
+        );
 ```
 
 Kotlin Coroutines:
@@ -311,19 +316,19 @@ It's like all cashiers are busy/blocked, and customers are waiting in line.
 In order to measure queue wait time (and more*) use `ExecutorServiceMetrics` 
 from [Micrometer](https://docs.micrometer.io/micrometer/reference/reference/jvm.html):
 
-```kotlin
-import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics
+```java
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
 
-val threadPoolExecutor = 
-    ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+ThreadPoolExecutor threadPoolExecutor =
+    new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
 
-val monitoredThreadPoolExecutor = 
+ExecutorService monitoredThreadPoolExecutor =
     ExecutorServiceMetrics
         .monitor(
             meterRegistry,
             threadPoolExecutor,
-            threadPoolName,
-        )
+            threadPoolName
+        );
 ```
 
 Thanks to this code, the metric `executor.idle` will be available - yes, 
@@ -336,19 +341,23 @@ being executed immediately - in other words, customers are standing in line.
 Under the hood code is wrapping `Runnable` in `MonitoredRunnable` and then it is executed.
 This is a simplified illustration - Micrometer uses the same idea:
 
-```kotlin
-class MonitoredRunnable(
-  private val delegate: Runnable,
-) : Runnable {
+```java
+public class MonitoredRunnable implements Runnable {
 
-  val runnableInstanceCreatedAt = System.nanoTime()
+  private final Runnable delegate;
+  private final long runnableInstanceCreatedAt = System.nanoTime();
 
-  override fun run() {
-    log("Queue wait time took: ${System.nanoTime() - runnableInstanceCreatedAt} ns")
+  public MonitoredRunnable(Runnable delegate) {
+    this.delegate = delegate;
+  }
 
-    val startExecution = System.nanoTime()
-    delegate.run()
-    log("Task execution took: ${System.nanoTime() - startExecution} ns")
+  @Override
+  public void run() {
+    System.out.println(Thread.currentThread() + " : Queue wait time took: " + (System.nanoTime() - runnableInstanceCreatedAt) + " ns");
+
+    long startExecution = System.nanoTime();
+    delegate.run();
+    System.out.println(Thread.currentThread() + " : Task execution took: " + (System.nanoTime() - startExecution) + " ns");
   }
 }
 ```
@@ -391,8 +400,8 @@ when it is not excessive.
 
 # Presentation / Blog examples
 
-The module [01-presentation-blog-examples](01-presentation-blog-examples/src/main/kotlin/com/nalepa/demo)
-contains pure Kotlin, zero frameworks, zero magic.
+The module [01-presentation-blog-examples](01-presentation-blog-examples/src/main/java/com/nalepa/demo)
+contains pure Java, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
 Simple files with a `main()` method that can be executed after cloning this repository.
 
