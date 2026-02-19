@@ -14,10 +14,13 @@ public class Example13_With_SEDA {
         AtomicInteger counterOfCPUTasks = new AtomicInteger(2); // used to wait for all CPU tasks to finish before ending the example
         long exampleStart = System.nanoTime();
 
-
         long startTimeForIndex1 = System.nanoTime();
+
+        // add task to queueForIo
         queueForIo.add(new MonitoredRunnable(1, () -> {
             byte[] byteArrayFromClient = ioHttpClientCall(1);
+
+            // add task to queueForCPU
             queueForCPU.add(new MonitoredRunnable(1, () -> {
                 cpuJsonParsing(byteArrayFromClient);
                 log("######## Data ready for index 1. It took: " +
@@ -26,8 +29,12 @@ public class Example13_With_SEDA {
         }));
 
         long startTimeForIndex2 = System.nanoTime();
+
+        // add task to queueForIo
         queueForIo.add(new MonitoredRunnable(2, () -> {
             byte[] byteArrayFromClient = ioHttpClientCall(2);
+
+            // add task to queueForCPU after data are ready from ioHttpClientCall
             queueForCPU.add(new MonitoredRunnable(2, () -> {
                 cpuJsonParsing(byteArrayFromClient);
                 log("######## Data ready for index 2. It took: " +
@@ -70,7 +77,7 @@ public class Example13_With_SEDA {
     static byte[] ioHttpClientCall(int index) {
         log("Start getting data for index: " + index);
         try {
-            Thread.sleep(Duration.ofSeconds(3).toMillis());
+            Thread.sleep(Duration.ofSeconds(4).toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -81,7 +88,7 @@ public class Example13_With_SEDA {
     static void cpuJsonParsing(byte[] byteArray) {
         log("Start parsing data for " + new String(byteArray));
         try {
-            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            Thread.sleep(Duration.ofSeconds(4).toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

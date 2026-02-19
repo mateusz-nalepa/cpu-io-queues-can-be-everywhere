@@ -46,7 +46,7 @@ public class example12_Without_SEDA {
     static byte[] ioHttpClientCall(int index) {
         log("Start getting data for index: " + index);
         try {
-            Thread.sleep(Duration.ofSeconds(3).toMillis());
+            Thread.sleep(Duration.ofSeconds(4).toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -57,7 +57,7 @@ public class example12_Without_SEDA {
     static void cpuJsonParsing(byte[] byteArray) {
         log("Start parsing data for " + new String(byteArray));
         try {
-            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            Thread.sleep(Duration.ofSeconds(4).toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
