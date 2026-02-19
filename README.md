@@ -434,7 +434,7 @@ In this repo two patterns are explored
 that can be used to reduce response times,
 when queue wait time is high:
 
-> In examples there is a simplification, 
+> In graphical examples there is a simplification, 
 > that there is only one thread in a thread pool.
 
 - bulkhead pattern

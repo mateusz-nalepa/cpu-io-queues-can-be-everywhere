@@ -8,6 +8,9 @@ It improves asynchronous processing performance by using a dedicated thread pool
 
 It's similar to a factory assembly line.
 
+> In graphical examples there is a simplification,
+> that there is only one thread in a thread pool.
+
 ![seda.png](../../../images/seda.png)
 
 When threads are busy or blocked, the application may behave as follows:
