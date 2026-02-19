@@ -21,7 +21,7 @@ In other cases it may have the opposite effect,
 for example when all threads are busy with CPU‑bound work
 then adding additional threads can make things only worse.
 
-# TL;DR for Queues
+# TL;DR for Queues - 2 minutes
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.

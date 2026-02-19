@@ -48,7 +48,7 @@ public class VirtualWebControllerWithDedicatedCpuPool {
     }
 
     private void executeHeavyCpuOperation(long cpuOperationDelaySeconds) {
-        AsyncUtils.safeGetOnVirtual(
+        AsyncUtils.nonBlockingGet(
                 executor.submit(() -> Operations.heavyCpuCode(cpuOperationDelaySeconds))
         );
     }

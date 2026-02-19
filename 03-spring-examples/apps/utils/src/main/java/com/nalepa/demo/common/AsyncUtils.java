@@ -10,9 +10,9 @@ public final class AsyncUtils {
 
     private AsyncUtils() {}
 
-    public static <T> T safeGetOnVirtual(Future<T> future) {
+    public static <T> T nonBlockingGet(Future<T> future) {
         if (!Thread.currentThread().isVirtual()) {
-            throw new RuntimeException("safeGetOnVirtual called from carrier thread");
+            throw new RuntimeException("nonBlockingGet called from carrier thread");
         }
 
         // carrier-thread returns to Loom pool, so this `get()` from perspective of virtual thread is non-blocking

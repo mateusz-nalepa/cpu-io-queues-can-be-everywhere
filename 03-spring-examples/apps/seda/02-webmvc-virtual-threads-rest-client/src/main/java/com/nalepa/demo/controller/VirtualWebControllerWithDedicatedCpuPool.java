@@ -53,7 +53,7 @@ public class VirtualWebControllerWithDedicatedCpuPool {
     }
 
     private SomeResponse executeHeavyCpuOperation(byte[] byteArray, long cpuOperationDelaySeconds) {
-        return AsyncUtils.safeGetOnVirtual(
+        return AsyncUtils.nonBlockingGet(
                 cpuExecutor.submit(() -> {
                     try {
                         SomeResponse someResponse = objectMapper.readValue(byteArray, SomeResponse.class);
