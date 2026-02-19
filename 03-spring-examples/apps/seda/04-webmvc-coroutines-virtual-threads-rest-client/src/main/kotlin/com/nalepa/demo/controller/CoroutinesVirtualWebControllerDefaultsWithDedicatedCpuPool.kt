@@ -1,6 +1,6 @@
 package com.nalepa.demo.controller
 
-import com.nalepa.demo.common.DUMMY_INDEX
+import com.nalepa.demo.common.Constants.DUMMY_INDEX
 import com.nalepa.demo.common.DummyLogger
 import com.nalepa.demo.common.Operations
 import com.nalepa.demo.common.SomeResponse
@@ -28,8 +28,8 @@ class CoroutinesVirtualWebControllerDefaultsWithDedicatedCpuPool(
         executorsFactory.create(
             "CPU Bound pool waiting time took:",
             "CPU.dispatcher",
-            threadsSize = Runtime.getRuntime().availableProcessors(),
-            taskQueueSize = Runtime.getRuntime().availableProcessors(),
+            Runtime.getRuntime().availableProcessors(), // threadsSize
+            Runtime.getRuntime().availableProcessors(), // taskQueueSize
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/{index}/{mockDelaySeconds}/{cpuOperationDelaySeconds}")

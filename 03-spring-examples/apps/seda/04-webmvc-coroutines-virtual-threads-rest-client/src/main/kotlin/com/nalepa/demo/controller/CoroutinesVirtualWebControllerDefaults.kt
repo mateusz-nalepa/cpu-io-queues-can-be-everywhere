@@ -1,6 +1,6 @@
 package com.nalepa.demo.controller
 
-import com.nalepa.demo.common.DUMMY_INDEX
+import com.nalepa.demo.common.Constants.DUMMY_INDEX
 import com.nalepa.demo.common.DummyLogger
 import com.nalepa.demo.common.Operations
 import com.nalepa.demo.common.SomeResponse

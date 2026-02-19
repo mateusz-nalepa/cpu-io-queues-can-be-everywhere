@@ -21,19 +21,19 @@ class CoroutinesVirtualWebControllerWithDedicatedCpuPool(
 
     private val dispatcherForFast =
         executorsFactory.create(
-                "CPU Bound pool for fast waiting time took:",
-                "CPU.for.fast",
-                threadsSize = 200,
-                taskQueueSize = 200,
-            )
+            "CPU Bound pool for fast waiting time took:",
+            "CPU.for.fast",
+            200, // threadsSize
+            200, // taskQueueSize
+        )
             .asCoroutineDispatcher()
 
     private val dispatcherForSlow =
         executorsFactory.create(
             "CPU Bound pool for slow waiting time took:",
             "CPU.for.slow",
-            threadsSize = 200,
-            taskQueueSize = 200,
+            200, // threadsSize
+            200, // taskQueueSize
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/fast/{index}")

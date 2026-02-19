@@ -1,6 +1,6 @@
 package com.nalepa.demo.controller
 
-import com.nalepa.demo.common.DUMMY_INDEX
+import com.nalepa.demo.common.Constants.DUMMY_INDEX
 import com.nalepa.demo.common.DummyLogger
 import com.nalepa.demo.common.Operations
 import com.nalepa.demo.common.SomeResponse
@@ -37,11 +37,11 @@ class ClassicWebControllerDefaultsWithDedicatedCpuPool(
         executorsFactory.create(
             "IO Bound Pool",
             "io",
-            threadsSize = 400,
+            400, // threadsSize
             // in order to prevent microburst present in demonstration :D
             // in normal situation, this queue should not be so high, there should be more threads
             // app should wait for response from I/O, not sit down in queue here
-            taskQueueSize = 400
+            400 // taskQueueSize
         ).asCoroutineDispatcher()
 
     // CPU-bound: small queue is fine; high CPU usage should trigger scaling.
@@ -52,8 +52,8 @@ class ClassicWebControllerDefaultsWithDedicatedCpuPool(
             "cpu",
             // In normal conditions, set Runtime.getRuntime().availableProcessors()
             // 200 is only for demonstration purposes in this repo
-            threadsSize = 200,
-            taskQueueSize = 400,
+            200, // threadsSize
+            400,// threadsSize
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/{index}/{mockDelaySeconds}/{cpuOperationDelaySeconds}")
