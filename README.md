@@ -405,12 +405,16 @@ when it is not excessive.
 
 # Presentation / Blog examples
 
+> Prerequisites: Java 24
+
 The module [01-presentation-blog-examples](01-presentation-blog-examples/src/main/java/com/nalepa/demo)
 contains pure Java, zero frameworks, zero magic.
 Only the minimal code needed to illustrate the concepts.
 Simple files with a `main()` method that can be executed after cloning this repository.
 
 # Thread Pool (Un)Expected Things
+
+> Prerequisites: Java 24
 
 Sometimes things does not work as expected.
 Knowing about them, can save a lot of debugging hours.
@@ -419,6 +423,7 @@ Please check [02-thread-pool-un-expected-things](02-thread-pool-un-expected-thin
 
 # Spring Boot Examples
 
+> Prerequisites: Java 24, Docker
 > Each example includes instructions on how to run it,
 as well as a detailed threads diagram.
 
