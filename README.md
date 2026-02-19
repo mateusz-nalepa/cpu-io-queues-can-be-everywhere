@@ -1,13 +1,18 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-An educational repository demonstrating 
-how thread‑pool tasks queue wait time appears 
-across different types of tasks and
-how easily it hides in plain sight. 
-It contains pure Java (and Kotlin Coroutines when needed) examples,
-some un-expected things about thread pool
-and Spring Boot examples with defaults and some solutions 
-of how to monitor, get rid of queues and make response times faster.
+> An educational repository demonstrating 
+> how thread‑pool tasks queue wait time appears 
+> across different types of tasks and
+> how easily it hides in plain sight. 
+> It contains pure Java (with Kotlin Coroutines where applicable) examples.
+> 
+> Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
+Tracing is also not included.
+
+Queues can be present on a daily basis, and they can be hidden in plain sight.
+It's like traffic jam in the city - it can be there every day.
+By monitoring them, there is a chance to decide 
+what to do with them, and how to fix them.
 
 Sometimes adding a new thread pool can make a system `several times faster`,
 especially when high queue wait time is the dominant bottleneck.
@@ -16,7 +21,7 @@ In other cases it may have the opposite effect,
 for example when all threads are busy with CPU‑bound work
 then adding additional threads can make things only worse.
 
-# Quick check for queues
+# TL;DR for Queues
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
@@ -37,28 +42,6 @@ in given service or it's dependencies.
 > From the other hand, there might be "day all the time", 
 > if service is being used globally.
 
-Interested in details? 
-How to monitor thread pool queues and how to fix them?
-Please keep reading!
-
-# Table of Contents
-
-- [TL;DR](#tldr)
-- [Short introduction](#short-introduction)
-- [How to use this repo](#how-to-use-this-repo)
-- [Prerequisites & Scope](#prerequisites--scope)
-- [Thread, Thread Pools](#thread-thread-pools)
-- [When queue wait time happens](#when-queue-wait-time-happens)
-- [How to measure queue wait time](#how-to-measure-queue-wait-time)
-- [Fastest way to reduce queue wait](#fastest-way-to-reduce-queue-wait)
-- [A little bit slower way to reduce response times](#a-little-bit-slower-way-to-reduce-response-times)
-- [Presentation / Blog examples](#presentation--blog-examples)
-- [Thread Pool (Un)Expected Things](#thread-pool-unexpected-things)
-- [Spring Boot Examples](#spring-boot-examples)
-- [Contributing](#contributing)
-
-# TL;DR
-
 CPU usage is misleading when it comes to thread pool tasks queue wait time.
 Queues can be present at any CPU utilization level.
 
@@ -68,7 +51,7 @@ What to do when queue wait time > 0?
   - absolutely simplest, really
     - does every app truly need to be ultra‑fast and hyper‑optimized?
     - probably not
-    - it's like a soft version of `add more instances` :D
+    - it's like a soft version of `add more instances` 😄
 - Thread Pool Isolation -> aka Bulkhead
   - many thread pools, many endpoints
   - It protects from the "noisy neighbour"
@@ -94,6 +77,25 @@ There are 3 main modules in this repo:
 - [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
 - [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
 - [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
+
+Interested in details?
+How to monitor thread pool queues and how to fix them?
+Please keep reading!
+
+# Table of Contents
+
+- [Short introduction](#short-introduction)
+- [How to use this repo](#how-to-use-this-repo)
+- [Prerequisites & Scope](#prerequisites--scope)
+- [Thread, Thread Pools](#thread-thread-pools)
+- [When queue wait time happens](#when-queue-wait-time-happens)
+- [How to measure queue wait time](#how-to-measure-queue-wait-time)
+- [Fastest way to reduce queue wait](#fastest-way-to-reduce-queue-wait)
+- [A little bit slower way to reduce response times](#a-little-bit-slower-way-to-reduce-response-times)
+- [Presentation / Blog examples](#presentation--blog-examples)
+- [Thread Pool (Un)Expected Things](#thread-pool-unexpected-things)
+- [Spring Boot Examples](#spring-boot-examples)
+- [Contributing](#contributing)
 
 # Short introduction
 Many different systems behave surprisingly similarly: 
@@ -145,10 +147,9 @@ Cause a queue can appear at any CPU utilization level.
 So it's good to monitor standing in line time and scanning time as two separate metrics.
 
 `Bonus`
-> If the queue is really high, it’s probably worth calculating a `Time to Consume Queue` metric :D
+> If the queue is really high, it’s probably worth calculating a `Time to Consume Queue` metric 😄
 >
-> It can be useful when doing migrations for millions of records :D
-
+> It can be useful when doing migrations for millions of records 😄
 
 # How to use this repo
 
@@ -160,10 +161,8 @@ They focus solely on showing thread‑pool tasks queue wait time.
 Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
 Tracing is also not included.
 
-Check also [The USE Method](https://www.brendangregg.com/usemethod.html) by Brendan Gregg
-
 Steps for this repo:
-- start with reading `this readme.md` file
+- continue reading `this readme.md` file
 - jump to [presentation-blog-examples module](01-presentation-blog-examples) and run examples
 - jump to [thread-pool-un-expected-things module](02-thread-pool-un-expected-things) and learn about some (un)expected things
 - jump to [spring-examples module](03-spring-examples) and run examples & see results in Grafana
@@ -172,10 +171,10 @@ Steps for this repo:
 
 ### Language / framework
 
-Examples are written in Java (and Kotlin Coroutines when needed), 
+Examples are written in Java (with Kotlin Coroutines where applicable), 
 but the rules of queuing and resource isolation are universal.
 Whether Go, Rust, Java, or any other language is used,
-the hardware limits and queuing effects are probably the same :D
+the hardware limits and queuing effects are probably the same 😄
 
 ### Metrics
 
@@ -249,7 +248,7 @@ What, if customers are waiting in a line?
 
 #### Debugging thread pools
 When dealing with threads, it's `ABSOLUTELY GOOD IDEA` to check which thread executes code.
-Given code is simple enough to check this :D
+Given code is simple enough to check this 😄
 
 ```java
 System.out.println("Current thread: " + Thread.currentThread());
@@ -274,7 +273,7 @@ Default Thread Pool Sizes:
 
 Under the hood: just threads.
 
-Project Reactor:
+[Project Reactor](https://projectreactor.io/):
 
 ```java
 private final Scheduler scheduler =
@@ -285,7 +284,7 @@ private final Scheduler scheduler =
         );
 ```
 
-Kotlin Coroutines:
+[Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html):
 
 ```kotlin
 private val dispatcher =
@@ -372,7 +371,7 @@ Just add more threads, unless there are only CPU‑bound tasks:
 - really, absolutely simplest
   - does every app truly need to be ultra‑fast and hyper‑optimized?
   - probably not
-  - it's like a soft version of `add more instances` :D
+  - it's like a soft version of `add more instances` 😄
 
 What can happen under high load?
 
@@ -380,11 +379,17 @@ What can happen under high load?
 - slow app:
   - all threads are doing I/O
   - or all threads are doing CPU
-  - other things
 
 # A little bit slower way to reduce response times
 
-There are two patterns (maybe there is some more?) that can be used to reduce response times, when queue wait time is high:
+
+In this repo two patterns are explored
+that can be used to reduce response times,
+when queue wait time is high:
+
+> In examples there is a simplification, 
+> that there is only one thread in a thread pool.
+
 - bulkhead pattern
   - many thread pools, many endpoints
   - it protects resources
@@ -439,4 +444,6 @@ Found this useful? Star the repo!
 If you spot an error, feel free to open an issue or fork the repo and submit a
 Pull Request with a fix.
 
-Got examples from production? Please share them!
+I'm not a native English speaker, so contributions related to grammar and spelling are also welcome!
+
+Got examples from production? Please share them! 😄
