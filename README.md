@@ -218,7 +218,9 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Thread.ofPlatform()
                 .name("some-thread")
-                .start(() -> System.out.println(Thread.currentThread() + " : Hello world!"))
+                .start(() -> 
+                    System.out.println(Thread.currentThread() + " : Hello world!")
+                )
                 .join();
     }
 }
@@ -233,9 +235,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
   public static void main(String[] args) throws Exception {
-    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+    ThreadPoolExecutor threadPoolExecutor = 
+            new ThreadPoolExecutor(
+                    1, // corePoolSize
+                    1, // maxPoolSize
+                    0, // keep alive time, not used when corePoolSize == maxPoolSize
+                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+                    new LinkedBlockingQueue<>(10) // queue with size 10
+            );
+    
     threadPoolExecutor
-            .submit(() -> System.out.println(Thread.currentThread() + " : Hello world!"))
+            .submit(() -> 
+                System.out.println(Thread.currentThread() + " : Hello world!")
+            )
             .get();
   }
 }
@@ -276,19 +288,33 @@ Under the hood: just threads.
 [Project Reactor](https://projectreactor.io/):
 
 ```java
+ThreadPoolExecutor threadPoolExecutor =
+        new ThreadPoolExecutor(
+                    1, // corePoolSize
+                    1, // maxPoolSize
+                    0, // keep alive time, not used when corePoolSize == maxPoolSize
+                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+                    new LinkedBlockingQueue<>(10) // queue with size 10
+            );
+
 private final Scheduler scheduler =
-        Schedulers.fromExecutor(
-                new ThreadPoolExecutor(
-                        1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10)
-                )
-        );
+        Schedulers.fromExecutor(threadPoolExecutor);
 ```
 
 [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html):
 
 ```kotlin
-private val dispatcher =
-    ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, LinkedBlockingQueue(10))
+val threadPoolExecutor =
+    ThreadPoolExecutor(
+                    1, // corePoolSize
+                    1, // maxPoolSize
+                    0, // keep alive time, not used when corePoolSize == maxPoolSize
+                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+                    LinkedBlockingQueue(10) // queue with size 10
+            )
+
+val dispatcher =
+    threadPoolExecutor
         .asCoroutineDispatcher()
 ```
 
@@ -316,17 +342,24 @@ In order to measure queue wait time (and more*) use `ExecutorServiceMetrics`
 from [Micrometer](https://docs.micrometer.io/micrometer/reference/reference/jvm.html):
 
 ```java
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
 
 ThreadPoolExecutor threadPoolExecutor =
-    new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+        new ThreadPoolExecutor(
+                1, // corePoolSize
+                1, // maxPoolSize
+                0, // keep alive time, not used when corePoolSize == maxPoolSize
+                TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+                new LinkedBlockingQueue<>(10) // queue with size 10
+        );
 
 ExecutorService monitoredThreadPoolExecutor =
     ExecutorServiceMetrics
         .monitor(
-            meterRegistry,
-            threadPoolExecutor,
-            threadPoolName
+            meterRegistry, // Micrometer MeterRegistry
+            threadPoolExecutor, // original thread pool
+            threadPoolName // my-custom-thread-pool
         );
 ```
 
@@ -343,8 +376,11 @@ This is a simplified illustration - Micrometer uses the same idea:
 ```java
 public class MonitoredRunnable implements Runnable {
 
-  private final Runnable delegate;
-  private final long runnableInstanceCreatedAt = System.nanoTime();
+  // original runnable task
+  private final Runnable delegate; 
+  
+  // start observation when task is added to the queue
+  private final long customerEnteredLineAt = System.nanoTime();
 
   public MonitoredRunnable(Runnable delegate) {
     this.delegate = delegate;
@@ -352,11 +388,22 @@ public class MonitoredRunnable implements Runnable {
 
   @Override
   public void run() {
-    System.out.println(Thread.currentThread() + " : Queue wait time took: " + (System.nanoTime() - runnableInstanceCreatedAt) + " ns");
+    // calculate queue wait time when task is about to be executed
+    long queueWaitTime = System.nanoTime() - customerEnteredLineAt;
+    System.out.println(
+        Thread.currentThread() 
+                + " : Customer wait time in line took: " 
+                + queueWaitTime + " ns"
+    );
 
-    long startExecution = System.nanoTime();
+    long startScanningGroceries = System.nanoTime();
     delegate.run();
-    System.out.println(Thread.currentThread() + " : Task execution took: " + (System.nanoTime() - startExecution) + " ns");
+    long scanningGroceriesTook = System.nanoTime() - startScanningGroceries;
+    System.out.println(
+        Thread.currentThread() 
+                + " : Scanning groceries took: " 
+                + scanningGroceriesTook + " ns"
+    );
   }
 }
 ```
@@ -448,7 +495,5 @@ Found this useful? Star the repo!
 
 If you spot an error, feel free to open an issue or fork the repo and submit a
 Pull Request with a fix.
-
-I'm not a native English speaker, so contributions related to grammar and spelling are also welcome!
 
 Got examples from production? Please share them! 😄
