@@ -6,7 +6,10 @@ import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ExecutorsFactory {
@@ -19,55 +22,83 @@ public class ExecutorsFactory {
         this.executorsShutdownManager = executorsShutdownManager;
     }
 
-    public Executor monitorExecutorForVirtualThreads(
-            Executor delegate,
-            String logMessagePrefix,
-            String threadPoolName
-    ) {
-        return ExecutorServiceMetrics.monitor(meterRegistry, delegate, threadPoolName);
-    }
-
-    public ExecutorService create(
-            String logMessagePrefix,
-            String threadPoolName,
-            int threadsSize,
-            int taskQueueSize
-    ) {
-        ThreadPoolExecutor executor = createThreadPoolExecutor(threadPoolName, threadsSize, taskQueueSize);
+    public ExecutorService create(ThreadPoolConfig threadPoolConfig) {
+        ThreadPoolExecutor executor = createThreadPoolExecutor(threadPoolConfig);
 
         executorsShutdownManager.addExecutorService(executor);
 
-        return monitorExecutorService(executor, logMessagePrefix, threadPoolName);
+        return monitorExecutorService(executor, threadPoolConfig.threadPoolName);
     }
+
 
     public ExecutorService monitorExecutorService(
             ExecutorService delegate,
-            String logMessagePrefix,
             String threadPoolName
     ) {
         return ExecutorServiceMetrics.monitor(meterRegistry, delegate, threadPoolName);
     }
 
     private ThreadPoolExecutor createThreadPoolExecutor(
-            String threadPrefix,
-            int threads,
-            int taskQueueSize
+            ThreadPoolConfig threadPoolConfig
     ) {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 // by default, Java minimize resources used when dealing with threads, so threads are created when there is reached queue limit
                 // so yolo, core pool size is equal here always to max pool size
                 // but also, we will reach core when needed, cause there is no `executor.prestartAllCoreThreads()` used
-                threads,
-                threads,
+                threadPoolConfig.threadsSize,
+                threadPoolConfig.threadsSize,
                 Duration.ofSeconds(60).toMillis(), // ignored, cause core == max
                 TimeUnit.MILLISECONDS,             // ignored, cause core == max
-                new LinkedBlockingQueue<>(taskQueueSize),
-                new CustomizableThreadFactory(threadPrefix + "-"),
+                new LinkedBlockingQueue<>(threadPoolConfig.taskQueueSize),
+                new CustomizableThreadFactory(threadPoolConfig.threadPoolName + "-"),
                 new ThreadPoolExecutor.AbortPolicy()
         );
 
         executor.prestartAllCoreThreads();
 
         return executor;
+    }
+
+    public static class ThreadPoolConfig {
+
+        private final String threadPoolName;
+        private final int threadsSize;
+        private final int taskQueueSize;
+
+        private ThreadPoolConfig(Builder builder) {
+            this.threadPoolName = builder.threadPoolName;
+            this.threadsSize = builder.threadsSize;
+            this.taskQueueSize = builder.taskQueueSize;
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public static class Builder {
+
+            private String threadPoolName;
+            private int threadsSize;
+            private int taskQueueSize;
+
+            public Builder threadPoolName(String threadPoolName) {
+                this.threadPoolName = threadPoolName;
+                return this;
+            }
+
+            public Builder threadsSize(int threadsSize) {
+                this.threadsSize = threadsSize;
+                return this;
+            }
+
+            public Builder taskQueueSize(int taskQueueSize) {
+                this.taskQueueSize = taskQueueSize;
+                return this;
+            }
+
+            public ThreadPoolConfig build() {
+                return new ThreadPoolConfig(this);
+            }
+        }
     }
 }

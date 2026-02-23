@@ -17,23 +17,16 @@ class CoroutinesVirtualWebControllerWithDedicatedCpuPool(
     private val executorsFactory: ExecutorsFactory,
 ) {
 
-    // thanks to those executors, tomcat threads are like I/O threads
-
-    private val dispatcherForFast =
-        executorsFactory.create(
-            "CPU Bound pool for fast waiting time took:",
-            "CPU.for.fast",
-            200, // threadsSize
-            200, // taskQueueSize
-        )
-            .asCoroutineDispatcher()
-
+    // thanks to this executor, server threads are like I/O threads
+    // executor for fast endpoint is not really needed here,
+    // but I want to show that we can have different executors for different endpoints
     private val dispatcherForSlow =
         executorsFactory.create(
-            "CPU Bound pool for slow waiting time took:",
-            "CPU.for.slow",
-            200, // threadsSize
-            200, // taskQueueSize
+            ExecutorsFactory.ThreadPoolConfig.builder()
+                .threadPoolName("pool.for.slow")
+                .threadsSize(Runtime.getRuntime().availableProcessors())
+                .taskQueueSize(Runtime.getRuntime().availableProcessors())
+                .build()
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/fast/{index}")
@@ -42,9 +35,7 @@ class CoroutinesVirtualWebControllerWithDedicatedCpuPool(
     ): ResponseEntity<SomeResponse> {
         DummyLogger.log(this, "Start FAST endpoint for index: $index")
 
-        return withContext(dispatcherForFast) {
-            ResponseEntity.ok((SomeResponse("slow")))
-        }
+        return ResponseEntity.ok((SomeResponse("fast")))
     }
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/slow/{index}/{cpuAppOrSleep}")

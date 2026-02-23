@@ -33,10 +33,14 @@ public class NettyWebfluxControllerWithDedicatedCpuPool {
         this.webClient = httpClientFactory.createWebClient();
         this.afterWebClientScheduler = Schedulers.fromExecutor(
                 executorsFactory.create(
-                        "CPU Bound pool waiting time took:",
-                        "CPU.for.afterWebClient",
-                        Runtime.getRuntime().availableProcessors(),
-                        Runtime.getRuntime().availableProcessors()
+                        ExecutorsFactory.ThreadPoolConfig.builder()
+                                .threadPoolName("cpu.pool")
+                                .threadsSize(Runtime.getRuntime().availableProcessors())
+                                // queue size can be high,
+                                // because when CPU is bottleneck, it's better to wait in queue
+                                // than process all requests at the same time
+                                .taskQueueSize(400)
+                                .build()
                 )
         );
     }

@@ -21,17 +21,19 @@ public class ClassicWebControllerWithDedicatedCpuPool {
 
     public ClassicWebControllerWithDedicatedCpuPool(ExecutorsFactory executorsFactory) {
         this.executorForFast = executorsFactory.create(
-                "CPU Bound pool for fast waiting time took:",
-                "CPU.for.fast",
-                200,
-                200
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("pool.for.fast")
+                        .threadsSize(200)
+                        .taskQueueSize(200)
+                        .build()
         );
 
         this.executorForSlow = executorsFactory.create(
-                "CPU Bound pool for slow waiting time took:",
-                "CPU.for.slow",
-                200,
-                200
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("pool.for.slow")
+                        .threadsSize(200)
+                        .taskQueueSize(200)
+                        .build()
         );
     }
 

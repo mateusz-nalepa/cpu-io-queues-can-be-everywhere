@@ -26,10 +26,13 @@ class CoroutinesVirtualWebControllerDefaultsWithDedicatedCpuPool(
 
     private val cpuDispatcher =
         executorsFactory.create(
-            "CPU Bound pool waiting time took:",
-            "CPU.dispatcher",
-            Runtime.getRuntime().availableProcessors(), // threadsSize
-            Runtime.getRuntime().availableProcessors(), // taskQueueSize
+            ExecutorsFactory.ThreadPoolConfig.builder()
+                .threadPoolName("cpu.pool")
+                .threadsSize(Runtime.getRuntime().availableProcessors()) // queue size can be high,
+                // because when CPU is bottleneck, it's better to wait in queue
+                // than process all requests at the same time
+                .taskQueueSize(400)
+                .build()
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/{index}/{mockDelaySeconds}/{cpuOperationDelaySeconds}")

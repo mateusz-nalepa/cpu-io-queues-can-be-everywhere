@@ -18,22 +18,23 @@ class CoroutinesClassicWebControllerWithDedicatedCpuPool(
 ) {
 
     // thanks to those executors, tomcat threads are like I/O threads
-
     private val dispatcherForFast =
         executorsFactory.create(
-            "CPU Bound pool for fast waiting time took:",
-            "CPU.for.fast",
-            200, // threadsSize
-            200, // taskQueueSize
+            ExecutorsFactory.ThreadPoolConfig.builder()
+                .threadPoolName("pool.for.fast")
+                .threadsSize(200)
+                .taskQueueSize(200)
+                .build()
         )
             .asCoroutineDispatcher()
 
     private val dispatcherForSlow =
         executorsFactory.create(
-            "CPU Bound pool for slow waiting time took:",
-            "CPU.for.slow",
-            200, // threadsSize
-            200, // taskQueueSize
+            ExecutorsFactory.ThreadPoolConfig.builder()
+                .threadPoolName("pool.for.slow")
+                .threadsSize(200)
+                .taskQueueSize(200)
+                .build()
         ).asCoroutineDispatcher()
 
     @GetMapping("/endpoint/scenario/dedicatedCpuPool/fast/{index}")

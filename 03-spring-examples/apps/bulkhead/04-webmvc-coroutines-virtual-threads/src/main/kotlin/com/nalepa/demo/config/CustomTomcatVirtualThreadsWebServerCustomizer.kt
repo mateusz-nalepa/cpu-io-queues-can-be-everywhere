@@ -21,9 +21,8 @@ class CustomTomcatVirtualThreadsWebServerCustomizer(
         factory.addProtocolHandlerCustomizers(
             TomcatProtocolHandlerCustomizer { protocolHandler: ProtocolHandler ->
                 protocolHandler.executor =
-                    executorsFactory.monitorExecutorForVirtualThreads(
+                    executorsFactory.monitorExecutorService(
                         VirtualThreadExecutor("custom-tomcat-handler-"),
-                        "Http server pending request took:",
                         "custom.http.server.pending"
                     )
 

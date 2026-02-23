@@ -15,27 +15,19 @@ import reactor.core.scheduler.Schedulers;
 @RestController
 public class NettyWebControllerWithDedicatedCpuPool {
 
-    private final Scheduler schedulerForFast;
     private final Scheduler schedulerForSlow;
 
     public NettyWebControllerWithDedicatedCpuPool(ExecutorsFactory executorsFactory) {
-        // thanks to those executors, server threads are like I/O threads
-        this.schedulerForFast = Schedulers.fromExecutor(
-                executorsFactory.create(
-                        "CPU Bound pool waiting time took:",
-                        "CPU.for.fast",
-                        Runtime.getRuntime().availableProcessors(),
-                        Runtime.getRuntime().availableProcessors()
-                )
-        );
-
-        // in theory this is not needed, in practice in reactor I have no idea how to monitor tasks queue wait time for server
+        // thanks to this executor, server threads are like I/O threads
+        // executor for fast endpoint is not really needed,
+        // but I want to show that we can have different executors for different endpoints
         this.schedulerForSlow = Schedulers.fromExecutor(
                 executorsFactory.create(
-                        "CPU Bound pool waiting time took:",
-                        "CPU.for.slow",
-                        Runtime.getRuntime().availableProcessors(),
-                        Runtime.getRuntime().availableProcessors()
+                        ExecutorsFactory.ThreadPoolConfig.builder()
+                                .threadPoolName("pool.for.fast")
+                                .threadsSize(Runtime.getRuntime().availableProcessors())
+                                .taskQueueSize(Runtime.getRuntime().availableProcessors())
+                                .build()
                 )
         );
     }
@@ -48,7 +40,6 @@ public class NettyWebControllerWithDedicatedCpuPool {
 
         return Mono
                 .just(index)
-                .publishOn(schedulerForFast)
                 .map(i -> {
                     // some processing here
                     return ResponseEntity.ok(new SomeResponse("fast"));

@@ -15,14 +15,18 @@ import java.util.concurrent.ExecutorService;
 @RestController
 public class VirtualWebControllerWithDedicatedCpuPool {
 
-    private final ExecutorService executor;
+    // thanks to this executor, server threads are like I/O threads
+    // executor for fast endpoint is not really needed here,
+    // but I want to show that we can have different executors for different endpoints
+    private final ExecutorService executorForSlow;
 
     public VirtualWebControllerWithDedicatedCpuPool(ExecutorsFactory executorsFactory) {
-        this.executor = executorsFactory.create(
-                "CPU Bound pool waiting time took:",
-                "CPU.for.slow",
-                Runtime.getRuntime().availableProcessors(),
-                Runtime.getRuntime().availableProcessors()
+        this.executorForSlow = executorsFactory.create(
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("CPU.for.slow")
+                        .threadsSize(Runtime.getRuntime().availableProcessors())
+                        .taskQueueSize(Runtime.getRuntime().availableProcessors())
+                        .build()
         );
     }
 
@@ -49,7 +53,7 @@ public class VirtualWebControllerWithDedicatedCpuPool {
 
     private void executeHeavyCpuOperation(long cpuOperationDelaySeconds) {
         AsyncUtils.nonBlockingGet(
-                executor.submit(() -> Operations.heavyCpuCode(cpuOperationDelaySeconds))
+                executorForSlow.submit(() -> Operations.heavyCpuCode(cpuOperationDelaySeconds))
         );
     }
 }

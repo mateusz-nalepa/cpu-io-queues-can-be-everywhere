@@ -1,10 +1,6 @@
 package com.nalepa.demo.controller;
 
-import com.nalepa.demo.common.AsyncUtils;
-import com.nalepa.demo.common.Constants;
-import com.nalepa.demo.common.DummyLogger;
-import com.nalepa.demo.common.Operations;
-import com.nalepa.demo.common.SomeResponse;
+import com.nalepa.demo.common.*;
 import com.nalepa.demo.common.monitored.ExecutorsFactory;
 import com.nalepa.demo.httpclient.HttpClientFactory;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +27,14 @@ public class VirtualWebControllerWithDedicatedCpuPool {
         this.objectMapper = objectMapper;
         this.restClient = httpClientFactory.createRestClient();
         this.cpuExecutor = executorsFactory.create(
-                "CPU Bound pool waiting time took:",
-                "CPU.executor",
-                Runtime.getRuntime().availableProcessors(),
-                Runtime.getRuntime().availableProcessors()
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("cpu.pool")
+                        .threadsSize(Runtime.getRuntime().availableProcessors())
+                        // queue size can be high,
+                        // because when CPU is bottleneck, it's better to wait in queue
+                        // than process all requests at the same time
+                        .taskQueueSize(400)
+                        .build()
         );
     }
 

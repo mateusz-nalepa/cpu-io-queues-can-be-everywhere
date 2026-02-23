@@ -20,10 +20,10 @@ import java.util.function.Supplier;
 
 /**
  * request
- *    -> IO Pool
- *    -> CPU Pool
- *    -> another IO Pool (if needed)
- *    -> another CPU Pool (if needed)
+ * -> IO Pool
+ * -> CPU Pool
+ * -> another IO Pool (if needed)
+ * -> another CPU Pool (if needed)
  */
 @RestController
 public class ClassicWebControllerDefaultsWithDedicatedCpuPool {
@@ -48,22 +48,29 @@ public class ClassicWebControllerDefaultsWithDedicatedCpuPool {
         this.restClient = httpClientFactory.createRestClient();
 
         this.ioExecutor = executorsFactory.create(
-                "IO Bound Pool",
-                "io",
-                400,
-                // in order to prevent microburst present in demonstration :D
-                // in normal situation, this queue should not be so high, there should be more threads
-                // app should wait for response from I/O, not sit down in queue here
-                400
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("io.pool")
+                        .threadsSize(400)
+                        // in order to prevent microburst present in demonstration :D
+                        // in normal situation, this queue should not be so high, there should be more threads
+                        // app should wait for response from I/O, not sit down in queue here
+                        .taskQueueSize(400)
+                        .build()
         );
 
         this.cpuExecutor = executorsFactory.create(
-                "CPU Bound Pool",
-                "cpu",
-                // In normal conditions, set Runtime.getRuntime().availableProcessors()
-                // 200 is only for demonstration purposes in this repo
-                200,
-                400
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("cpu.pool")
+                        // thread size should be equal to cpu Runtime.getRuntime().availableProcessors()
+                        // here is 200 for demonstration purposes
+                        // cause tomcat default is 200
+                        // so it's easier to demonstrate xd
+                        .threadsSize(200)
+                        // queue size can be high,
+                        // because when CPU is bottleneck, it's better to wait in queue
+                        // than process all requests at the same time
+                        .taskQueueSize(400)
+                        .build()
         );
     }
 
@@ -109,7 +116,8 @@ public class ClassicWebControllerDefaultsWithDedicatedCpuPool {
 
     // in order to have something like: SLR - Single Line Responsibility
     public static FluentFuture<Void> startAsyncOn(Executor executor) {
-        return FluentFuture.of(CompletableFuture.runAsync(() -> {}, executor));
+        return FluentFuture.of(CompletableFuture.runAsync(() -> {
+        }, executor));
     }
 
     // -------------------------------------------------------------------------

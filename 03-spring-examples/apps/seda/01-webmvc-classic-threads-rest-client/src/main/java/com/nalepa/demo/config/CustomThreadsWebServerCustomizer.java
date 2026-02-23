@@ -37,10 +37,11 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
     @Override
     public void customize(ConfigurableTomcatWebServerFactory factory) {
         ExecutorService customTomcatExecutor = executorsFactory.create(
-                "Http server pending request took:",
-                "custom.tomcat",
-                tomcatServerProperties.getThreads().getMax(),
-                tomcatServerProperties.getThreads().getMaxQueueCapacity()
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("custom.tomcat")
+                        .threadsSize(tomcatServerProperties.getThreads().getMax())
+                        .taskQueueSize(tomcatServerProperties.getThreads().getMaxQueueCapacity())
+                        .build()
         );
 
         customTomcatThreadsShutdownManager.assignExecutor(customTomcatExecutor);

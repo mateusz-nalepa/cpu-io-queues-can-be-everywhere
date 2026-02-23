@@ -1,14 +1,12 @@
 package com.nalepa.demo.config;
 
 import com.nalepa.demo.common.monitored.ExecutorsFactory;
-import org.apache.coyote.ProtocolHandler;
 import org.apache.tomcat.util.threads.TaskQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnThreading;
 import org.springframework.boot.thread.Threading;
 import org.springframework.boot.tomcat.ConfigurableTomcatWebServerFactory;
-import org.springframework.boot.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.boot.tomcat.autoconfigure.TomcatServerProperties;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.SmartLifecycle;
@@ -39,10 +37,11 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
     @Override
     public void customize(ConfigurableTomcatWebServerFactory factory) {
         ExecutorService customTomcatExecutor = executorsFactory.create(
-                "Http server pending request took:",
-                "custom.tomcat",
-                tomcatServerProperties.getThreads().getMax(),
-                tomcatServerProperties.getThreads().getMaxQueueCapacity()
+                ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("custom.tomcat")
+                        .threadsSize(tomcatServerProperties.getThreads().getMax())
+                        .taskQueueSize(tomcatServerProperties.getThreads().getMaxQueueCapacity())
+                        .build()
         );
 
         customTomcatThreadsShutdownManager.assignExecutor(customTomcatExecutor);

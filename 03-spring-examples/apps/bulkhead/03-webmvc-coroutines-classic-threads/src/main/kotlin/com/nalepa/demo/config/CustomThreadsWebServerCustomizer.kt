@@ -30,10 +30,11 @@ class CustomThreadsWebServerCustomizer(
         val customTomcatExecutor =
             executorsFactory
                 .create(
-                    "Http server pending request took:",
-                    "custom.tomcat",
-                    tomcatServerProperties.threads.max,
-                    tomcatServerProperties.threads.maxQueueCapacity,
+                    ExecutorsFactory.ThreadPoolConfig.builder()
+                        .threadPoolName("custom.tomcat")
+                        .threadsSize(tomcatServerProperties.threads.max)
+                        .taskQueueSize(tomcatServerProperties.threads.maxQueueCapacity)
+                        .build()
                 )
 
         customTomcatThreadsShutdownManager.assignExecutor(customTomcatExecutor)
