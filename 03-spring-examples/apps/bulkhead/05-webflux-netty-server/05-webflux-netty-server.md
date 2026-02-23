@@ -34,7 +34,7 @@ In this example, metric `http.server.requests` is not telling the truth
 
 |                Element                 | Expected response times | Metrics from App | Metrics from RequestSender |
 |:--------------------------------------:|:-----------------------:|:----------------:|:--------------------------:|
-|             Slow endpoint              |           10s           |      10s ✅       |          20s ✅ 🤔          |
+|             Slow endpoint              |           10s           |      10s ✅       |           20s 🤔           |
 |             Fast endpoint              |        almost 0s        |   almost 0s ❌    |            8s ✅            |
 | App queue wait time<br>(custom metric) |           8s            |      10s 🤔      |       Not Applicable       |
 
