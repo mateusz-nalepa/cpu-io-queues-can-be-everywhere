@@ -1,14 +1,5 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-> An educational repository demonstrating 
-> how thread‑pool tasks queue wait time appears 
-> across different types of tasks and
-> how easily it hides in plain sight. 
-> It contains pure Java (with Kotlin Coroutines where applicable) examples.
-> 
-> Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
-Tracing is also not included.
-
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
 By monitoring them, there is a chance to decide 
@@ -21,14 +12,20 @@ In other cases it may have the opposite effect,
 for example when all threads are busy with CPU‑bound work (e.g. JSON parsing)
 then adding additional threads can make things only worse.
 
+> An educational repository demonstrating
+> how thread‑pool tasks queue wait time appears
+> across different types of tasks and
+> how easily it hides in plain sight.
+> It contains pure Java (with Kotlin Coroutines where applicable) examples.
+>
+> Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
+> Tracing is also not included.
+
 There are 3 main modules in this repo:
 - [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
 - [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
 - [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
 
-Interested in details?
-How to monitor thread pool queues and how to fix them?
-Please keep reading!
 
 # TL;DR for Queues - 2 minutes
 
@@ -497,5 +494,3 @@ Found this useful? Star the repo!
 
 If you spot an error, feel free to open an issue or fork the repo and submit a
 Pull Request with a fix.
-
-Got examples from production? Please share them! 😄
