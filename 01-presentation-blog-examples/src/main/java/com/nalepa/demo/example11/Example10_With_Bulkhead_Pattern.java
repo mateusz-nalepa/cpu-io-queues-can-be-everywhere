@@ -12,11 +12,9 @@ public class Example10_With_Bulkhead_Pattern {
 
         queueForSlow.add(new MonitoredRunnable(() -> simulateSlowEndpoint(1)));
         queueForSlow.add(new MonitoredRunnable(() -> simulateSlowEndpoint(2)));
-        queueForSlow.add(new MonitoredRunnable(() -> simulateSlowEndpoint(3)));
 
         queueForFast.add(new MonitoredRunnable(() -> simulateFastEndpoint(1)));
         queueForFast.add(new MonitoredRunnable(() -> simulateFastEndpoint(2)));
-        queueForFast.add(new MonitoredRunnable(() -> simulateFastEndpoint(3)));
 
         Thread threadForSlow = new Thread(
                 () -> {
