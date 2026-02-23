@@ -18,8 +18,17 @@ Sometimes adding a new thread pool can make a system `several times faster`,
 especially when high queue wait time is the dominant bottleneck.
 
 In other cases it may have the opposite effect,
-for example when all threads are busy with CPU‑bound work
+for example when all threads are busy with CPU‑bound work (e.g. JSON parsing)
 then adding additional threads can make things only worse.
+
+There are 3 main modules in this repo:
+- [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
+- [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
+- [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
+
+Interested in details?
+How to monitor thread pool queues and how to fix them?
+Please keep reading!
 
 # TL;DR for Queues - 2 minutes
 
@@ -63,7 +72,7 @@ What to do when queue wait time > 0?
   - maximize cpu, minimize queue wait time
 - Hybrid: Bulkhead + SEDA
 - maybe just more threads/instances
-- other things
+- maybe some other things? 🤔
 
 And what if queue size is almost 0?
 
@@ -72,15 +81,6 @@ And what if queue size is almost 0?
 - maybe deep dive with e.g. async-profiler
 - maybe fewer threads/instances are needed ❤️
 - maybe some other things? 🤔
-
-There are 3 main modules in this repo:
-- [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
-- [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
-- [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
-
-Interested in details?
-How to monitor thread pool queues and how to fix them?
-Please keep reading!
 
 # Table of Contents
 
