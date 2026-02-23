@@ -151,9 +151,9 @@ static void anotherSubscribeOnHasNoEffect() {
         .subscribeOn(firstScheduler)
         // Thread[#26,first-Scheduler-2,5,main] : first-Value   
         .doOnNext(v -> System.out.println(Thread.currentThread() + " : first-Value"))
+            
         .subscribeOn(secondScheduler)
-
-         // Thread[#26,first-Scheduler-2,5,main] : second-Value  
+        // Thread[#26,first-Scheduler-2,5,main] : second-Value  
         .doOnNext(v -> System.out.println(Thread.currentThread() + " : second-Value"))
         .block();
 
