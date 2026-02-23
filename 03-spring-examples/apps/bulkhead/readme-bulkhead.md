@@ -31,6 +31,10 @@ Operations.heavyCpuCode(cpuOperationDelaySeconds)
 ResponseEntity.ok((SomeResponse("slow")))
 ```
 
+## Architecture of the applications
+
+![img.png](img.png)
+
 ## Application examples
 - every one of them includes `how to run` and detailed threads diagram
 - [01-webmvc-classic-threads](01-webmvc-classic-threads/01-webmvc-classic-threads.md)

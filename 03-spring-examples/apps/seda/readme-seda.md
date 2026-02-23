@@ -8,7 +8,7 @@ It improves asynchronous processing performance by using a dedicated thread pool
 
 It's similar to a factory assembly line.
 
-> In graphical examples there is a simplification,
+> In graphical example there is a simplification,
 > that there is only one thread in a thread pool.
 
 ![seda.png](../../../images/seda.png)
@@ -32,12 +32,14 @@ There is only one `dummy endpoint` in apps:
 httpClient.getData()
 
 // and then
-Operations.someBlockingIO(blockingIODelaySeconds)
-// or
 Operations.heavyCpuCode(cpuOperationDelaySeconds)
 // and
 ResponseEntity.ok((SomeResponse("response")))
 ```
+
+## Architecture of the applications
+
+![img.png](img.png)
 
 ## Application examples 
 - every one of them includes `how to run` and detailed threads diagram
