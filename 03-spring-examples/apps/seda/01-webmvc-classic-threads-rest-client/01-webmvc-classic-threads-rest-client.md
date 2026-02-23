@@ -11,7 +11,7 @@
 
 #### HighLevel Overview
 
-![tomcat_http_client_platform_threads.png](../../../../images/tomcat_http_client_platform_threads.png)
+![seda_tomcat_200_classic_threads.png](../../../../images/seda_tomcat_200_classic_threads.png)
 
 <details>
   <summary>Click to learn How To Run</summary>

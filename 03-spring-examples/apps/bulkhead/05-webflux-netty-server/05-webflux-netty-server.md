@@ -8,7 +8,7 @@
 
 #### HighLevel Overview
 
-![netty_different_endpoints.png](../../../../images/netty_different_endpoints.png)
+![bulkhead_netty.png](../../../../images/bulkhead_netty.png)
 
 <details>
   <summary>Click to learn How To Run</summary>

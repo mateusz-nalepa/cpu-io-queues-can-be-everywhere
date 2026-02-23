@@ -11,7 +11,7 @@
 
 #### HighLevel Overview
 
-![netty_http_client.png](../../../../images/netty_http_client.png)
+![seda_netty.png](../../../../images/seda_netty.png)
 
 <details>
   <summary>Click to learn How To Run</summary>
