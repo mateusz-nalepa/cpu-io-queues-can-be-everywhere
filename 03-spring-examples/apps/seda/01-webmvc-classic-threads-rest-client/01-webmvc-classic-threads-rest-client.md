@@ -43,6 +43,8 @@ In this example, metric `http.server.requests` is not telling the truth
 |            Http Client metric             |      from 0s to 9s      |        from 0s to 9s        |       Not Applicable       |
 | Server queue wait time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
 
+![img.png](img.png)
+
 #### Results, when `heavyCpuCode` is being executed on dedicated thread pool
 
 |                  Element                  | Expected response times |      Metrics from App       | Metrics from RequestSender |
@@ -51,3 +53,5 @@ In this example, metric `http.server.requests` is not telling the truth
 |     `second batch` on dummy endpoint      |           19s           | 19s (no info about batch) ✅ |           19s ✅            |
 |            Http Client metric             |      from 0s to 9s      |        from 0s to 9s        |       Not Applicable       |
 | Server queue wait time<br>(custom metric) |           0s            |            0s ✅             |       Not Applicable       |
+
+![img_1.png](img_1.png)
