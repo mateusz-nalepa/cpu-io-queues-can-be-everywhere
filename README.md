@@ -473,13 +473,13 @@ Please check [02-thread-pool-un-expected-things](02-thread-pool-un-expected-thin
 # Spring Boot Examples
 
 > Prerequisites: Java 24, Docker
-> Each example includes instructions on how to run it,
-as well as a detailed threads diagram.
+> 
+> Each example includes: 
+> - how to run
+> - detailed threads diagram
+> - screenshots from Grafana dashboards
 
 There are two different types of examples:
-
-> Nalepa TODO: Check once again that modules are working
-> after migrating them from Kotlin to Java ( except of Kotlin Coroutines of course)
 
 - applications with `fast` and `slow` endpoints
     - bulkhead pattern is used
