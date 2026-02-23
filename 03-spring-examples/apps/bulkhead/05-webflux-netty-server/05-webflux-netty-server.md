@@ -38,7 +38,7 @@ In this example, metric `http.server.requests` is not telling the truth
 |             Fast endpoint              |        almost 0s        |   almost 0s ❌    |            8s ✅            |
 | App queue wait time<br>(custom metric) |           8s            |      10s 🤔      |       Not Applicable       |
 
-![img.png](img.png)
+![img.png](defaults.png)
 
 #### Results, when `heavyCpuCode` is being executed on dedicated thread pool
 
@@ -48,4 +48,4 @@ In this example, metric `http.server.requests` is not telling the truth
 |             Fast endpoint              |        almost 0s        |   almost 0s ✅    |        almost 0s ✅         |
 | App queue wait time<br>(custom metric) |           8s            |        0s        |       Not Applicable       |
 
-![img_1.png](img_1.png)
+![img_1.png](dedicatedCpuPool.png)

@@ -44,7 +44,7 @@ In this example, metric `http.client.requests` is not telling the truth
 | App Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
 | App Client Queue wait time<br>(custom metric) |           8s            |            8s ✅             |       Not Applicable       |
 
-![img.png](img.png)
+![img.png](defaults.png)
 
 #### Results, when `heavyCpuCode` is being executed on dedicated thread pool
 
@@ -56,4 +56,4 @@ In this example, metric `http.client.requests` is not telling the truth
 | App Server Queue wait time<br>(custom metric) |           0s            |             0s              |       Not Applicable       |
 | App Client Queue wait time<br>(custom metric) |           0s            |            0s ✅             |       Not Applicable       |
 
-![img_1.png](img_1.png)
+![img_1.png](dedicatedCpuPool.png)
