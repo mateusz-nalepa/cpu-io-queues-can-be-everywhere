@@ -15,8 +15,8 @@ public class Example09_Monitored_BLOCKING_IO_vs_CPU_BOUND_IN_EXECUTOR {
         var futures = new java.util.ArrayList<Future<?>>();
 
         for (int index = 0; index < 10000; index++) {
-            futures.add(executor.submit(new MonitoredRunnable(() -> simulateBlockingIO())));
-            // futures.add(executor.submit(new MonitoredRunnable(() -> simulateCpuCode(index))));
+//            futures.add(executor.submit(new MonitoredRunnable(() -> simulateBlockingIO())));
+             futures.add(executor.submit(new MonitoredRunnable(() -> simulateCpuCode())));
         }
 
         for (Future<?> future : futures) {

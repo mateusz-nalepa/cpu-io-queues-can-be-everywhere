@@ -334,6 +334,8 @@ For any other library... it's probably the same 😄
 
 It's like all cashiers are busy/blocked, and customers are waiting in line.
 
+Below are some screenshot from Visual VM which shows CPU usage for busy and blocked threads:
+
 ![cpu-usage.png](images/cpu-usage.png)
 
 # How to measure queue wait time
