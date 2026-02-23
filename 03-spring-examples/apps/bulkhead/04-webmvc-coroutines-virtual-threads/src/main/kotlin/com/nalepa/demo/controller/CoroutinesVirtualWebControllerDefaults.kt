@@ -28,7 +28,7 @@ class CoroutinesVirtualWebControllerDefaults {
     ): ResponseEntity<SomeResponse> {
         DummyLogger.log(this, "Start SLOW endpoint for index: $index")
 
-        Operations.someBlockingIO(cpuAppOrSleep)
+        Operations.heavyCpuCode(cpuAppOrSleep)
 
         return ResponseEntity.ok((SomeResponse("fast")))
     }
