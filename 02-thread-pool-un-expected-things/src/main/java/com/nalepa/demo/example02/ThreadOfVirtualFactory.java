@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 
 public class ThreadOfVirtualFactory {
     public static void main(String[] args) throws Exception {
+        // That's for Java 24, maybe in the future, there will be some changes in that area.
         virtualThreadFactoryThreadsAreScheduledOnForkJoinPool();
     }
 

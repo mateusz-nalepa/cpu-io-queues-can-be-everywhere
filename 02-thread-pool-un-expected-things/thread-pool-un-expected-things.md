@@ -95,7 +95,9 @@ Incorrect thread‑pool sizing may result in:
 ### Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool
 
 When creating multiple executors with virtual thread factories,
-full isolation may by expected. However, it does not work like that.
+full isolation may be expected. However, it does not work like that.
+
+> NOTE: That's for Java 24, maybe in the future, there will be some changes in that area.
 
 ```java
 static void virtualThreadFactoryThreadsAreScheduledOnForkJoinPool() throws Exception {
