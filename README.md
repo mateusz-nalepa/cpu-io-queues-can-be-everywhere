@@ -476,6 +476,12 @@ There are two different types of examples:
     - it makes resources faster
     - check [03-spring-examples/seda module](03-spring-examples/apps/seda/readme-seda.md)
 
+> Few words about metrics:
+> - [p99](https://www.baeldung.com/cs/whats-the-p99-latency) - 99% of requests complete within this time, slowest 1% is often noise, e.g.: GC pause
+> - avg(p99) - smoothed view across instances - for spotting peaks and valleys over time
+> - max(p99) - worst case among all instances
+> - using both avg(p99) and max(p99) together gives a fuller picture
+
 # Contributing
 
 Found this useful? Star the repo!
