@@ -27,7 +27,7 @@ There are 3 main modules in this repo:
 - [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
 
 
-# TL;DR for Queues - 2 minutes
+# TL;DR
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
@@ -52,32 +52,10 @@ CPU usage is misleading when it comes to thread pool tasks queue wait time.
 Queues can be present at any CPU utilization level.
 
 What to do when queue wait time > 0?
+-  add more threads, bulkhead, SEDA, or hybrid
 
-- just add more threads
-  - absolutely simplest, really
-    - does every app truly need to be ultra‑fast and hyper‑optimized?
-    - probably not
-    - it's like a soft version of `add more instances` 😄
-- Thread Pool Isolation -> aka Bulkhead
-  - many thread pools, many endpoints
-  - It protects from the "noisy neighbour"
-  - request A -> Thread Pool A
-  - request B -> Thread Pool B
-- Thread Stage Isolation -> aka Stage Event-Driven Architecture (SEDA)
-  - many thread pools, different stage of endpoint execution
-  - request -> IO Pool 1 -> CPU Pool 1 -> IO Pool 2 - CPU Pool 2 etc
-  - maximize cpu, minimize queue wait time
-- Hybrid: Bulkhead + SEDA
-- maybe just more threads/instances
-- maybe some other things? 🤔
-
-And what if queue size is almost 0?
-
-- maybe cache is needed
-- maybe async calls (http, database) can be done
-- maybe deep dive with e.g. async-profiler
-- maybe fewer threads/instances are needed ❤️
-- maybe some other things? 🤔
+What if queue size is almost 0?
+-  cache, async calls, async-profiler, fewer threads
 
 # Table of Contents
 
