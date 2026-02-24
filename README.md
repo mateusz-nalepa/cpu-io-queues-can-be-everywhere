@@ -327,6 +327,9 @@ Below are some screenshot from Visual VM which shows CPU usage for busy and bloc
 
 ![cpu-usage.png](images/cpu-usage.png)
 
+Please check [example09](01-presentation-blog-examples/src/main/java/com/nalepa/demo/example09/Example09_Monitored_BLOCKING_IO_vs_CPU_BOUND_IN_EXECUTOR.java)
+from `01-presentation-blog-examples` for this case
+
 # How to measure queue wait time
 
 In order to measure queue wait time (and more*) use `ExecutorServiceMetrics` 
