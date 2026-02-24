@@ -44,15 +44,8 @@ for the latest few days,
 then probably queues are present
 in given service or it's dependencies.
 
-> Please remember, that during night there might be no traffic at all. 
-> From the other hand, there might be "day all the time", 
-> if service is being used globally.
-
-CPU usage is misleading when it comes to thread pool tasks queue wait time.
-Queues can be present at any CPU utilization level.
-
 What to do when queue wait time > 0?
--  add more threads, bulkhead, SEDA, or hybrid
+-  add more threads, [bulkhead](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead), [SEDA](https://stackoverflow.com/questions/3570610/what-is-seda-staged-event-driven-architecture), or hybrid
 
 What if queue size is almost 0?
 -  cache, async calls, async-profiler, fewer threads
@@ -121,10 +114,28 @@ Cause a queue can appear at any CPU utilization level.
 
 So it's good to monitor standing in line time and scanning time as two separate metrics.
 
-`Bonus`
 > If the queue is really high, it’s probably worth calculating a `Time to Consume Queue` metric 😄
 >
 > It can be useful when doing migrations for millions of records 😄
+
+
+Furthermore, queues can be present on a daily basis.
+Like traffic jam in the city - it can be there every day.
+The image below shows an estimated travel time
+from Wrocław to Kraków (cities in Poland).
+It's faster during night, slower during day.
+
+![quick_check_traffic_jam.png](images/quick_check_traffic_jam.png)
+
+It's the same for the service.
+If there are peaks and valleys in response times
+for the latest few days,
+then probably queues are present
+in given service or it's dependencies.
+
+> Please remember, that during night there might be no traffic at all.
+> From the other hand, there might be "day all the time",
+> if service is being used globally.
 
 # How to use this repo
 
