@@ -45,7 +45,7 @@ then probably queues are present
 in given service or it's dependencies.
 
 CPU usage is misleading when it comes to thread pool tasks queue wait time.
-Queues can be present at any CPU utilization level
+Queues can be present at any CPU utilization level.
 
 What to do when queue wait time > 0?
 -  add more threads, [bulkhead](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead), [SEDA](https://stackoverflow.com/questions/3570610/what-is-seda-staged-event-driven-architecture), or hybrid
@@ -122,7 +122,7 @@ So it's good to monitor standing in line time and scanning time as two separate 
 > It can be useful when doing migrations for millions of records 😄
 
 
-Furthermore, queues can be present on a daily basis.
+Queues can be present on a daily basis.
 Like traffic jam in the city - it can be there every day.
 The image below shows an estimated travel time
 from Wrocław to Kraków (cities in Poland).
@@ -409,14 +409,7 @@ Just add more threads, unless there are only CPU‑bound tasks:
 - really, absolutely simplest
   - does every app truly need to be ultra‑fast and hyper‑optimized?
   - probably not
-  - it's like a soft version of `add more instances` 😄
-
-What can happen under high load?
-
-- noisy neighbour, one endpoint consumes all resources
-- slow app:
-  - all threads are doing I/O
-  - or all threads are doing CPU
+  - it's like a soft version of `just add more instances` 😄
 
 # A little bit slower way to reduce response times
 
