@@ -101,6 +101,13 @@ class CustomTomcatThreadsShutdownManager implements SmartLifecycle {
         return running;
     }
 
+    @Override
+    public int getPhase() {
+        // close custom executor after Tomcat is closed
+        // so there will be no requests stopped in the middle of the execution
+        return Integer.MIN_VALUE;
+    }
+
     private void shutdownExecutor() {
         try {
             executorService.shutdown();

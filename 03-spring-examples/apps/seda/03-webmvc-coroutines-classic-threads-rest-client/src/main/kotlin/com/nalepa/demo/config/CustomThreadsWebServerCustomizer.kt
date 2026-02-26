@@ -91,6 +91,12 @@ class CustomTomcatThreadsShutdownManager : SmartLifecycle {
 
     override fun isRunning(): Boolean = running
 
+    override fun getPhase(): Int {
+        // close custom executor after Tomcat is closed
+        // so there will be no requests stopped in the middle of the execution
+        return Integer.MIN_VALUE
+    }
+
     private fun shutdownExecutor() {
         executorService.shutdown()
         val isTerminated = executorService.awaitTermination(5, TimeUnit.SECONDS)
