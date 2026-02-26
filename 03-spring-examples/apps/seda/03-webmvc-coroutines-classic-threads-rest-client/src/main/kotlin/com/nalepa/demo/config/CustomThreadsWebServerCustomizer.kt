@@ -52,8 +52,6 @@ class CustomThreadsWebServerCustomizer(
         val taskQueue = TaskQueue(tomcatServerProperties.threads.maxQueueCapacity)
         val threadFactory = TaskThreadFactory("custom-tomcat-handler-", true, Thread.MAX_PRIORITY)
 
-        tomcatServerProperties.acceptCount
-
         val executor =
             ThreadPoolExecutor(
                 tomcatServerProperties.threads.minSpare,
@@ -65,6 +63,11 @@ class CustomThreadsWebServerCustomizer(
             )
         taskQueue.setParent(executor)
         executor.prestartAllCoreThreads()
+
+        // note
+        // com.nalepa.demo.common.monitored.customSimpleMonitoredExecutorMonitoredExecutorService
+        // can be used here in order to add queue wait time for this Pool
+        // ThreadPoolExecutor from Tomcat extends ExecutorService
 
         return executor
     }

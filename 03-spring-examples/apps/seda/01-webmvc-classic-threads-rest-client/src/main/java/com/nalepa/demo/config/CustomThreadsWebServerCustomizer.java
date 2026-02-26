@@ -1,6 +1,7 @@
 package com.nalepa.demo.config;
 
 import com.nalepa.demo.common.monitored.ExecutorsFactory;
+import io.micrometer.core.instrument.internal.TimedExecutorService;
 import org.apache.tomcat.util.threads.TaskQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
@@ -59,8 +60,6 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
         TaskQueue taskQueue = new TaskQueue(tomcatServerProperties.getThreads().getMaxQueueCapacity());
         TaskThreadFactory threadFactory = new TaskThreadFactory("custom-tomcat-handler-", true, Thread.MAX_PRIORITY);
 
-        tomcatServerProperties.getAcceptCount();
-
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 tomcatServerProperties.getThreads().getMinSpare(),
                 tomcatServerProperties.getThreads().getMax(),
@@ -71,6 +70,11 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
         );
         taskQueue.setParent(executor);
         executor.prestartAllCoreThreads();
+
+        // note
+        // com.nalepa.demo.common.monitored.customSimpleMonitoredExecutorMonitoredExecutorService
+        // can be used here in order to add queue wait time for this Pool
+        // ThreadPoolExecutor from Tomcat extends ExecutorService
 
         return executor;
     }
