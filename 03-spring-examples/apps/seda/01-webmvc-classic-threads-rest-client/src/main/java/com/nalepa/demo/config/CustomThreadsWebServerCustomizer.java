@@ -1,7 +1,6 @@
 package com.nalepa.demo.config;
 
 import com.nalepa.demo.common.monitored.ExecutorsFactory;
-import io.micrometer.core.instrument.internal.TimedExecutorService;
 import org.apache.tomcat.util.threads.TaskQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
