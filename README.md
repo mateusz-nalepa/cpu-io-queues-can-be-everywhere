@@ -44,7 +44,7 @@ for the latest few days,
 then probably queues are present
 in given service or it's dependencies.
 
-Threads are not waiting for a tasks. Tasks are waiting for a threads.
+Threads are not waiting for tasks. Tasks are waiting for threads.
 CPU usage is misleading when it comes to thread pool tasks queue wait time.
 Queues can be present at any CPU utilization level. 
 
@@ -323,6 +323,8 @@ For any other library... it's probably the same 😄
   - thousands of `blocking tasks`? probably not so bad at all
 
 It's like all cashiers are busy/blocked, and customers are waiting in line.
+From thread pool perspective, threads are not waiting for tasks. 
+Tasks are waiting for threads.
 
 Below are some screenshot from Visual VM which shows CPU usage for busy and blocked threads:
 
