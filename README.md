@@ -44,7 +44,7 @@ for the latest few days,
 then probably queues are present
 in given service or it's dependencies.
 
-**Threads are not waiting for tasks. Tasks are waiting for threads.**
+`Threads are not waiting for tasks. Tasks are waiting for threads.`
 So CPU usage is misleading when it comes to thread pool tasks queue wait time.
 Because queues can be present at any CPU utilization level.
 Threads are either busy, or blocked.
