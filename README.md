@@ -46,8 +46,8 @@ in given service or it's dependencies.
 
 Threads are not waiting for tasks. Tasks are waiting for threads.
 So CPU usage is misleading when it comes to thread pool tasks queue wait time.
-Because queues can be present at any CPU utilization level.
-Threads are either busy, or blocked.
+Queues can be present at any CPU utilization level.
+Because threads are either busy, or blocked.
 
 What to do when queue wait time > 0?
 -  add more threads, [bulkhead](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead), [SEDA](https://stackoverflow.com/questions/3570610/what-is-seda-staged-event-driven-architecture), or hybrid
