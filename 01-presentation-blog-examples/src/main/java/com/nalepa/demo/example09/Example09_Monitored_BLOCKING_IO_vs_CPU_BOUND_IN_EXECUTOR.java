@@ -2,21 +2,34 @@ package com.nalepa.demo.example09;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Example09_Monitored_BLOCKING_IO_vs_CPU_BOUND_IN_EXECUTOR {
     public static void main(String[] args) throws Exception {
         ThreadFactory threadFactory = new SimpleThreadFactory("workerThread");
         int cpuCount = Runtime.getRuntime().availableProcessors();
-        var executor = Executors.newFixedThreadPool(cpuCount, threadFactory);
-        var futures = new java.util.ArrayList<Future<?>>();
+
+        var executor =
+                new ThreadPoolExecutor(
+                        cpuCount,
+                        cpuCount,
+                        0L, MILLISECONDS,
+                        new LinkedBlockingQueue<>(10000),
+                        threadFactory
+                );
+        var futures = new ArrayList<Future<?>>();
 
         for (int index = 0; index < 10000; index++) {
-//            futures.add(executor.submit(new MonitoredRunnable(() -> simulateBlockingIO())));
-             futures.add(executor.submit(new MonitoredRunnable(() -> simulateCpuCode())));
+            futures.add(executor.submit(new MonitoredRunnable(() -> simulateBlockingIO())));
+            // or
+//             futures.add(executor.submit(new MonitoredRunnable(() -> simulateCpuCode())));
         }
 
         for (Future<?> future : futures) {
@@ -57,10 +70,10 @@ public class Example09_Monitored_BLOCKING_IO_vs_CPU_BOUND_IN_EXECUTOR {
 
         @Override
         public void run() {
-             log("Queue wait time took: " + Duration.ofNanos(System.nanoTime() - runnableInstanceCreatedAt).toSeconds() + " s");
+            log("Queue wait time took: " + Duration.ofNanos(System.nanoTime() - runnableInstanceCreatedAt).toSeconds() + " s");
             long startExecution = System.nanoTime();
             delegate.run();
-             log("Task execution took: " + Duration.ofNanos(System.nanoTime() - startExecution).toSeconds() + " s");
+            log("Task execution took: " + Duration.ofNanos(System.nanoTime() - startExecution).toSeconds() + " s");
         }
     }
 
