@@ -20,7 +20,7 @@ import java.util.concurrent.Future;
 import static com.nalepa.demo.utils.SimulationStartedText.SIMULATION_STARTED_TEXT;
 
 @RestController
-public class RequestSenderDifferentEndpoint {
+public class SenderBulkheadEndpoint {
 
     private final ActionRecorder actionRecorder;
     private final RestClient restClient;
@@ -31,7 +31,7 @@ public class RequestSenderDifferentEndpoint {
     private Thread thread = new Thread(() -> {
     });
 
-    public RequestSenderDifferentEndpoint(
+    public SenderBulkheadEndpoint(
             HttpClientFactory httpClientFactory,
             ActionRecorder actionRecorder
     ) {
