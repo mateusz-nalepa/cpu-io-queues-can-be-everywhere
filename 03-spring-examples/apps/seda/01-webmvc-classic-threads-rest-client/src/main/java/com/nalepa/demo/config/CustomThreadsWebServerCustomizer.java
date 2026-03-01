@@ -53,7 +53,7 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
     }
 
     // that's how Tomcat by default creates executor for handling requests
-    private ThreadPoolExecutor getExecutor() {
+    private ExecutorService getExecutor() {
         // by default, Java minimize resources used when dealing with threads, so threads are created when there is reached queue limit
         // this task queue enforce java to create threads, when there are only elements in queue
         TaskQueue taskQueue = new TaskQueue(tomcatServerProperties.getThreads().getMaxQueueCapacity());
@@ -70,12 +70,18 @@ public class CustomThreadsWebServerCustomizer implements WebServerFactoryCustomi
         taskQueue.setParent(executor);
         executor.prestartAllCoreThreads();
 
-        // note
-        // com.nalepa.demo.common.monitored.customSimpleMonitoredExecutorMonitoredExecutorService
-        // can be used here in order to add queue wait time for this Pool
-        // ThreadPoolExecutor from Tomcat extends ExecutorService
+        // There will be given log in logs:
+        // i.m.c.i.b.jvm.ExecutorServiceMetrics     : Failed to bind as org.apache.tomcat.util.threads.ThreadPoolExecutor is unsupported.
+        // but Timer metrics will be available, so we can monitor how long requests are pending before being executed
+        // in order to learn more, have a look at the source code of ExecutorServiceMetrics
 
-        return executor;
+        var monitoredExecutor =
+                executorsFactory.monitorExecutorService(
+                        executor,
+                        "custom.http.server.pending"
+                );
+
+        return monitoredExecutor;
     }
 }
 
