@@ -1,25 +1,19 @@
 package com.nalepa.demo.config;
 
 import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
-import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
-import jakarta.annotation.PostConstruct;
+import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DummyPrometheusConfig {
 
-    private final PrometheusMeterRegistry meterRegistry;
-
-    public DummyPrometheusConfig(PrometheusMeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
-    }
-
-    // TODO: use MeterRegistryCustomizer<MeterRegistry> beans instead of @PostConstruct
-    @PostConstruct
-    public void configurePercentiles() {
-        meterRegistry
+    @Bean
+    public MeterRegistryCustomizer<MeterRegistry> meterRegistryPercentilesCustomizer() {
+        return meterRegistry -> meterRegistry
                 .config()
                 .meterFilter(new MeterFilter() {
                     @Override
@@ -31,8 +25,11 @@ public class DummyPrometheusConfig {
                                 .merge(config);
                     }
                 });
+    }
 
-        meterRegistry
+    @Bean
+    public MeterRegistryCustomizer<MeterRegistry> meterRegistryPrometheusFilterCustomizer() {
+        return meterRegistry -> meterRegistry
                 .config()
                 .meterFilter(
                         MeterFilter.deny(id ->
