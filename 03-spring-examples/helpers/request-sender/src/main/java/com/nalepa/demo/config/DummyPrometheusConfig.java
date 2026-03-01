@@ -16,6 +16,7 @@ public class DummyPrometheusConfig {
         this.meterRegistry = meterRegistry;
     }
 
+    // TODO: use MeterRegistryCustomizer<MeterRegistry> beans instead of @PostConstruct
     @PostConstruct
     public void configurePercentiles() {
         meterRegistry
