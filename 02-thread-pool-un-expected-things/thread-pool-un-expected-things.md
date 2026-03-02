@@ -241,7 +241,8 @@ Solutions?
 - the easiest one, set `corePoolSize` and `maxPoolSize` to the same number
 - create wrapper for `LinkedBlockingQueue` (or any other queue) and modify method `offer`
     - Tomcat thread pool works like that
-
+    - in code example there is a wrapper for `LinkedBlockingQueue` 
+      - with this wrapper, corePoolSize and maxPoolSize works as expected
 Check
 [ThreadPoolCoreSizeMaxSize](src/main/java/com/nalepa/demo/example04/ThreadPoolCoreSizeMaxSize.java)
 for more

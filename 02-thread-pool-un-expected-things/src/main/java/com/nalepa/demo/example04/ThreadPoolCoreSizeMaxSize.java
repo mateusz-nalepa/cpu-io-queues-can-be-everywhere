@@ -10,7 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ThreadPoolCoreSizeMaxSize {
     public static void main(String[] args) throws Exception {
         threadPoolIsNotCreatingThreadsWhenQueueIsNotEmpty();
-        // threadPoolCorePoolSizeAndMaxPoolSizeAreTheSame();
+//         threadPoolCorePoolSizeAndMaxPoolSizeAreTheSame();
+//        threadPoolIsCreatingNewThreadsAsExpectedDueToCustomLinkedBlockingQueue();
     }
 
     static void threadPoolIsNotCreatingThreadsWhenQueueIsNotEmpty() throws Exception {
@@ -37,7 +38,7 @@ public class ThreadPoolCoreSizeMaxSize {
         Thread.sleep(100);
         System.out.println();
         System.out.println("Number of threads in pool: " + executor.getPoolSize() + ", number of tasks in queue: " + executor.getQueue().size());
-        System.out.println("It would be nice to have 6 threads in pool here XD");
+        System.out.println("It would be nice to have 10 threads in pool here XD, not: " + executor.getQueue().size() + " tasks in queue :D");
         System.out.println();
         if (executor.getPoolSize() != 1) throw new IllegalStateException("Pool size is: " + executor.getPoolSize());
         for (int index = 0; index < 5; index++) {
@@ -68,7 +69,8 @@ public class ThreadPoolCoreSizeMaxSize {
         }
         Thread.sleep(100);
         System.out.println("Number of threads in pool: " + executor.getPoolSize() + ", number of tasks in queue: " + executor.getQueue().size());
-        if (executor.getPoolSize() != poolSize) throw new IllegalStateException("Pool size is: " + executor.getPoolSize());
+        if (executor.getPoolSize() != poolSize)
+            throw new IllegalStateException("Pool size is: " + executor.getPoolSize());
         executor.shutdownNow();
     }
 
@@ -81,12 +83,55 @@ public class ThreadPoolCoreSizeMaxSize {
         }
     }
 
+    static void threadPoolIsCreatingNewThreadsAsExpectedDueToCustomLinkedBlockingQueue() throws Exception {
+        int corePoolSize = 1;
+        int maxPoolSize = 10;
+        int queueSize = 20;
+        var executorAwareLinkedBlockingQueue = new CustomFixedCoreAndMaxPoolSize.ExecutorAwareLinkedBlockingQueue(20);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                corePoolSize,
+                maxPoolSize,
+                1L,
+                TimeUnit.MINUTES,
+                executorAwareLinkedBlockingQueue,
+                new SimpleThreadFactory("customThread")
+        );
+        executorAwareLinkedBlockingQueue.setExecutor(executor);
+
+        executor.execute(() -> sleepForOneHour(Thread.currentThread().getName() + " : Will sleep for an hour"));
+        Thread.sleep(100);
+        System.out.println();
+        System.out.println("Number of threads in pool: " + executor.getPoolSize() + ", number of tasks in queue: " + executor.getQueue().size());
+        if (executor.getPoolSize() != 1) throw new IllegalStateException("1. Pool size is: " + executor.getPoolSize());
+        for (int index = 0; index < queueSize; index++) {
+            final int idx = index;
+            executor.execute(() -> sleepForOneHour(Thread.currentThread().getName() + " : Index: " + idx + " : Will sleep for an hour"));
+        }
+        Thread.sleep(100);
+        System.out.println();
+        System.out.println("Number of threads in pool: " + executor.getPoolSize() + ", number of tasks in queue: " + executor.getQueue().size());
+        System.out.println();
+        if (executor.getPoolSize() != 10) throw new IllegalStateException("2. Pool size is: " + executor.getPoolSize());
+        for (int index = 0; index < 5; index++) {
+            final int idx = index;
+            executor.execute(() -> sleepForOneHour(Thread.currentThread().getName() + " : New Index: " + idx + " : Will sleep for an hour"));
+        }
+        Thread.sleep(100);
+        System.out.println();
+        System.out.println("Number of threads in pool: " + executor.getPoolSize() + ", number of tasks in queue: " + executor.getQueue().size());
+        if (executor.getPoolSize() != 10) throw new IllegalStateException("3. Pool size is: " + executor.getPoolSize());
+        executor.shutdownNow();
+    }
+
+
     static class SimpleThreadFactory implements ThreadFactory {
         private final String namePrefix;
         private final AtomicInteger counter = new AtomicInteger(0);
+
         public SimpleThreadFactory(String namePrefix) {
             this.namePrefix = namePrefix;
         }
+
         @Override
         public Thread newThread(Runnable r) {
             String name = namePrefix + "-" + counter.incrementAndGet();
