@@ -49,6 +49,12 @@ So CPU usage is misleading when it comes to thread pool tasks queue wait time.
 Queues can be present at any CPU utilization level.
 Because threads are either busy, or blocked.
 
+How to monitor queue wait time?
+- Spring Boot WebMVC + Tomcat and Platform Threads [click here](03-spring-examples/apps/bulkhead/01-webmvc-classic-threads/src/main/java/com/nalepa/demo/config/CustomThreadsWebServerCustomizer.java)
+- Spring Boot WebMVC + Tomcat and Virtual Threads [click here](03-spring-examples/apps/bulkhead/02-webmvc-virtual-threads/src/main/java/com/nalepa/demo/config/CustomTomcatVirtualThreadsWebServerCustomizer.java)
+- Spring Boot WebFlux + Event Loop Threads [click here](03-spring-examples/apps/bulkhead/05-webflux-netty-server/src/main/java/com/nalepa/demo/config/NettyEventLoopGroupMonitoring.java)
+- Custom Thread Pool [click here](03-spring-examples/apps/utils/src/main/java/com/nalepa/demo/common/monitored/ExecutorsFactory.java)
+
 What to do when queue wait time > 0?
 -  add more threads, [bulkhead](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead), [SEDA](https://stackoverflow.com/questions/3570610/what-is-seda-staged-event-driven-architecture), or hybrid
 
