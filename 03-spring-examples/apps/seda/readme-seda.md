@@ -39,7 +39,7 @@ ResponseEntity.ok((SomeResponse("response")))
 
 ## Architecture of the applications
 
-![img.png](img.png)
+![seda-test-app-flow.png](seda-test-app-flow.png)
 
 ## Application examples 
 - every one of them includes `how to run` and detailed threads diagram

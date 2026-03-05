@@ -33,7 +33,7 @@ ResponseEntity.ok((SomeResponse("slow")))
 
 ## Architecture of the applications
 
-![img.png](img.png)
+![bulkhead-test-app-flow.png](bulkhead-test-app-flow.png)
 
 ## Application examples
 - every one of them includes `how to run` and detailed threads diagram
