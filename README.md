@@ -212,14 +212,14 @@ There is always some `Thread` - like a cashier at the checkout:
 
 ```java
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        Thread.ofPlatform()
-                .name("some-thread")
-                .start(() -> 
-                    System.out.println(Thread.currentThread() + " : Hello world!")
-                )
-                .join();
-    }
+  public static void main(String[] args) throws InterruptedException {
+    Thread.ofPlatform()
+      .name("some-thread")
+      .start(() -> 
+        System.out.println(Thread.currentThread() + " : Hello world!")
+      )
+      .join();
+  }
 }
 ```
 
@@ -233,19 +233,19 @@ import java.util.concurrent.TimeUnit;
 public class Main {
   public static void main(String[] args) throws Exception {
     ThreadPoolExecutor threadPoolExecutor = 
-            new ThreadPoolExecutor(
-                    1, // corePoolSize
-                    1, // maxPoolSize
-                    0, // keep alive time, not used when corePoolSize == maxPoolSize
-                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
-                    new LinkedBlockingQueue<>(10) // queue with size 10
-            );
+      new ThreadPoolExecutor(
+        1, // corePoolSize
+        1, // maxPoolSize
+        0, // keep alive time, not used when corePoolSize == maxPoolSize
+        TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+        new LinkedBlockingQueue<>(10) // queue with size 10
+      );
     
     threadPoolExecutor
-            .submit(() -> 
-                System.out.println(Thread.currentThread() + " : Hello world!")
-            )
-            .get();
+      .submit(() -> 
+        System.out.println(Thread.currentThread() + " : Hello world!")
+      )
+      .get();
   }
 }
 ```
@@ -286,33 +286,33 @@ Under the hood: just threads.
 
 ```java
 ThreadPoolExecutor threadPoolExecutor =
-        new ThreadPoolExecutor(
-                    1, // corePoolSize
-                    1, // maxPoolSize
-                    0, // keep alive time, not used when corePoolSize == maxPoolSize
-                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
-                    new LinkedBlockingQueue<>(10) // queue with size 10
-            );
+  new ThreadPoolExecutor(
+    1, // corePoolSize
+    1, // maxPoolSize
+    0, // keep alive time, not used when corePoolSize == maxPoolSize
+    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+    new LinkedBlockingQueue<>(10) // queue with size 10
+  );
 
 private final Scheduler scheduler =
-        Schedulers.fromExecutor(threadPoolExecutor);
+  Schedulers.fromExecutor(threadPoolExecutor);
 ```
 
 [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html):
 
 ```kotlin
 val threadPoolExecutor =
-    ThreadPoolExecutor(
-                    1, // corePoolSize
-                    1, // maxPoolSize
-                    0, // keep alive time, not used when corePoolSize == maxPoolSize
-                    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
-                    LinkedBlockingQueue(10) // queue with size 10
-            )
+  ThreadPoolExecutor(
+    1, // corePoolSize
+    1, // maxPoolSize
+    0, // keep alive time, not used when corePoolSize == maxPoolSize
+    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+    LinkedBlockingQueue(10) // queue with size 10
+  )
 
 val dispatcher =
-    threadPoolExecutor
-        .asCoroutineDispatcher()
+  threadPoolExecutor
+    .asCoroutineDispatcher()
 ```
 
 For any other library... it's probably the same 😄
@@ -350,21 +350,21 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
 
 ThreadPoolExecutor threadPoolExecutor =
-        new ThreadPoolExecutor(
-                1, // corePoolSize
-                1, // maxPoolSize
-                0, // keep alive time, not used when corePoolSize == maxPoolSize
-                TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
-                new LinkedBlockingQueue<>(10) // queue with size 10
-        );
+  new ThreadPoolExecutor(
+    1, // corePoolSize
+    1, // maxPoolSize
+    0, // keep alive time, not used when corePoolSize == maxPoolSize
+    TimeUnit.SECONDS,  // keep alive time unit, not used when corePoolSize == maxPoolSize
+    new LinkedBlockingQueue<>(10) // queue with size 10
+  );
 
 ExecutorService monitoredThreadPoolExecutor =
-    ExecutorServiceMetrics
-        .monitor(
-            meterRegistry, // Micrometer MeterRegistry
-            threadPoolExecutor, // original thread pool
-            threadPoolName // my-custom-thread-pool
-        );
+  ExecutorServiceMetrics
+    .monitor(
+        meterRegistry, // Micrometer MeterRegistry
+        threadPoolExecutor, // original thread pool
+        threadPoolName // my-custom-thread-pool
+    );
 ```
 
 Thanks to this code, the metric `executor.idle` will be available - yes, 
@@ -395,18 +395,18 @@ public class MonitoredRunnable implements Runnable {
     // calculate queue wait time when task is about to be executed
     long queueWaitTime = System.nanoTime() - customerEnteredLineAt;
     System.out.println(
-        Thread.currentThread() 
-                + " : Customer wait time in line took: " 
-                + queueWaitTime + " ns"
+      Thread.currentThread() 
+        + " : Customer wait time in line took: " 
+        + queueWaitTime + " ns"
     );
 
     long startScanningGroceries = System.nanoTime();
     delegate.run();
     long scanningGroceriesTook = System.nanoTime() - startScanningGroceries;
     System.out.println(
-        Thread.currentThread() 
-                + " : Scanning groceries took: " 
-                + scanningGroceriesTook + " ns"
+      Thread.currentThread() 
+        + " : Scanning groceries took: " 
+        + scanningGroceriesTook + " ns"
     );
   }
 }
