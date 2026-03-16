@@ -31,6 +31,11 @@ public class ExecutorsFactory {
     }
 
 
+    // TODO: in order to pass thread local context
+    // use micrometer context-propagation
+    // and class ContextExecutorService
+    // first wrap original thread pool with ContextExecutorService.wrap
+    // and then wrap again with ExecutorServiceMetrics.monitor
     public ExecutorService monitorExecutorService(
             ExecutorService delegate,
             String threadPoolName
