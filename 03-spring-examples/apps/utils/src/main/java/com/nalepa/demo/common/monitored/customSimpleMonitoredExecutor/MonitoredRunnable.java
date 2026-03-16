@@ -30,6 +30,8 @@ public class MonitoredRunnable implements Runnable {
                 .tag("taskType", "runnable")
                 .description("Time between creation and execution")
                 .register(meterRegistry);
+
+        // TODO: read values from Thread Locals and save them to map
     }
 
     @Override
@@ -37,7 +39,12 @@ public class MonitoredRunnable implements Runnable {
         Duration duration = Duration.ofNanos(System.nanoTime() - startTime);
         DummyLogger.log(this, messagePrefix + " " + duration);
         waitTimer.record(duration);
-
-        delegate.run();
+        try {
+            // TODO:
+//        put values from map to thread locals
+            delegate.run();
+        } finally {
+            // TODO: clear thread locals
+        }
     }
 }

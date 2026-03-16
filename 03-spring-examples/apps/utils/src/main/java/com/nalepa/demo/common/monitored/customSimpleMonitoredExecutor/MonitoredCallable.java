@@ -30,6 +30,9 @@ public class MonitoredCallable<T> implements Callable<T> {
                 .tag("taskType", "callable")
                 .description("Time between creation and execution")
                 .register(meterRegistry);
+
+        // TODO: read values from Thread Locals and save them to map
+
     }
 
     @Override
@@ -38,6 +41,12 @@ public class MonitoredCallable<T> implements Callable<T> {
         DummyLogger.log(this, messagePrefix + " " + duration);
         waitTimer.record(duration);
 
-        return delegate.call();
+        try {
+            // TODO:
+//        put values from map to thread locals
+            return delegate.call();
+        } finally {
+            // TODO: clear thread locals
+        }
     }
 }
