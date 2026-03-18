@@ -23,9 +23,13 @@ public final class Operations {
     /**
      * simulate blocking I/O
      */
-    public static void someBlockingIO(long blockingTimeSeconds) throws InterruptedException {
+    public static void someBlockingIO(long blockingTimeSeconds)  {
         if (!Thread.currentThread().isVirtual()) {
-            Thread.sleep(Duration.ofSeconds(blockingTimeSeconds));
+            try {
+                Thread.sleep(Duration.ofSeconds(blockingTimeSeconds));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             throw new RuntimeException("Thread.sleep is non-blocking on virtual threads");
         }

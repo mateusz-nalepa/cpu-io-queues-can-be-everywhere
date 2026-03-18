@@ -44,7 +44,7 @@ class CoroutinesClassicWebControllerWithDedicatedCpuPool(
         DummyLogger.log(this, "Start FAST endpoint for index: $index")
 
         return withContext(dispatcherForFast) {
-            ResponseEntity.ok((SomeResponse("slow")))
+            ResponseEntity.ok((SomeResponse("fast")))
         }
     }
 
@@ -58,7 +58,7 @@ class CoroutinesClassicWebControllerWithDedicatedCpuPool(
         return withContext(dispatcherForSlow) {
             // NOTE: in real app remember for example about: deserialize requestBody, remember about validation
             Operations.someBlockingIO(cpuAppOrSleep)
-            ResponseEntity.ok((SomeResponse("fast")))
+            ResponseEntity.ok((SomeResponse("slow")))
         }
     }
 

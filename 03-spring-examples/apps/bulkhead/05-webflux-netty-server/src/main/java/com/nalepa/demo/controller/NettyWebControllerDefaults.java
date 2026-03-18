@@ -30,6 +30,6 @@ public class NettyWebControllerDefaults {
 
         Operations.heavyCpuCode(cpuOperationDelaySeconds);
 
-        return Mono.just(ResponseEntity.ok(new SomeResponse("fast")));
+        return Mono.just(ResponseEntity.ok(new SomeResponse("slow")));
     }
 }

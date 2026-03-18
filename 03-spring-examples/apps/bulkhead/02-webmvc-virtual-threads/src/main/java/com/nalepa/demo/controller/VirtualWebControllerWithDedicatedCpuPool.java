@@ -48,7 +48,7 @@ public class VirtualWebControllerWithDedicatedCpuPool {
 
         executeHeavyCpuOperation(cpuOperationDelaySeconds);
 
-        return ResponseEntity.ok(new SomeResponse("fast"));
+        return ResponseEntity.ok(new SomeResponse("slow"));
     }
 
     private void executeHeavyCpuOperation(long cpuOperationDelaySeconds) {

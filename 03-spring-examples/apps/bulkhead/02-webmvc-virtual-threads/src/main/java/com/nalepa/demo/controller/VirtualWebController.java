@@ -29,6 +29,6 @@ public class VirtualWebController {
 
         Operations.heavyCpuCode(cpuOperationDelaySeconds);
 
-        return ResponseEntity.ok(new SomeResponse("fast"));
+        return ResponseEntity.ok(new SomeResponse("slow"));
     }
 }

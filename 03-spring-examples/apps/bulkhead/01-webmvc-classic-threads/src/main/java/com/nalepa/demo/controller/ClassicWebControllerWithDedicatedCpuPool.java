@@ -44,7 +44,7 @@ public class ClassicWebControllerWithDedicatedCpuPool {
         DummyLogger.log(this, "Start FAST endpoint for index: " + index);
 
         return AsyncUtils.async(executorForFast, () ->
-                ResponseEntity.ok(new SomeResponse("slow"))
+                ResponseEntity.ok(new SomeResponse("fast"))
         );
     }
 
@@ -56,14 +56,9 @@ public class ClassicWebControllerWithDedicatedCpuPool {
         DummyLogger.log(this, "Start SLOW endpoint for index: " + index);
 
         return AsyncUtils.async(executorForSlow, () -> {
-            try {
-                // NOTE: in real app remember for example about: deserialize requestBody, remember about validation
-                Operations.someBlockingIO(cpuAppOrSleep);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            }
-            return ResponseEntity.ok(new SomeResponse("fast"));
+            // NOTE: in real app remember for example about: deserialize requestBody, remember about validation
+            Operations.someBlockingIO(cpuAppOrSleep);
+            return ResponseEntity.ok(new SomeResponse("slow"));
         });
     }
 }

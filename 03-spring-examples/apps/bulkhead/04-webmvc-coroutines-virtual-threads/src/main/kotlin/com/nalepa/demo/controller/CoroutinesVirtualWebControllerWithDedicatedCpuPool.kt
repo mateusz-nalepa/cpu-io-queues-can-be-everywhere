@@ -48,7 +48,7 @@ class CoroutinesVirtualWebControllerWithDedicatedCpuPool(
         return withContext(dispatcherForSlow) {
             // NOTE: in real app remember for example about: deserialize requestBody, remember about validation
             Operations.heavyCpuCode(cpuAppOrSleep)
-            ResponseEntity.ok((SomeResponse("fast")))
+            ResponseEntity.ok((SomeResponse("slow")))
         }
     }
 

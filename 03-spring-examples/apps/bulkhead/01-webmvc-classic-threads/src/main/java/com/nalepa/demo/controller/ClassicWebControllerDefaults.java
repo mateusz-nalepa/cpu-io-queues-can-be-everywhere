@@ -24,11 +24,11 @@ public class ClassicWebControllerDefaults {
     public ResponseEntity<SomeResponse> slowEndpointDefaults(
             @PathVariable String index,
             @PathVariable long cpuAppOrSleep
-    ) throws InterruptedException {
+    ) {
         DummyLogger.log(this, "Start SLOW endpoint for index: " + index);
 
         Operations.someBlockingIO(cpuAppOrSleep);
 
-        return ResponseEntity.ok(new SomeResponse("fast"));
+        return ResponseEntity.ok(new SomeResponse("slow"));
     }
 }

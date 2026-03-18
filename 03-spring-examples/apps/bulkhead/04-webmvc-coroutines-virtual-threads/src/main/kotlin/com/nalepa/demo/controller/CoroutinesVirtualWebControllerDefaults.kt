@@ -30,7 +30,7 @@ class CoroutinesVirtualWebControllerDefaults {
 
         Operations.heavyCpuCode(cpuAppOrSleep)
 
-        return ResponseEntity.ok((SomeResponse("fast")))
+        return ResponseEntity.ok((SomeResponse("slow")))
     }
 
 }

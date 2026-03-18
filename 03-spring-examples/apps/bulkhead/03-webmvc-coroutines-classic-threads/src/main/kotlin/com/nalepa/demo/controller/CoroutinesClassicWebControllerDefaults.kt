@@ -30,7 +30,7 @@ class CoroutinesClassicWebControllerDefaults {
 
         Operations.someBlockingIO(cpuAppOrSleep)
 
-        return ResponseEntity.ok((SomeResponse("fast")))
+        return ResponseEntity.ok((SomeResponse("slow")))
     }
 
 }
