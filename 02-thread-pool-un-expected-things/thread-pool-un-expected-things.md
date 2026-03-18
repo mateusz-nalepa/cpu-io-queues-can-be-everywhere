@@ -9,6 +9,7 @@ At the end of every section, there is info `why this matter`
 - [Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool](#threads-created-with-threadofvirtualfactory-are-scheduled-on-forkjoinpool)
 - [Only first subscribeOn does matter](#only-first-subscribeon-does-matter)
 - [Behavior of corePoolSize and maxPoolSize is unintuitive](#behavior-of-corepoolsize-and-maxpoolsize-is-unintuitive)
+- [Bonus about Virtual Threads](#bonus-about-virtual-threads)
 
 
 ### Adding more threads for CPU‑bound tasks may make things worse
@@ -250,3 +251,46 @@ for more
 ##### Why this matter?
 
 There can be a performance problem and knowing about default Thread Pool Behavior can save a lot of hours
+
+
+### Bonus about Virtual Threads
+
+Virtual Threads are a part of JDK. 
+So it's very easy to use them under the hood, when dealing for example with:
+- Project Reactor
+- Kotlin Coroutines
+
+How is that possible?
+
+`VirtualThread extends Thread`
+
+So why switch to VirtualThreads is so easy?
+
+```java
+// Platform Threads
+ExecutorService executor = Executors.newFixedThreadPool(200);
+
+// Virtual Threads
+ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+```
+
+Why does this work? Under the hood, in JVM, there's a lot of condition like:
+
+```java
+if (Thread.currentThread() instanceof VirtualThread) {
+    // do something with virtual thread
+} else {
+    // do something with platform thread
+}
+```
+
+![bonus_virtual_threads.png](../images/bonus_virtual_threads.png)
+
+##### Why this matter?
+
+There may be a case, for example, 
+that there is no Reactive Driver for given library. 
+So regular Platform Threads are needed in order to make requests. 
+So there can be a lot of Platform Threads.
+But all of them can be switched to Virtual Threads.
+So total number of threads in the application won't be high.
