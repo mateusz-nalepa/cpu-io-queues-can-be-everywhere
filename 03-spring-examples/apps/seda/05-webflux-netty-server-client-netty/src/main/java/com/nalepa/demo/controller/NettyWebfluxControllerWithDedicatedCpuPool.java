@@ -72,6 +72,9 @@ public class NettyWebfluxControllerWithDedicatedCpuPool {
     private Mono<byte[]> getData(String index, long mockDelaySeconds) {
         long startTime = System.nanoTime();
 
+        // note about virtual threads:
+        // if reactive driver is missing, then I/O can be offloaded to virtual thread
+        // ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
         return webClient
                 .get()
                 .uri("http://localhost:8082/mock/{index}/{mockDelaySeconds}", index, mockDelaySeconds)

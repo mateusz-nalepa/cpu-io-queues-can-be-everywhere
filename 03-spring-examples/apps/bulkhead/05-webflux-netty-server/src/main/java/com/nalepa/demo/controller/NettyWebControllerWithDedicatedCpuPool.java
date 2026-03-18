@@ -56,6 +56,9 @@ public class NettyWebControllerWithDedicatedCpuPool {
         return Mono
                 .just(index)
                 .publishOn(schedulerForSlow)
+                // note about virtual threads:
+                // if reactive driver is missing, then I/O can be offloaded to virtual thread
+                // ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
                 .doOnNext(i -> Operations.heavyCpuCode(cpuOperationDelaySeconds))
                 .map(i -> {
                     // some processing here
