@@ -7,10 +7,12 @@ what to do with them, and how to fix them.
 
 Sometimes adding a new thread pool can make a system `several times faster`,
 especially when high queue wait time is the dominant bottleneck.
+In that case, additional context-switches can make `things faster, more predictable`.
 
 In other cases it may have the opposite effect,
 for example when all threads are busy with CPU‑bound work (e.g. JSON parsing)
 then adding additional threads can make things only worse.
+In that case, additional context-switches can make `things worse, more unpredictable`.
 
 > An educational repository demonstrating
 > how thread‑pool tasks queue wait time appears
