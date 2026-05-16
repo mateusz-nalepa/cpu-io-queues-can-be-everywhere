@@ -30,6 +30,9 @@ There are 3 main modules in this repo:
 - [02-thread-pool-un-expected-things](02-thread-pool-un-expected-things) - some edge cases and pitfalls
 - [03-spring-examples](03-spring-examples) - Spring Boot demos with Grafana dashboards
 
+> BONUS!
+> 
+> There is also some [ultra-small directory with JavaScript](javascript-examples/javascript-examples.md) that shows SEDA‑like implementation in JavaScript.
 
 # TL;DR
 

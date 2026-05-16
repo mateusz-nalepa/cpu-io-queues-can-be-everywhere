@@ -1,8 +1,8 @@
 import MutexLimiter from "./mutexLimiter.js";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const mutexLimiter = new MutexLimiter()
+
+const asyncDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function smallProcessingStep(taskNumber, label, results) {
     logMessage("### Task number: " + taskNumber + " Processing step: " + label)
@@ -35,7 +35,7 @@ export async function internalBigProcessingChunked(taskNumber) {
 
     for (const step of steps) {
         await step();
-        await delay(1000); // eventLoop has time to do something
+        await asyncDelay(1000); // eventLoop has time to do something
     }
 
     logMessage("### Ended big function for task number: " + taskNumber)

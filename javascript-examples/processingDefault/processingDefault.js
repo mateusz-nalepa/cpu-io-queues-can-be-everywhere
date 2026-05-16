@@ -1,14 +1,13 @@
-function smallProcessingStep(taskNumber, label, results) {
-    logMessage("### Task number: " + taskNumber + " Processing step: " + label)
-    results.push(label);
-}
-
-
 const delaySync = (ms) => {
     const end = Date.now() + ms;
     while (Date.now() < end) {
     } // busy wait
 };
+
+function smallProcessingStep(taskNumber, label, results) {
+    logMessage("### Task number: " + taskNumber + " Processing step: " + label)
+    results.push(label);
+}
 
 export function bigProcessing(taskNumber) {
     logMessage("### Start big function for task number: " + taskNumber)
