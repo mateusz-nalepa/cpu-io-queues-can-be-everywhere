@@ -47,6 +47,8 @@ If there are peaks and valleys in response times
 for the latest few days,
 then probably queues are present
 in given service or it's dependencies.
+Or maybe too many threads are doing 
+CPU Bound work at the same time.
 
 Threads are not waiting for tasks. Tasks are waiting for threads.
 So CPU usage is misleading when it comes to thread pool tasks queue wait time.
