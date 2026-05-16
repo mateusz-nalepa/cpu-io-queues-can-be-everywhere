@@ -2,6 +2,8 @@
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
+They can make things slower, more unpredictable, 
+and they can be present at any CPU utilization level.
 By monitoring them, there is a chance to decide 
 what to do with them, and how to fix them.
 
