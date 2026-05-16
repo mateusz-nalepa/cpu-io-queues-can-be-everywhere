@@ -3,3 +3,5 @@
 build
 .*/build
 images/.*bkp
+
+javascript-examples/node_modules
