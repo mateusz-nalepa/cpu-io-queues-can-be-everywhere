@@ -32,7 +32,7 @@ There are 3 main modules in this repo:
 
 > BONUS!
 > 
-> There is also some [ultra-small directory with JavaScript](javascript-examples/javascript-examples.md) that shows SEDA‑like implementation in JavaScript.
+> There is also some [ultra-small directory with JavaScript](javascript-examples/javascript-examples.md) that shows SEDA‑like implementation in JavaScript :D
 
 # TL;DR
 
