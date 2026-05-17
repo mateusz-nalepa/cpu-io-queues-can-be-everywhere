@@ -446,11 +446,48 @@ when queue wait time is high:
 - bulkhead pattern
   - many thread pools, many endpoints
   - it protects resources
-  ![bulkhead.png](images/bulkhead.png)
+```java
+// Methods used in examples
+void slow() {
+    Thread.sleep(Duration.ofSeconds(5));
+}
+
+void fast() {
+    Thread.sleep(Duration.ofSeconds(1));
+}
+
+void processRequests() {
+    slow();
+    slow();
+    fast();
+    fast();
+}
+```
+![bulkhead.png](images/bulkhead.png)
 - Staged Event-Driven Architecture (SEDA)
   - many thread pools, different stage of endpoint execution
   - it makes resources faster
-  ![seda.png](images/seda.png)
+```java
+// Methods used in examples
+byte[] io() {
+    return new byte[]{1, 2, 3};
+}
+
+void cpu(byte[] bytes) {
+  // parse bytes, do some business logic, etc
+}
+
+void executeHttpCall() {
+    byte[] bytes = io();
+    cpu(bytes);
+}
+
+void processRequests() {
+    executeHttpCall();
+    executeHttpCall();
+}
+```
+![seda.png](images/seda.png)
 
 In those approaches, additional thread pools may be needed,
 thus more context-switching. But context-switching is not a problem, 
