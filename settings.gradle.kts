@@ -19,6 +19,7 @@ include(
     ":03-spring-examples:apps:seda:03-webmvc-coroutines-classic-threads-rest-client",
     ":03-spring-examples:apps:seda:04-webmvc-coroutines-virtual-threads-rest-client",
     ":03-spring-examples:apps:seda:05-webflux-netty-server-client-netty",
+    ":03-spring-examples:apps:seda:06-webflux-netty-server-client-netty-mongo",
 
     ":03-spring-examples:helpers:request-sender",
     ":03-spring-examples:helpers:mock-external-service",

@@ -1,3 +1,5 @@
+import {logMessage} from "../common/logMessage.js";
+
 const delaySync = (ms) => {
     const end = Date.now() + ms;
     while (Date.now() < end) {
@@ -12,6 +14,8 @@ function smallProcessingStep(taskNumber, label, results) {
 export function bigProcessing(taskNumber) {
     logMessage("### Start big function for task number: " + taskNumber)
     const results = [];
+    const startBigProcessingChunkedTime = Date.now();
+
 
     const steps = [
         () => smallProcessingStep(taskNumber, "step 1", results),
@@ -26,12 +30,8 @@ export function bigProcessing(taskNumber) {
         delaySync(1000); // eventLoop is not able to do anything
     }
 
-    logMessage("### Ended big function for task number: " + taskNumber)
+    const elapsed = Date.now() - startBigProcessingChunkedTime;
+
+    logMessage("### Ended big function for task number: " + taskNumber + " after: " + elapsed + " ms")
     return results;
-}
-
-
-function logMessage(message) {
-    const d = new Date();
-    console.log(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}   ` + message);
 }

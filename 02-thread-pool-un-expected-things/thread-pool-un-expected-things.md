@@ -9,7 +9,8 @@ At the end of every section, there is info `why this matter`
 - [Threads created with Thread.ofVirtual().factory() are scheduled on ForkJoinPool](#threads-created-with-threadofvirtualfactory-are-scheduled-on-forkjoinpool)
 - [Only first subscribeOn does matter](#only-first-subscribeon-does-matter)
 - [Behavior of corePoolSize and maxPoolSize is unintuitive](#behavior-of-corepoolsize-and-maxpoolsize-is-unintuitive)
-- [Bonus about Virtual Threads](#bonus-about-virtual-threads)
+- [Virtual Threads](#virtual-threads)
+- [Virtual Threads Lack of Monitoring](#virtual-threads-lack-of-monitoring)
 
 
 ### Adding more threads for CPU‑bound tasks may make things worse
@@ -253,7 +254,7 @@ for more
 There can be a performance problem and knowing about default Thread Pool Behavior can save a lot of hours
 
 
-### Bonus about Virtual Threads
+### Virtual Threads
 
 Virtual Threads are a part of JDK. 
 So it's very easy to use them under the hood, when dealing for example with:
@@ -294,3 +295,14 @@ So regular Platform Threads are needed in order to make requests.
 So there can be a lot of Platform Threads.
 But all of them can be switched to Virtual Threads.
 So total number of threads in the application won't be high.
+
+### Virtual Threads Lack of Monitoring
+When a new task is added to the Virtual Thread Pool, then a new Virtual Thread is created.
+At this moment, there is an option to monitor task queue wait time, before it's being picked up by a Carrier Thread.
+But when thread is unmounted, right now there no way to monitor, how long it waited before being able to mount on a carrier thread again.
+
+##### Why this matter?
+Metrics are not telling the truth, without this, hard to analyze performance issues.
+But there is an option, to monitor how many virtual threads are already parked.
+
+https://docs.micrometer.io/micrometer/reference/reference/jvm.html#_java_21_metrics

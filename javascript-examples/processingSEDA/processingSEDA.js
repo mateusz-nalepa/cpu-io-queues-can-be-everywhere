@@ -1,8 +1,15 @@
 import MutexLimiter from "./mutexLimiter.js";
+import {logMessage} from "../common/logMessage.js";
 
 const mutexLimiter = new MutexLimiter()
 
-const asyncDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const yieldToEventLoop = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+const delaySync = (ms) => {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+    } // busy wait
+};
 
 async function smallProcessingStep(taskNumber, label, results) {
     logMessage("### Task number: " + taskNumber + " Processing step: " + label)
@@ -10,12 +17,13 @@ async function smallProcessingStep(taskNumber, label, results) {
 }
 
 
-export async function limitedBigProcessing(taskNumber) {
+export async function limitedBigProcessingChunked(taskNumber) {
     const startQueueWaitTime = Date.now();
 
     await mutexLimiter.execute(async () => {
         const elapsed = Date.now() - startQueueWaitTime;
-        console.log(`Task number: ${taskNumber} waited ${elapsed} ms in the queue.`);
+
+        logMessage(`### Task number: ${taskNumber} waited ${elapsed} ms in the queue.`)
 
         await internalBigProcessingChunked(taskNumber);
     });
@@ -23,6 +31,8 @@ export async function limitedBigProcessing(taskNumber) {
 
 export async function internalBigProcessingChunked(taskNumber) {
     logMessage("### Start big function for task number: " + taskNumber)
+    const startBigProcessingChunkedTime = Date.now();
+
     const results = [];
 
     const steps = [
@@ -35,15 +45,11 @@ export async function internalBigProcessingChunked(taskNumber) {
 
     for (const step of steps) {
         await step();
-        await asyncDelay(1000); // eventLoop has time to do something
+        delaySync(1000)
+        await yieldToEventLoop(); // eventLoop has time to do something
     }
+    const elapsed = Date.now() - startBigProcessingChunkedTime;
 
-    logMessage("### Ended big function for task number: " + taskNumber)
+    logMessage("### Ended big function for task number: " + taskNumber + " after: " + elapsed + " ms")
     return results;
-}
-
-
-function logMessage(message) {
-    const d = new Date();
-    console.log(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}   ` + message);
 }

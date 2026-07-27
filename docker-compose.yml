@@ -26,6 +26,16 @@ services:
           - ./docker/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
       ports:
           - "3000:3000"
+  cpu-bound-io-bound-mongodb:
+      image: mongo:7.0
+      container_name: mongodb
+      command: mongod --setParameter enableTestCommands=1
+      restart: always
+      ports:
+          - "27017:27017"
+      environment:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: admin
 volumes:
   prometheus_data:
     driver: local
