@@ -208,12 +208,19 @@ When all threads in thread pool are busy, then thread pool is saturated.
 In this repository, the term `queue wait time` 
 is used to describe the time of the saturation.
 
-### Backpressure & Queues Limits
+### Queues Limits
 
 To keep examples minimal and focused on queue wait time metrics, 
-this repo doesn't cover Backpressure or Rejected Execution Policies. 
+this repo doesn't cover every aspect of thread pool config, for example Rejected Execution Policies. 
 In production, always remember that an unbounded queue is a `hidden`
 memory leak waiting to happen.
+
+### Tools
+
+> Nalepa Personal Experience. I'm open to any feedback on this!
+
+Performance‑profiling tools usually do not provide any direct insight into `queue wait time`.
+Typically only the` queue size` metric is available, which is not sufficient to understand how long tasks actually wait before execution. As a result, queue‑related delays often remain invisible unless measured explicitly.
 
 # Thread, Thread Pools
 
