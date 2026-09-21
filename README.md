@@ -445,6 +445,7 @@ when queue wait time is high:
 
 - bulkhead pattern
   - many thread pools, many endpoints
+  - thread pool operation isolation
   - it protects resources
 ```java
 // Methods used in examples
@@ -466,6 +467,7 @@ void processRequests() {
 ![bulkhead.png](images/bulkhead.png)
 - Staged Event-Driven Architecture (SEDA)
   - many thread pools, different stage of endpoint execution
+  - thread pool stage isolation
   - it makes resources faster
 ```java
 // Methods used in examples

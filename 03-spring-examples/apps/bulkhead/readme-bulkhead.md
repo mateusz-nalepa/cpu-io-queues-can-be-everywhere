@@ -2,6 +2,8 @@
 
 In those endpoints, `bulkhead` pattern is used.
 
+It's Thread Pool Operation Isolation pattern.
+
 It has many thread pools for many endpoints.
 
 It protects one resources from another, e.g. `noisy neighbour`

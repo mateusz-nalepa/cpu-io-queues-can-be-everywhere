@@ -2,6 +2,8 @@
 
 In those examples, Staged Event-Driven Architecture (SEDA) pattern is being used.
 
+It's Thread Pool Stage Isolation pattern.
+
 It has many thread pools, different stage of endpoint execution.
 
 It improves asynchronous processing performance by using a dedicated thread pool for each stage of request execution.
