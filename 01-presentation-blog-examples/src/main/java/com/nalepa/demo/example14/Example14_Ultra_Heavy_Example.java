@@ -42,9 +42,8 @@ public class Example14_Ultra_Heavy_Example {
             System.out.println();
             System.out.println("Response times not flat?");
             System.out.println("Something may be bad");
-            System.out.println("Something may be bad");
             System.out.println("Maybe remove context-switch");
-            System.out.println("Maybe let's context-switch");
+            System.out.println("Maybe let's add context-switch");
             System.out.println("Both are two sides of same thing");
             System.out.println("Performance monitoring!");
         }
