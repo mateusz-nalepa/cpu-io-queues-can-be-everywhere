@@ -23,7 +23,7 @@ public class MongoClientProperties {
     public static class EventLoopLag {
 
         private boolean enabled = true;
-        private Duration interval = Duration.ofMillis(50);
+        private Duration interval = Duration.ofMillis(10);
 
         public boolean isEnabled() {
             return enabled;
