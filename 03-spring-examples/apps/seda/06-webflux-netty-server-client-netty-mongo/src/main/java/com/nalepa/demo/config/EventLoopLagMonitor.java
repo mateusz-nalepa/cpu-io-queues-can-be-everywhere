@@ -5,16 +5,29 @@ import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class EventLoopLagMonitor {
 
+    private static final String DEFAULT_METRIC_NAME = "custom.netty.eventloop.lag";
+
     private final MeterRegistry meterRegistry;
-    private final Duration interval = Duration.ofMillis(20);
+    private final long intervalNanos;
+    private final String metricName;
 
     public EventLoopLagMonitor(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
+        this(meterRegistry, Duration.ofMillis(20), DEFAULT_METRIC_NAME);
+    }
+
+    EventLoopLagMonitor(MeterRegistry meterRegistry, Duration interval, String metricName) {
+        this.meterRegistry = Objects.requireNonNull(meterRegistry, "meterRegistry");
+        this.intervalNanos = interval.toNanos();
+        if (intervalNanos <= 0) {
+            throw new IllegalArgumentException("interval must be positive");
+        }
+        this.metricName = Objects.requireNonNull(metricName, "metricName");
     }
 
     public void registerGroup(EventExecutorGroup group) {
@@ -28,17 +41,17 @@ public class EventLoopLagMonitor {
                     long now = System.nanoTime();
                     long diff = now - last.getAndSet(now);
 
-                    long lagNanos = diff - interval.toNanos();
+                    long lagNanos = diff - intervalNanos;
 
                     if (lagNanos > 0) {
                         meterRegistry
-                                .timer("custom.netty.eventloop.lag",
+                                .timer(metricName,
                                         "executor", Thread.currentThread().getName()
                                 )
                                 .record(lagNanos, TimeUnit.NANOSECONDS);
                     }
                 },
-                0, interval.toMillis(), TimeUnit.MILLISECONDS
+                0, intervalNanos, TimeUnit.NANOSECONDS
         );
     }
 }

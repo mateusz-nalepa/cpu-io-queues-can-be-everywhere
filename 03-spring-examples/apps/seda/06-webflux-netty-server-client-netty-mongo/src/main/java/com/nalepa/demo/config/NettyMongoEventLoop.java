@@ -6,47 +6,52 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.nio.NioIoHandler;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.mongodb.autoconfigure.MongoClientSettingsBuilderCustomizer;
-import org.springframework.stereotype.Component;
 
-@Component
-// this class is copy-paste from
-// org.springframework.boot.mongodb.autoconfigure.MongoReactiveAutoConfiguration.NettyDriverMongoClientSettingsBuilderCustomizer
-
-// what is added here?
-// customMonitorEventLoop
 public class NettyMongoEventLoop implements MongoClientSettingsBuilderCustomizer, DisposableBean {
 
 
     private final ObjectProvider<MongoClientSettings> settings;
+    private final MongoClientProperties properties;
 
     private volatile @Nullable EventLoopGroup eventLoopGroup;
-    private volatile @Nullable MeterRegistry meterRegistry;
+    private final ObjectProvider<MeterRegistry> meterRegistry;
 
-    NettyMongoEventLoop(ObjectProvider<MongoClientSettings> settings, MeterRegistry meterRegistry) {
+    NettyMongoEventLoop(
+            ObjectProvider<MongoClientSettings> settings,
+            ObjectProvider<MeterRegistry> meterRegistry,
+            MongoClientProperties properties
+    ) {
         this.settings = settings;
+        this.properties = properties;
         this.meterRegistry = meterRegistry;
     }
 
     @Override
-    public void customize(MongoClientSettings.Builder builder) {
-
-        if (!isCustomTransportConfiguration(this.settings.getIfAvailable())) {
-            EventLoopGroup eventLoopGroup = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
-
-            customMonitorEventLoop(eventLoopGroup);
-
-            this.eventLoopGroup = eventLoopGroup;
-            builder.transportSettings(TransportSettings.nettyBuilder().eventLoopGroup(eventLoopGroup).build());
+    public void customize(MongoClientSettings.@NonNull Builder builder) {
+        MeterRegistry meterRegistry = this.meterRegistry.getIfAvailable();
+        if (!properties.getEventLoopLag().isEnabled() || meterRegistry == null) {
+            return;
         }
-    }
-
-    private void customMonitorEventLoop(EventLoopGroup eventLoopGroup) {
-        new EventLoopLagMonitor(meterRegistry)
-                .registerGroup(eventLoopGroup);
+        if (!isCustomTransportConfiguration(this.settings.getIfAvailable())) {
+            EventLoopGroup configuredEventLoopGroup = this.eventLoopGroup;
+            if (configuredEventLoopGroup == null) {
+                configuredEventLoopGroup = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
+                this.eventLoopGroup = configuredEventLoopGroup;
+                new EventLoopLagMonitor(
+                        meterRegistry,
+                        properties.getEventLoopLag().getInterval(),
+                        "eventLoop"
+                ).registerGroup(configuredEventLoopGroup);
+            }
+            builder.transportSettings(
+                    TransportSettings.nettyBuilder().eventLoopGroup(configuredEventLoopGroup).build()
+            );
+        }
     }
 
     @Override
