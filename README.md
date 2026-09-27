@@ -1,5 +1,23 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
+# Ultra TL;DR
+Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response times are usually not aware about queues. Examples:
+
+![store.png](images/store.png)
+
+- Server Response Time
+  - It's like groceries scanning time only
+  - but what about customers standing in a line?
+- Client Response Time (http, database, etc.)
+  - It's like customer queue wait time + groceries scanning time
+
+In both examples, we need two metrics:
+- customer queue wait time
+- groceries scanning time
+
+Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable.
+
+
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
 They can make things slower, more unpredictable, 
