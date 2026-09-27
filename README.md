@@ -29,7 +29,6 @@ In this repo there is info about queues from thread-pool JVM perspective. But th
 > It contains pure Java (with Kotlin Coroutines where applicable) examples.
 >
 > Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
-> Tracing is also not included. Well, comments only about it are present :D 
 
 There are 3 main modules in this repo:
 - [01-presentation-blog-examples](01-presentation-blog-examples) - minimal Java examples
