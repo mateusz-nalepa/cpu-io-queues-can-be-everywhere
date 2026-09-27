@@ -11,7 +11,7 @@ Queues are everywhere on a daily basis. Real live example? Customers standing in
 - Client Response Time (http, database, etc.)
   - It's like customer queue wait time + cashier scanning time
 
-In both examples, we need two metrics:
+In both examples, two metrics are needed:
 - customer queue wait time
 - cashier scanning time
 
