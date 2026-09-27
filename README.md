@@ -3,13 +3,13 @@
 # TL;DR - 1 minute
 Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response time metrics are usually not aware about queues.
 
-![store.png](images/store.png)
-
 - Server Response Time
   - It's like scanning time from cashier perspective
   - but what about queue wait time from customer perspective?
 - Client Response Time (http, database, etc.)
   - It's like customer queue wait time + cashier scanning time
+
+![store.png](images/store.png)
 
 In both examples, two metrics are needed:
 - customer queue wait time
