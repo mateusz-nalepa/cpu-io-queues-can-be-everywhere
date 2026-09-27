@@ -6,10 +6,10 @@ Queues are everywhere on a daily basis. Real live example? Customers standing in
 ![store.png](images/store.png)
 
 - Server Response Time
-  - It's like groceries scanning time only
-  - but what about customers standing in a line?
+  - It's like scanning time from cashier perspective
+  - but what about queue wait time from customer perspective?
 - Client Response Time (http, database, etc.)
-  - It's like customer queue wait time + groceries scanning time
+  - It's like customer queue wait time + cashier scanning time
 
 In both examples, we need two metrics:
 - customer queue wait time
