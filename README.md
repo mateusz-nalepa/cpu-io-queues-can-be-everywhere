@@ -1,6 +1,6 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-# Ultra TL;DR
+# Ultra TL;DR - 1 minute
 Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response times are usually not aware about queues. Examples:
 
 ![store.png](images/store.png)
@@ -15,7 +15,8 @@ In both examples, we need two metrics:
 - customer queue wait time
 - groceries scanning time
 
-Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable.
+Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable. In this repo there is info about queues from thread-pool perspective. But the rules are universal, and they can be applied to any other pool, e.g. connection pool.
+
 
 # What's in the repo?
 
