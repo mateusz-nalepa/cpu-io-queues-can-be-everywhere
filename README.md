@@ -15,7 +15,9 @@ In both examples, we need two metrics:
 - customer queue wait time
 - groceries scanning time
 
-Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable. In this repo there is info about queues from thread-pool perspective. But the rules are universal, and they can be applied to any other pool, e.g. connection pool.
+Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable. 
+
+In this repo there is info about queues from thread-pool JVM perspective. But the rules are universal. They can be applied to any programming language and any other pool, e.g. connection pool.
 
 
 # What's in the repo?
