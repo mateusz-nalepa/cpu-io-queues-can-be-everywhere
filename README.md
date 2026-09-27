@@ -17,22 +17,7 @@ In both examples, we need two metrics:
 
 Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable.
 
-
-Queues can be present on a daily basis, and they can be hidden in plain sight.
-It's like traffic jam in the city - it can be there every day.
-They can make things slower, more unpredictable, 
-and they can be present at any CPU utilization level.
-By monitoring them, there is a chance to decide 
-what to do with them, and how to fix them.
-
-Sometimes adding a new thread pool can make a system `several times faster`,
-especially when high queue wait time is the dominant bottleneck.
-In that case, additional context-switches can make `things faster, more predictable`.
-
-In other cases it may have the opposite effect,
-for example when all threads are busy with CPU‑bound work (e.g. JSON parsing)
-then adding additional threads can make things only worse.
-In that case, additional context-switches can make `things worse, more unpredictable`.
+# What's in the repo?
 
 > An educational repository demonstrating
 > how thread‑pool tasks queue wait time appears
@@ -52,7 +37,18 @@ There are 3 main modules in this repo:
 > 
 > There is also some [ultra-small directory with JavaScript](javascript-examples/javascript-examples.md) that shows SEDA‑like implementation in JavaScript :D
 
-# TL;DR
+# Ultra quick info about context-switch
+
+Sometimes adding a new thread pool can make a system `several times faster`,
+especially when high queue wait time is the dominant bottleneck.
+In that case, additional context-switches can make `things faster, more predictable`.
+
+In other cases it may have the opposite effect,
+for example when all threads are busy with CPU‑bound work (e.g. JSON parsing)
+then adding additional threads can make things only worse.
+In that case, additional context-switches can make `things worse, more unpredictable`.
+
+# A little bit longer Introduction
 
 Queues can be present on a daily basis, and they can be hidden in plain sight.
 It's like traffic jam in the city - it can be there every day.
