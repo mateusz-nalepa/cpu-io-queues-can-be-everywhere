@@ -26,7 +26,6 @@ In this repo there is info about queues from thread-pool JVM perspective. But th
 > how thread‑pool tasks queue wait time appears
 > across different types of tasks and
 > how easily it hides in plain sight.
-> It contains pure Java (with Kotlin Coroutines where applicable) examples.
 >
 > Programming principles such as SOLID, KISS, DRY, or Hexagonal Architecture were not considered when creating this repo.
 
