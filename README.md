@@ -13,11 +13,11 @@ Queues are everywhere on a daily basis. Real live example? Customers standing in
 
 In both examples, we need two metrics:
 - customer queue wait time
-- groceries scanning time
+- cashier scanning time
 
 Consequences? In production, system can be even `several times faster` by monitoring & fixing queue wait time issues. It depends, how long queue wait time is. As a side effect, it can be more predictable, and more stable. 
 
-In this repo there is info about queues from thread-pool JVM perspective. But the rules are universal. They can be applied to any programming language and any other pool, e.g. connection pool.
+In this repo there is info about queues from thread-pool JVM perspective. But the rules are universal. They can be applied to any programming language as well as any other pool, e.g. connection pool.
 
 
 # What's in the repo?
