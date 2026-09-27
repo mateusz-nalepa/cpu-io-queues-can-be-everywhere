@@ -1,7 +1,7 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
 # TL;DR - 1 minute
-Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response times are usually not aware about queues. Examples:
+Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response times are usually not aware about queues.
 
 ![store.png](images/store.png)
 
