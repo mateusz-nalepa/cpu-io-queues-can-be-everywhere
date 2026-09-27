@@ -1,6 +1,6 @@
 # CPU-Bound, I/O Bound: Queues can be everywhere
 
-# Ultra TL;DR - 1 minute
+# TL;DR - 1 minute
 Queues are everywhere on a daily basis. Real live example? Customers standing in line at the checkout. In programming, response times are usually not aware about queues. Examples:
 
 ![store.png](images/store.png)
