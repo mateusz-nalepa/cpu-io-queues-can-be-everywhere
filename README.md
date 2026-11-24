@@ -21,9 +21,12 @@ In this repo there is info about queues from thread-pool JVM perspective and a l
 
 Just add this library to your deps:
 ```kotlin
-// https://mvnrepository.com/artifact/pl.allegro.tech.queuewaittime/queue-wait-time-spring-boot-starter/versions
 implementation 'pl.allegro.tech.queuewaittime:queue-wait-time-spring-boot-starter:<version>'
 ```
+Get the newest version from: 
+https://search.maven.org/artifact/pl.allegro.tech.queuewaittime/queue-wait-time-spring-boot-starter
+
+
 More info about library here:
 https://github.com/allegro/queue-wait-time-spring-boot-starter
 
