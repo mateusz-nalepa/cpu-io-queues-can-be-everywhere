@@ -19,6 +19,11 @@ Consequences? In production, system can be even `several times faster` by monito
 
 In this repo there is info about queues from thread-pool JVM perspective and a little bit of JavaScript. But the rules are universal. They can be applied to any programming language as well as any other pool, e.g. connection pool.
 
+Just add this library to your deps:
+```kotlin
+// https://mvnrepository.com/artifact/pl.allegro.tech.queuewaittime/queue-wait-time-spring-boot-starter/versions
+implementation 'pl.allegro.tech.queuewaittime:queue-wait-time-spring-boot-starter:<version>'
+```
 
 # What's in the repo?
 
