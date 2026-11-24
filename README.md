@@ -24,6 +24,8 @@ Just add this library to your deps:
 // https://mvnrepository.com/artifact/pl.allegro.tech.queuewaittime/queue-wait-time-spring-boot-starter/versions
 implementation 'pl.allegro.tech.queuewaittime:queue-wait-time-spring-boot-starter:<version>'
 ```
+More info about library here:
+https://github.com/allegro/queue-wait-time-spring-boot-starter
 
 # What's in the repo?
 
